@@ -1,32 +1,31 @@
 <?php
 
 require_once 'class-advertising-agency.php';
+require_once 'class-db-manager.php';
+require_once dirname(__DIR__) . '/constants.php';
 
 class AffiliationTableAdmin
 {
-    const ADVERTISING_AGENCY_TABLE = 'affiliation_table_advertising_agency';
+    private $dbManager;
 
-    private $advertisingAgencies = array();
-
-    private $db;
+    private $advertisingAgencies;
 
     function __construct()
     {
-        global $wpdb;
+        $this->dbManager = new DbManager();
 
-        $this->db = $wpdb;
+        $this->advertisingAgencies = array();
+        array_push($this->advertisingAgencies, new AdvertisingAgency('AWIN', 'Awin', null));
+        array_push($this->advertisingAgencies, new AdvertisingAgency('EFFILIATION', 'Effiliation', null));
+        array_push($this->advertisingAgencies, new AdvertisingAgency('AFFILAE', 'Affilae', null));
 
         add_action('admin_menu', array($this, 'add_menu_page_affiliation_table'));
-
-        array_push($this->advertisingAgencies, new AdvertisingAgency('AWIN', 'Awin'));
-        array_push($this->advertisingAgencies, new AdvertisingAgency('EFFILIATION', 'Effiliation'));
-        array_push($this->advertisingAgencies, new AdvertisingAgency('AFFILAE', 'Affilae'));
     }
 
     public function initialize()
     {
-        if ($this->db->get_var("SHOW TABLES LIKE '" . self::ADVERTISING_AGENCY_TABLE . "'") == '') {
-            $this->create_advertising_agency_table();
+        if (!$this->dbManager->table_exists(Constants::ADVERTISING_AGENCY_TABLE)) {
+            $this->dbManager->create_advertising_agency_table($this->advertisingAgencies);
         }
     }
 
@@ -36,34 +35,22 @@ class AffiliationTableAdmin
             'Affiliation',
             'Affiliation',
             'manage_options',
-            'views/main.php',
-            '',
+            'affiliationTableAdmin',
+            array($this, 'select_page_to_show'),
             'dashicons-editor-table',
             20
         );
     }
 
-    private function create_advertising_agency_table()
+    public function select_page_to_show()
     {
-        require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-
-        $sql = "
-			CREATE TABLE " . self::ADVERTISING_AGENCY_TABLE . " (
-				name VARCHAR(255) NOT NULL UNIQUE,
-				label VARCHAR(255) NOT NULL,
-				value VARCHAR(255)
-			);
-		";
-
-        dbDelta($sql);
-
-        foreach ($this->advertisingAgencies as $advertisingAgency) {
-            $sql = "
-                INSERT INTO " . self::ADVERTISING_AGENCY_TABLE . " (name, label) 
-                VALUES ('" . $advertisingAgency->getName() . "', '" . $advertisingAgency->getLabel() . "')
-            ";
-
-            dbDelta($sql);
+        switch ($_GET['action']) {
+            case 'edit-advertising-agencies':
+                include(dirname(__DIR__) . '/pages/edit-advertising-agencies.php');
+                break;
+            default:
+                include(dirname(__DIR__) . '/pages/main.php');
+                break;
         }
     }
 }
