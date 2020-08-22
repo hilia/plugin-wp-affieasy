@@ -48,6 +48,9 @@ class AffiliationTableAdmin
             case 'edit-advertising-agencies':
                 include(dirname(__DIR__) . '/pages/edit-advertising-agencies.php');
                 break;
+            case 'edit-table':
+                include(dirname(__DIR__) . '/pages/edit-table.php');
+                break;
             default:
                 include(dirname(__DIR__) . '/pages/main.php');
                 break;
