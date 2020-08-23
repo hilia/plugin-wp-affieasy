@@ -51,11 +51,21 @@ wp_enqueue_script(
                         </label>
                     </th>
                     <td>
-                        <input type="checkbox" id="with-header" name="with-header" checked
+                        <input
+                                type="checkbox"
+                                id="with-header"
+                                name="with-header"
+                                checked
                                onchange="toggleWithHeader()">
                     </td>
                 </tr>
             </table>
+
+            <div class="action-buttons">
+                <a type="button" class="page-title-action" onclick="addRow()">
+                    Add row
+                </a>
+            </div>
 
             <div class="table-content">
                 <input type="text" class="header-cell" maxlength="255">

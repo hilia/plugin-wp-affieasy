@@ -6,6 +6,17 @@
     width: 25em!important;
 }
 
+#edition-panel {
+    display: flex;
+    flex-direction: column;
+}
+
+.action-buttons {
+    margin-top: 1em;
+    display: flex;
+    flex-direction: row;
+}
+
 .table-content {
     width: 100%;
     margin-top: 1em;
@@ -22,6 +33,17 @@
     text-align: center;
     font-size: 14px;
     font-weight: 700;
+    line-height: 1.5;
+    border-radius: 0!important;
+}
+
+.content-cell {
+    margin: 1px;
+
+    height: 60px;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 500;
     line-height: 1.5;
     border-radius: 0!important;
 }
