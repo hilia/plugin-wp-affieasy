@@ -18,13 +18,13 @@ wp_enqueue_script(
     <h1>Create Table</h1>
 
     <nav class="nav-tab-wrapper wp-clearfix" aria-label="Menu secondaire">
-        <span id="nav-edition" class="nav-tab nav-tab-active" aria-current="page"
+        <span id="edition-nav" class="nav-tab nav-tab-active" aria-current="page"
               onclick="updateActivePanel('nav-edition')">Edition</span>
-        <span id="nav-overview" class="nav-tab" aria-current="page"
+        <span id="overview-nav" class="nav-tab" aria-current="page"
               onclick="updateActivePanel('nav-overview')">Overview</span>
     </nav>
 
-    <div id="panel-edition">
+    <div id="edition-panel">
         <form class="validate" method="post">
             <table class="form-table" role="presentation">
                 <tr class="form-field">
@@ -51,14 +51,22 @@ wp_enqueue_script(
                         </label>
                     </th>
                     <td>
-                        <input type="checkbox" id="with-header" name="with-header">
+                        <input type="checkbox" id="with-header" name="with-header" checked
+                               onchange="toggleWithHeader()">
                     </td>
                 </tr>
             </table>
+
+            <div class="table-content">
+                <input type="text" class="header-cell" maxlength="255">
+                <input type="text" class="header-cell" maxlength="255">
+                <input type="text" class="header-cell" maxlength="255">
+                <input type="text" class="header-cell" maxlength="255">
+            </div>
         </form>
     </div>
 
-    <div id="panel-overview" style="display: none;">
+    <div id="overview-panel" style="display: none;">
     </div>
 
     <button

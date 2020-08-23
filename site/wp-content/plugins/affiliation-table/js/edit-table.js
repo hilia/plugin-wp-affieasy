@@ -1,15 +1,25 @@
 function updateActivePanel(activeNav) {
     if (activeNav === 'nav-edition') {
-        document.querySelector('#nav-edition').classList.add('nav-tab-active');
-        document.querySelector('#nav-overview').classList.remove('nav-tab-active');
+        document.querySelector('#edition-nav').classList.add('nav-tab-active');
+        document.querySelector('#overview-nav').classList.remove('nav-tab-active');
 
-        document.querySelector('#panel-edition').style.display = "block";
-        document.querySelector('#panel-overview').style.display = "none";
+        document.querySelector('#edition-panel').style.display = "block";
+        document.querySelector('#overview-panel').style.display = "none";
     } else {
-        document.querySelector('#nav-edition').classList.remove('nav-tab-active');
-        document.querySelector('#nav-overview').classList.add('nav-tab-active');
+        document.querySelector('#edition-nav').classList.remove('nav-tab-active');
+        document.querySelector('#overview-nav').classList.add('nav-tab-active');
 
-        document.querySelector('#panel-edition').style.display = "none";
-        document.querySelector('#panel-overview').style.display = "block";
+        document.querySelector('#edition-panel').style.display = "none";
+        document.querySelector('#overview-panel').style.display = "block";
+    }
+}
+
+function toggleWithHeader() {
+    if (document.querySelector('#with-header').checked) {
+        document.querySelectorAll('.header-cell')
+            .forEach(header => header.style.display = "block");
+    } else {
+        document.querySelectorAll('.header-cell')
+            .forEach(header => header.style.display = "none");
     }
 }
