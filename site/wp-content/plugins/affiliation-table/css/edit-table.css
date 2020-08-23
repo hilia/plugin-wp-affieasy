@@ -15,11 +15,11 @@
     margin-top: 1em ;
     display: flex;
     flex-direction: row;
+    margin-left: 20px;
 }
 
 .table-content {
     margin-top: 1em;
-
     display: flex;
     flex-direction: column;
 }
@@ -28,23 +28,39 @@
     width: 100%;
     display: grid;
     grid-template-columns: 20px repeat(4, 1fr);
+    column-gap: 0;
 }
 
 .table-actions-cell {
     display: flex;
     flex-direction: column;
     align-self: end;
+
+    background: #b7b7b7;
+    margin-bottom: 1px;
+    margin-right: 0;
+    border-radius: 4px 0 0 8px;
 }
 
 .action-button {
     cursor: pointer;
 }
 
+.action-button-add {
+    color: #0073aa;
+}
+
+.action-button-delete {
+    color: #ca4a1f;
+}
+
 .table-header-cell {
     background: #23282d!important;
     color: #eeeeee!important;
 
+    margin-left: 0;
     height: 60px;
+    min-width: 60px;
     text-align: center;
     font-size: 14px;
     font-weight: 700;
@@ -53,13 +69,15 @@
 }
 
 .table-content-cell {
-    margin: 1px;
-
+    margin-top: 1px;
+    margin-right: 1px;
     height: 60px;
+    min-width: 60px;
     text-align: center;
     font-size: 14px;
     font-weight: 500;
     line-height: 1.5;
+    resize: none;
     border-radius: 0!important;
 }
 

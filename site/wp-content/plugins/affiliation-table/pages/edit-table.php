@@ -69,7 +69,11 @@ wp_enqueue_script(
             <div class="table-content">
                 <div class="table-row" data-row-id="0">
                     <div class="table-actions-cell">
-                        <span class="dashicons dashicons-plus action-button" title="Add row after header" onclick="addRowAfter(0)"></span>
+                        <span
+                                class="dashicons dashicons-plus action-button action-button-add"
+                                title="Add row after header"
+                                onclick="addRowAfter(0)">
+                        </span>
                     </div>
                     <input type="text" class="table-header-cell" maxlength="255">
                     <input type="text" class="table-header-cell" maxlength="255">

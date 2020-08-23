@@ -24,6 +24,10 @@ function toggleWithHeader() {
     }
 }
 
+function deleteRow(rowId) {
+    document.querySelector(`[data-row-id="${rowId}"]`).remove();
+}
+
 function addRowAfter(rowId) {
     const newId = (Number(localStorage.getItem('affiliation-table-row-id')) + 1).toString();
     localStorage.setItem('affiliation-table-row-id', newId);
@@ -44,11 +48,17 @@ function addRowAfter(rowId) {
     actionsCell.className = 'table-actions-cell';
     tableRow.appendChild(actionsCell);
 
-    const addButton = document.createElement('span');
-    addButton.className = 'dashicons dashicons-plus action-button';
-    addButton.title = 'Add row after this row';
-    addButton.addEventListener('click', () => addRowAfter(Number(newId)));
-    actionsCell.appendChild(addButton);
+    const deleteRowButton = document.createElement('span');
+    deleteRowButton.className = 'dashicons dashicons-minus action-button action-button-delete';
+    deleteRowButton.title = 'Delete this row';
+    deleteRowButton.addEventListener('click', () => deleteRow(Number(newId)));
+    actionsCell.appendChild(deleteRowButton);
+
+    const addRowButton = document.createElement('span');
+    addRowButton.className = 'dashicons dashicons-plus action-button action-button-add';
+    addRowButton.title = 'Add row after this row';
+    addRowButton.addEventListener('click', () => addRowAfter(Number(newId)));
+    actionsCell.appendChild(addRowButton);
 
     for (let i = 0; i < 4; i++) {
         const cell = document.createElement('textarea');
