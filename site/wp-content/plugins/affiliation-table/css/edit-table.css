@@ -12,20 +12,35 @@
 }
 
 .action-buttons {
-    margin-top: 1em;
+    margin-top: 1em ;
     display: flex;
     flex-direction: row;
 }
 
 .table-content {
-    width: 100%;
     margin-top: 1em;
 
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    display: flex;
+    flex-direction: column;
 }
 
-.header-cell {
+.table-row {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 20px repeat(4, 1fr);
+}
+
+.table-actions-cell {
+    display: flex;
+    flex-direction: column;
+    align-self: end;
+}
+
+.action-button {
+    cursor: pointer;
+}
+
+.table-header-cell {
     background: #23282d!important;
     color: #eeeeee!important;
 
@@ -37,7 +52,7 @@
     border-radius: 0!important;
 }
 
-.content-cell {
+.table-content-cell {
     margin: 1px;
 
     height: 60px;

@@ -11,7 +11,6 @@ wp_enqueue_script(
     array('jquery'),
     time()
 );
-
 ?>
 
 <div class="wrap">
@@ -62,16 +61,21 @@ wp_enqueue_script(
             </table>
 
             <div class="action-buttons">
-                <a type="button" class="page-title-action" onclick="addRow()">
+                <a class="page-title-action" onclick="addRowAfter()">
                     Add row
                 </a>
             </div>
 
             <div class="table-content">
-                <input type="text" class="header-cell" maxlength="255">
-                <input type="text" class="header-cell" maxlength="255">
-                <input type="text" class="header-cell" maxlength="255">
-                <input type="text" class="header-cell" maxlength="255">
+                <div class="table-row" data-row-id="0">
+                    <div class="table-actions-cell">
+                        <span class="dashicons dashicons-plus action-button" title="Add row after header" onclick="addRowAfter(0)"></span>
+                    </div>
+                    <input type="text" class="table-header-cell" maxlength="255">
+                    <input type="text" class="table-header-cell" maxlength="255">
+                    <input type="text" class="table-header-cell" maxlength="255">
+                    <input type="text" class="table-header-cell" maxlength="255">
+                </div>
             </div>
         </form>
     </div>

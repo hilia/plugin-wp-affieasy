@@ -1,3 +1,5 @@
+localStorage.setItem('affiliation-table-row-id', '0');
+
 function updateActivePanel(activeNav) {
     if (activeNav === 'nav-edition') {
         document.querySelector('#edition-nav').classList.add('nav-tab-active');
@@ -16,20 +18,43 @@ function updateActivePanel(activeNav) {
 
 function toggleWithHeader() {
     if (document.querySelector('#with-header').checked) {
-        document.querySelectorAll('.header-cell')
-            .forEach(header => header.style.display = 'block');
+        document.querySelector('[data-row-id="0"]').style.display = 'grid';
     } else {
-        document.querySelectorAll('.header-cell')
-            .forEach(header => header.style.display = 'none');
+        document.querySelector('[data-row-id="0"]').style.display = 'none';
     }
 }
 
-function addRow() {
+function addRowAfter(rowId) {
+    const newId = (Number(localStorage.getItem('affiliation-table-row-id')) + 1).toString();
+    localStorage.setItem('affiliation-table-row-id', newId);
+
+    const tableContent = document.querySelector('.table-content');
+    const position = !!rowId || rowId === 0 ?
+        [...tableContent.children].indexOf(document.querySelector(`[data-row-id="${rowId}"]`)) :
+        -1;
+
+    const tableRow = document.createElement('div');
+    tableRow.className = 'table-row';
+    tableRow.setAttribute('data-row-id', newId);
+    position !== -1 ?
+        tableContent.insertBefore(tableRow, tableContent.children[position + 1]) :
+        tableContent.appendChild(tableRow);
+
+    const actionsCell = document.createElement('div');
+    actionsCell.className = 'table-actions-cell';
+    tableRow.appendChild(actionsCell);
+
+    const addButton = document.createElement('span');
+    addButton.className = 'dashicons dashicons-plus action-button';
+    addButton.title = 'Add row after this row';
+    addButton.addEventListener('click', () => addRowAfter(Number(newId)));
+    actionsCell.appendChild(addButton);
+
     for (let i = 0; i < 4; i++) {
         const cell = document.createElement('textarea');
         cell.maxLength = 255;
-        cell.className = 'content-cell';
+        cell.className = 'table-content-cell';
 
-        document.querySelector('.table-content').appendChild(cell);
+        tableRow.appendChild(cell);
     }
 }
