@@ -18,34 +18,38 @@ function updateActivePanel(activeNav) {
 
 function toggleWithHeader() {
     if (document.querySelector('#with-header').checked) {
-        document.querySelector('[data-row-id="0"]').style.display = 'grid';
+        document.querySelector('.table-content-header').style.display = 'table-row-group';
     } else {
-        document.querySelector('[data-row-id="0"]').style.display = 'none';
+        document.querySelector('.table-content-header').style.display = 'none';
     }
 }
 
 function deleteRow(rowId) {
-    document.querySelector(`[data-row-id="${rowId}"]`).remove();
+    document.querySelector('#row-' + rowId).remove();
 }
 
 function addRowAfter(rowId) {
     const newId = (Number(localStorage.getItem('affiliation-table-row-id')) + 1).toString();
     localStorage.setItem('affiliation-table-row-id', newId);
 
-    const tableContent = document.querySelector('.table-content');
-    const position = !!rowId || rowId === 0 ?
-        [...tableContent.children].indexOf(document.querySelector(`[data-row-id="${rowId}"]`)) :
-        -1;
+    const tableRow = document.createElement('tr');
+    tableRow.id = 'row-' + newId;
 
-    const tableRow = document.createElement('div');
-    tableRow.className = 'table-row';
-    tableRow.setAttribute('data-row-id', newId);
-    position !== -1 ?
-        tableContent.insertBefore(tableRow, tableContent.children[position + 1]) :
-        tableContent.appendChild(tableRow);
+    const tableContentBody = document.querySelector('.table-content-body');
+    if (rowId === 0) {
+        tableContentBody.insertBefore(tableRow, tableContentBody.children[0]);
+    } else {
+        const position = !!rowId  ?
+            [...tableContentBody.children].indexOf(document.querySelector('#row-' + rowId)) :
+            -1;
 
-    const actionsCell = document.createElement('div');
-    actionsCell.className = 'table-actions-cell';
+        position !== -1 ?
+            tableContentBody.insertBefore(tableRow, tableContentBody.children[position + 1]) :
+            tableContentBody.appendChild(tableRow);
+    }
+
+    const actionsCell = document.createElement('td');
+    actionsCell.className = 'table-cell-actions';
     tableRow.appendChild(actionsCell);
 
     const deleteRowButton = document.createElement('span');
@@ -61,10 +65,13 @@ function addRowAfter(rowId) {
     actionsCell.appendChild(addRowButton);
 
     for (let i = 0; i < 4; i++) {
-        const cell = document.createElement('textarea');
-        cell.maxLength = 255;
+        const cell = document.createElement('td');
         cell.className = 'table-content-cell';
-
         tableRow.appendChild(cell);
+
+        const cellContent = document.createElement('textarea');
+        cellContent.maxLength = 255;
+        cellContent.className = 'table-content-cell-content';
+        cell.appendChild(cellContent);
     }
 }

@@ -55,7 +55,7 @@ wp_enqueue_script(
                                 id="with-header"
                                 name="with-header"
                                 checked
-                               onchange="toggleWithHeader()">
+                                onchange="toggleWithHeader()">
                     </td>
                 </tr>
             </table>
@@ -66,21 +66,33 @@ wp_enqueue_script(
                 </a>
             </div>
 
-            <div class="table-content">
-                <div class="table-row" data-row-id="0">
-                    <div class="table-actions-cell">
-                        <span
-                                class="dashicons dashicons-plus action-button action-button-add"
-                                title="Add row after header"
-                                onclick="addRowAfter(0)">
-                        </span>
-                    </div>
-                    <input type="text" class="table-header-cell" maxlength="255">
-                    <input type="text" class="table-header-cell" maxlength="255">
-                    <input type="text" class="table-header-cell" maxlength="255">
-                    <input type="text" class="table-header-cell" maxlength="255">
-                </div>
-            </div>
+            <table class="table-content">
+                <thead class="table-content-header">
+                <tr id="row-0">
+                    <td class="table-cell-actions">
+                            <span
+                                    class="dashicons dashicons-plus action-button action-button-add"
+                                    title="Add row after header"
+                                    onclick="addRowAfter(0)">
+                            </span>
+                    </td>
+                    <td class="table-header-cell">
+                            <input type="text" class="table-header-cell-content" maxlength="255">
+                    </td>
+                    <td class="table-header-cell">
+                            <input type="text" class="table-header-cell-content" maxlength="255">
+                    </td>
+                    <td class="table-header-cell">
+                            <input type="text" class="table-header-cell-content" maxlength="255">
+                    </td>
+                    <td class="table-header-cell">
+                            <input type="text" class="table-header-cell-content" maxlength="255">
+                    </td>
+                </tr>
+                </thead>
+                <tbody class="table-content-body">
+                </tbody>
+            </table>
         </form>
     </div>
 
