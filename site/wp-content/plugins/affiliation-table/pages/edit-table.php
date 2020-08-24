@@ -8,7 +8,7 @@ wp_enqueue_style(
 wp_enqueue_script(
     'edit-table-script',
     plugins_url('/affiliation-table/js/edit-table.js'),
-    array('jquery'),
+    array('jquery', 'jquery-ui-dialog'),
     time()
 );
 ?>
@@ -17,10 +17,8 @@ wp_enqueue_script(
     <h1>Create Table</h1>
 
     <nav class="nav-tab-wrapper wp-clearfix" aria-label="Menu secondaire">
-        <span id="edition-nav" class="nav-tab nav-tab-active" aria-current="page"
-              onclick="updateActivePanel('nav-edition')">Edition</span>
-        <span id="overview-nav" class="nav-tab" aria-current="page"
-              onclick="updateActivePanel('nav-overview')">Overview</span>
+        <span id="edition-nav" class="nav-tab nav-tab-active" aria-current="page">Edition</span>
+        <span id="overview-nav" class="nav-tab" aria-current="page">Overview</span>
     </nav>
 
     <div id="edition-panel">
@@ -54,16 +52,15 @@ wp_enqueue_script(
                                 type="checkbox"
                                 id="with-header"
                                 name="with-header"
-                                checked
-                                onchange="toggleWithHeader()">
+                                checked>
                     </td>
                 </tr>
             </table>
 
             <div class="action-buttons">
-                <a class="page-title-action" onclick="addRowAfter()">
+                <button id="add-row-after-last" type="button" class="page-title-action">
                     Add row
-                </a>
+                </button>
             </div>
 
             <table class="table-content">
@@ -71,22 +68,22 @@ wp_enqueue_script(
                 <tr id="row-0">
                     <td class="table-cell-actions">
                             <span
+                                    id="add-row-after-header"
                                     class="dashicons dashicons-plus action-button action-button-add"
-                                    title="Add row after header"
-                                    onclick="addRowAfter(0)">
+                                    title="Add row">
                             </span>
                     </td>
                     <td class="table-header-cell">
-                            <input type="text" class="table-header-cell-content" maxlength="255">
+                        <input type="text" class="table-header-cell-content" maxlength="255">
                     </td>
                     <td class="table-header-cell">
-                            <input type="text" class="table-header-cell-content" maxlength="255">
+                        <input type="text" class="table-header-cell-content" maxlength="255">
                     </td>
                     <td class="table-header-cell">
-                            <input type="text" class="table-header-cell-content" maxlength="255">
+                        <input type="text" class="table-header-cell-content" maxlength="255">
                     </td>
                     <td class="table-header-cell">
-                            <input type="text" class="table-header-cell-content" maxlength="255">
+                        <input type="text" class="table-header-cell-content" maxlength="255">
                     </td>
                 </tr>
                 </thead>

@@ -1,77 +1,87 @@
-localStorage.setItem('affiliation-table-row-id', '0');
+jQuery(($) => {
+    localStorage.setItem('affiliation-table-row-id', '0');
 
-function updateActivePanel(activeNav) {
-    if (activeNav === 'nav-edition') {
-        document.querySelector('#edition-nav').classList.add('nav-tab-active');
-        document.querySelector('#overview-nav').classList.remove('nav-tab-active');
+    // Switch to edition panel
+    $('#edition-nav').on('click', () => {
+        $('#edition-nav').addClass('nav-tab-active');
+        $('#overview-nav').removeClass('nav-tab-active');
 
-        document.querySelector('#edition-panel').style.display = 'block';
-        document.querySelector('#overview-panel').style.display = 'none';
-    } else {
-        document.querySelector('#edition-nav').classList.remove('nav-tab-active');
-        document.querySelector('#overview-nav').classList.add('nav-tab-active');
+        $('#edition-panel').css('display', 'block');
+        $('#overview-panel').css('display', 'none');
+    });
 
-        document.querySelector('#edition-panel').style.display = 'none';
-        document.querySelector('#overview-panel').style.display = 'block';
+    // Switch to overview panel
+    $('#overview-nav').on('click', () => {
+        $('#edition-nav').removeClass('nav-tab-active');
+        $('#overview-nav').addClass('nav-tab-active');
+
+        $('#edition-panel').css('display', 'none');
+        $('#overview-panel').css('display', 'block');
+    });
+
+    // Hide or remove header row
+    $('#with-header').on('change', () => {
+        const tableContentHeader = $('.table-content-header');
+
+        $('#with-header').is(':checked') ?
+            tableContentHeader.css('display', 'table-row-group') :
+            tableContentHeader.css('display', 'none');
+    });
+
+    // Add new row after last table row
+    $('#add-row-after-last').on('click', () => {
+        addRowAfter();
+    });
+
+    // Add new row after header
+    $('#add-row-after-header').on('click', null, {rowId: 0}, addRowAfter);
+
+    /**
+     * Add a new row after the row specified by its id
+     * @param event
+     */
+    function addRowAfter(event) {
+        const newId = (Number(localStorage.getItem('affiliation-table-row-id')) + 1).toString();
+        localStorage.setItem('affiliation-table-row-id', newId);
+
+        // Create the new row and place it in the table
+        const tableRow = $('<tr>', {
+            id: 'row-' + newId
+        });
+
+        const tableContentBody = $('.table-content-body');
+        const rowId = !!event && !!event.data && (event.data.rowId || event.data.rowId === 0) ? event.data.rowId : null;
+        if (rowId === 0) {
+            tableContentBody.prepend(tableRow);
+        } else {
+            rowId === null || isNaN(rowId) ? tableContentBody.append(tableRow) : tableRow.insertAfter($('#row-' + rowId));
+        }
+
+        // Create actions cell with add and remove button
+        tableRow.append($('<td>', {
+            class: 'table-cell-actions',
+        }).append($('<span>', {
+            class: 'dashicons dashicons-minus action-button action-button-delete',
+            title: 'Delete row'
+        }).on('click', null, {rowId: newId}, deleteRow)).append($('<span>', {
+            class: 'dashicons dashicons-plus action-button action-button-add',
+            title: 'Add row'
+        }).on('click', null, {rowId: newId}, addRowAfter)));
+
+        // Add n cells to complete the row
+        for (let i = 0; i < 4; i++) {
+            tableRow.append($('<td>', {
+                class: 'table-content-cell',
+            }).append($('<textarea>', {
+                maxLength: 255,
+                class: 'table-content-cell-content'
+            })));
+        }
     }
-}
 
-function toggleWithHeader() {
-    if (document.querySelector('#with-header').checked) {
-        document.querySelector('.table-content-header').style.display = 'table-row-group';
-    } else {
-        document.querySelector('.table-content-header').style.display = 'none';
+    function deleteRow(event) {
+        if (!!event && !!event.data && !!event.data.rowId) {
+            document.querySelector('#row-' + event.data.rowId).remove();
+        }
     }
-}
-
-function deleteRow(rowId) {
-    document.querySelector('#row-' + rowId).remove();
-}
-
-function addRowAfter(rowId) {
-    const newId = (Number(localStorage.getItem('affiliation-table-row-id')) + 1).toString();
-    localStorage.setItem('affiliation-table-row-id', newId);
-
-    const tableRow = document.createElement('tr');
-    tableRow.id = 'row-' + newId;
-
-    const tableContentBody = document.querySelector('.table-content-body');
-    if (rowId === 0) {
-        tableContentBody.insertBefore(tableRow, tableContentBody.children[0]);
-    } else {
-        const position = !!rowId  ?
-            [...tableContentBody.children].indexOf(document.querySelector('#row-' + rowId)) :
-            -1;
-
-        position !== -1 ?
-            tableContentBody.insertBefore(tableRow, tableContentBody.children[position + 1]) :
-            tableContentBody.appendChild(tableRow);
-    }
-
-    const actionsCell = document.createElement('td');
-    actionsCell.className = 'table-cell-actions';
-    tableRow.appendChild(actionsCell);
-
-    const deleteRowButton = document.createElement('span');
-    deleteRowButton.className = 'dashicons dashicons-minus action-button action-button-delete';
-    deleteRowButton.title = 'Delete this row';
-    deleteRowButton.addEventListener('click', () => deleteRow(Number(newId)));
-    actionsCell.appendChild(deleteRowButton);
-
-    const addRowButton = document.createElement('span');
-    addRowButton.className = 'dashicons dashicons-plus action-button action-button-add';
-    addRowButton.title = 'Add row after this row';
-    addRowButton.addEventListener('click', () => addRowAfter(Number(newId)));
-    actionsCell.appendChild(addRowButton);
-
-    for (let i = 0; i < 4; i++) {
-        const cell = document.createElement('td');
-        cell.className = 'table-content-cell';
-        tableRow.appendChild(cell);
-
-        const cellContent = document.createElement('textarea');
-        cellContent.maxLength = 255;
-        cellContent.className = 'table-content-cell-content';
-        cell.appendChild(cellContent);
-    }
-}
+})
