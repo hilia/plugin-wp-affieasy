@@ -1,5 +1,6 @@
 jQuery(($) => {
     localStorage.setItem('affiliation-table-row-id', '0');
+    localStorage.setItem('affiliation-table-current-row-id', '-1');
 
     // Switch to edition panel
     $('#edition-nav').on('click', () => {
@@ -30,17 +31,23 @@ jQuery(($) => {
 
     // Add new row after last table row
     $('#add-row-after-last').on('click', () => {
+        localStorage.setItem('affiliation-table-current-row-id', null);
+
+        $('#add-row-after-last').popModal({
+            html: $('#add-row-popover'),
+            placement: 'rightTop'
+        });
+    });
+
+    $('#add-html-row').on('click', () => {
         addRowAfter();
     });
 
     // Add new row after header
-    $('#add-row-after-header').on('click', null, {rowId: 0}, addRowAfter);
+    $('#button-row-0').on('click', null, {rowId: 0}, openAddRowPopover);
 
-    /**
-     * Add a new row after the row specified by its id
-     * @param event
-     */
-    function addRowAfter(event) {
+    // Add a new row after the current row id
+    function addRowAfter() {
         const newId = (Number(localStorage.getItem('affiliation-table-row-id')) + 1).toString();
         localStorage.setItem('affiliation-table-row-id', newId);
 
@@ -50,11 +57,13 @@ jQuery(($) => {
         });
 
         const tableContentBody = $('.table-content-body');
-        const rowId = !!event && !!event.data && (event.data.rowId || event.data.rowId === 0) ? event.data.rowId : null;
-        if (rowId === 0) {
+        const currentRowId = Number(localStorage.getItem('affiliation-table-current-row-id'));
+        if (currentRowId === 0) {
             tableContentBody.prepend(tableRow);
-        } else {
-            rowId === null || isNaN(rowId) ? tableContentBody.append(tableRow) : tableRow.insertAfter($('#row-' + rowId));
+        }  else {
+            currentRowId === null || isNaN(currentRowId) ?
+                tableContentBody.append(tableRow) :
+                tableRow.insertAfter($('#row-' + currentRowId));
         }
 
         // Create actions cell with add and remove button
@@ -64,9 +73,10 @@ jQuery(($) => {
             class: 'dashicons dashicons-minus action-button action-button-delete',
             title: 'Delete row'
         }).on('click', null, {rowId: newId}, deleteRow)).append($('<span>', {
+            id: 'button-row-' + newId,
             class: 'dashicons dashicons-plus action-button action-button-add',
-            title: 'Add row'
-        }).on('click', null, {rowId: newId}, addRowAfter)));
+            title: 'Add a row after this one'
+        }).on('click', null, {rowId: newId}, openAddRowPopover)));
 
         // Add n cells to complete the row
         for (let i = 0; i < 4; i++) {
@@ -76,6 +86,19 @@ jQuery(($) => {
                 maxLength: 255,
                 class: 'table-content-cell-content'
             })));
+        }
+    }
+
+    // Open the popover row creation choice next to the current row
+    function openAddRowPopover(event) {
+        if (!!event && !!event.data && !isNaN(event.data.rowId)) {
+            const rowId = event.data.rowId;
+            localStorage.setItem('affiliation-table-current-row-id', rowId);
+
+            $('#button-row-' + rowId).popModal({
+                html: $('#add-row-popover'),
+                placement: 'rightTop'
+            });
         }
     }
 

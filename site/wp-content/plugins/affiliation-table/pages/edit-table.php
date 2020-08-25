@@ -5,10 +5,18 @@ wp_enqueue_style(
     array(),
     time());
 
+wp_enqueue_style(
+    'popover-modal-style',
+    plugins_url('/affiliation-table/libs/pop-modal/pop-modal.min.css'),
+    array(),
+    time());
+
+wp_register_script( 'pop-modal',  plugins_url('/affiliation-table/libs/pop-modal/pop-modal.min.js'), array('jquery'));
+
 wp_enqueue_script(
     'edit-table-script',
     plugins_url('/affiliation-table/js/edit-table.js'),
-    array('jquery', 'jquery-ui-dialog'),
+    array('jquery', 'pop-modal'),
     time()
 );
 ?>
@@ -68,9 +76,9 @@ wp_enqueue_script(
                 <tr id="row-0">
                     <td class="table-cell-actions">
                             <span
-                                    id="add-row-after-header"
+                                    id="button-row-0"
                                     class="dashicons dashicons-plus action-button action-button-add"
-                                    title="Add row">
+                                    title="Add a row after header">
                             </span>
                     </td>
                     <td class="table-header-cell">
@@ -104,4 +112,21 @@ wp_enqueue_script(
             value="edit-table">
         Save table
     </button>
+
+    <div style="display:none">
+        <div id="add-row-popover">
+            <h3 class="add-row-popover-header">Row type</h3>
+            <div class="add-row-popover-content">
+                <button type="button" id="add-html-row" class="page-title-action">
+                    Text / Html
+                </button>
+                <button type="button" class="page-title-action">
+                    Images
+                </button>
+                <button type="button" class="page-title-action">
+                    Affiliate links
+                </button>
+            </div>
+        </div>
+    </div>
 </div>
