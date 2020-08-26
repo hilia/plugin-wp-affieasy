@@ -11,7 +11,7 @@ wp_enqueue_style(
     array(),
     time());
 
-wp_register_script( 'pop-modal',  plugins_url('/affiliation-table/libs/pop-modal/pop-modal.min.js'), array('jquery'));
+wp_register_script('pop-modal', plugins_url('/affiliation-table/libs/pop-modal/pop-modal.min.js'), array('jquery'));
 
 wp_enqueue_script(
     'edit-table-script',
@@ -19,6 +19,9 @@ wp_enqueue_script(
     array('jquery', 'pop-modal'),
     time()
 );
+
+$defaultTableColumnNumber = 4;
+
 ?>
 
 <div class="wrap">
@@ -77,26 +80,34 @@ wp_enqueue_script(
 
             <table class="table-content">
                 <thead class="table-content-header">
+                <tr id="column-row-buttons">
+                    <th data-col-number="0"></th>
+                    <?php for ($i = 1; $i <= $defaultTableColumnNumber; $i++) { ?>
+                        <th data-col-number="<?php echo $i; ?>">
+                            <div class="table-col-actions-cell">
+                                <span
+                                        id="button-col-delete-<?php echo $i; ?>"
+                                        data-col-number="<?php echo $i; ?>"
+                                        class="dashicons dashicons-minus action-button action-button-delete"
+                                        title="Delete column">
+                                </span>
+                            </div>
+                        </th>
+                    <?php } ?>
+                </tr>
                 <tr id="row-0">
-                    <td class="table-cell-actions">
-                            <span
-                                    id="button-row-0"
-                                    class="dashicons dashicons-plus action-button action-button-add"
-                                    title="Add a row after header">
-                            </span>
-                    </td>
-                    <td class="table-header-cell">
-                        <input type="text" class="table-header-cell-content" maxlength="255">
-                    </td>
-                    <td class="table-header-cell">
-                        <input type="text" class="table-header-cell-content" maxlength="255">
-                    </td>
-                    <td class="table-header-cell">
-                        <input type="text" class="table-header-cell-content" maxlength="255">
-                    </td>
-                    <td class="table-header-cell">
-                        <input type="text" class="table-header-cell-content" maxlength="255">
-                    </td>
+                    <th class="table-row-actions-cell" data-col-number="0">
+                                <span
+                                        id="button-row-0"
+                                        class="dashicons dashicons-plus action-button action-button-add"
+                                        title="Add a row after header">
+                                </span>
+                    </th>
+                    <?php for ($i = 1; $i <= $defaultTableColumnNumber; $i++) { ?>
+                        <th class="table-header-cell" data-col-number="<?php echo $i; ?>">
+                            <input type="text" class="table-header-cell-content" maxlength="255">
+                        </th>
+                    <?php } ?>
                 </tr>
                 </thead>
                 <tbody class="table-content-body">

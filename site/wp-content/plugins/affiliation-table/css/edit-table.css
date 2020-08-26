@@ -22,7 +22,21 @@
     width: 100%;
 }
 
-.table-cell-actions {
+.table-col-actions {
+    width: 20px;
+}
+
+.table-col-actions-cell {
+    height: 20px;
+    width: 100%;
+    background: #b7b7b7;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: right;
+}
+
+.table-row-actions-cell {
     width: 20px;
     vertical-align: bottom;
 
