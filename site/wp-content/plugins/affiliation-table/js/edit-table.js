@@ -29,7 +29,7 @@ jQuery(($) => {
             tableContentHeader.css('display', 'none');
     });
 
-    // Add new row after last table row
+    // Open the creation row popover to add a row after the last
     $('#add-row-after-last').on('click', () => {
         localStorage.setItem('affiliation-table-current-row-id', null);
 
@@ -39,6 +39,12 @@ jQuery(($) => {
         });
     });
 
+    // Add a new column after the last
+    $('#add-column-after-last').on('click', () => {
+        addColumnAfter();
+    });
+
+    // Add an html row
     $('#add-html-row').on('click', () => {
         addRowAfter();
     });
@@ -79,7 +85,8 @@ jQuery(($) => {
         }).on('click', null, {rowId: newId}, openAddRowPopover)));
 
         // Add n cells to complete the row
-        for (let i = 0; i < 4; i++) {
+        const columnsNumber = $('#row-0').children().length;
+        for (let i = 1; i < columnsNumber; i++) {
             tableRow.append($('<td>', {
                 class: 'table-content-cell',
             }).append($('<textarea>', {
@@ -87,6 +94,26 @@ jQuery(($) => {
                 class: 'table-content-cell-content'
             })));
         }
+    }
+
+    // Add a new column after the current column id
+    function addColumnAfter() {
+        $('#row-0').append($('<td>', {
+            class: 'table-header-cell'
+        }).append($('<input>', {
+            type: 'text',
+            class: 'table-header-cell-content',
+            maxLength: 255
+        })));
+
+        $('.table-content-body').children().each((index, element) => {
+           $(element).append($('<td>', {
+               class: 'table-content-cell',
+           }).append($('<textarea>', {
+               maxLength: 255,
+               class: 'table-content-cell-content'
+           })));
+        });
     }
 
     // Open the popover row creation choice next to the current row
@@ -102,6 +129,7 @@ jQuery(($) => {
         }
     }
 
+    // Remove the specified row
     function deleteRow(event) {
         if (!!event && !!event.data && !!event.data.rowId) {
             document.querySelector('#row-' + event.data.rowId).remove();

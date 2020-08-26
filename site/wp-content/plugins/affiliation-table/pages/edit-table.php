@@ -69,6 +69,10 @@ wp_enqueue_script(
                 <button id="add-row-after-last" type="button" class="page-title-action">
                     Add row
                 </button>
+
+                <button id="add-column-after-last" type="button" class="page-title-action">
+                    Add column
+                </button>
             </div>
 
             <table class="table-content">
