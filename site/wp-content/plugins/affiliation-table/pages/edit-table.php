@@ -13,10 +13,11 @@ wp_enqueue_style(
 
 wp_register_script('pop-modal', plugins_url('/affiliation-table/libs/pop-modal/pop-modal.min.js'), array('jquery'));
 
+
 wp_enqueue_script(
     'edit-table-script',
     plugins_url('/affiliation-table/js/edit-table.js'),
-    array('jquery', 'pop-modal'),
+    array('jquery', 'pop-modal', 'jquery-ui-sortable'),
     time()
 );
 
@@ -83,8 +84,8 @@ $defaultTableColumnNumber = 4;
                 <tr id="column-row-buttons">
                     <th data-col-number="0"></th>
                     <?php for ($i = 1; $i <= $defaultTableColumnNumber; $i++) { ?>
-                        <th data-col-number="<?php echo $i; ?>">
-                            <div class="table-col-actions-cell">
+                        <th id="table-col-actions-cell-<?php echo $i; ?>" data-col-number="<?php echo $i; ?>">
+                            <div class="table-col-actions-cell-content">
                                 <span
                                         id="button-col-delete-<?php echo $i; ?>"
                                         data-col-number="<?php echo $i; ?>"

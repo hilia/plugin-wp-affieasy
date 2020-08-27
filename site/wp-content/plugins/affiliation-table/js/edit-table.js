@@ -5,6 +5,12 @@ jQuery(($) => {
 
     displayOrHideHeaderRow();
 
+    $('.table-content-body').sortable({
+        placeholder: 'sortable-placeholder'
+    });
+
+    $('.table-content-body').disableSelection();
+
     // Switch to edition panel
     $('#edition-nav').on('click', () => {
         $('#edition-nav').addClass('nav-tab-active');
@@ -82,7 +88,7 @@ jQuery(($) => {
         const actionCell = $('<th>', {
             'data-col-number': columnNumber,
         }).append($('<div>', {
-            class: 'table-col-actions-cell',
+            class: 'table-col-actions-cell-content',
         }).append($('<span>', {
             id: 'button-col-delete-' + columnNumber,
             'data-col-number': columnNumber,
@@ -92,7 +98,7 @@ jQuery(($) => {
             id: 'button-col-add-' + columnNumber,
             'data-col-number': columnNumber,
             class: 'dashicons dashicons-plus action-button action-button-add',
-            title:' Add a column after this one',
+            title: 'Add a column after this one',
         }).on('click', null, {columnNumber: columnNumber}, addColumnAfter)));
 
         // Create the header cell
@@ -160,6 +166,9 @@ jQuery(($) => {
         tableRow.append($('<td>', {
             class: 'table-row-actions-cell',
         }).append($('<span>', {
+            class: 'dashicons dashicons-editor-expand action-button drag-row',
+            title: 'Keep the mouse pressed to drag and drop the row'
+        })).append($('<span>', {
             class: 'dashicons dashicons-minus action-button action-button-delete',
             title: 'Delete row'
         }).on('click', null, {rowId: tableRowIdString}, deleteRow)).append($('<span>', {

@@ -3,7 +3,7 @@
 }
 
 .name-input {
-    width: 25em!important;
+    width: 25em !important;
 }
 
 #edition-panel {
@@ -12,7 +12,7 @@
 }
 
 .action-buttons {
-    margin-top: 1em ;
+    margin-top: 1em;
     display: flex;
     flex-direction: row;
 }
@@ -26,7 +26,7 @@
     width: 20px;
 }
 
-.table-col-actions-cell {
+.table-col-actions-cell-content {
     display: flex;
     flex-direction: row;
     justify-content: right;
@@ -60,7 +60,7 @@
 }
 
 .table-header-cell {
-    background: #23282d!important;
+    background: #23282d !important;
 }
 
 .table-header-cell-content {
@@ -71,10 +71,10 @@
     font-size: 14px;
     font-weight: 700;
     line-height: 1.5;
-    background: #23282d!important;
-    color: #eeeeee!important;
-    border: none!important;
-    border-radius: 0!important;
+    background: #23282d !important;
+    color: #eeeeee !important;
+    border: none !important;
+    border-radius: 0 !important;
 }
 
 .table-content-cell {
@@ -88,15 +88,15 @@
     text-align: center;
     resize: none;
     border: none;
-    border-radius: 0!important;
+    border-radius: 0 !important;
 }
 
 .edit-button-bottom {
-    margin-top: 2em!important;
+    margin-top: 2em !important;
 }
 
 .popModal {
-    max-width: 500px!important;
+    max-width: 500px !important;
 }
 
 .add-row-popover-header {
@@ -106,4 +106,17 @@
 .add-row-popover-content {
     display: flex;
     flex-direction: row;
+}
+
+.sortable-placeholder {
+    height: 80px;
+    background: #b7b7b7;
+}
+
+.ui-sortable-helper {
+    display: table;
+}
+
+.drag-row {
+    padding-bottom: 1em;
 }
