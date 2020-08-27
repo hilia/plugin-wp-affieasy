@@ -91,6 +91,12 @@ $defaultTableColumnNumber = 4;
                                         class="dashicons dashicons-minus action-button action-button-delete"
                                         title="Delete column">
                                 </span>
+                                <span
+                                        id="button-col-add-<?php echo $i; ?>"
+                                        data-col-number="<?php echo $i; ?>"
+                                        class="dashicons dashicons-plus action-button action-button-add"
+                                        title="Add a column after this one">
+                                </span>
                             </div>
                         </th>
                     <?php } ?>

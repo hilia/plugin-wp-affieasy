@@ -27,13 +27,15 @@
 }
 
 .table-col-actions-cell {
-    height: 20px;
-    width: 100%;
-    background: #b7b7b7;
-
     display: flex;
     flex-direction: row;
     justify-content: right;
+    align-items: end;
+
+
+    height: 24px;
+    width: 100%;
+    background: #b7b7b7;
 }
 
 .table-row-actions-cell {

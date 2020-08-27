@@ -3,6 +3,8 @@ jQuery(($) => {
     let currentRowId = null;
     let columnNumber = 4;
 
+    displayOrHideHeaderRow();
+
     // Switch to edition panel
     $('#edition-nav').on('click', () => {
         $('#edition-nav').addClass('nav-tab-active');
@@ -21,13 +23,9 @@ jQuery(($) => {
         $('#overview-panel').css('display', 'block');
     });
 
-    // Hide or remove header row
+    // Add hide or display header row event
     $('#with-header').on('change', () => {
-        const tableContentHeader = $('#row-0');
-
-        $('#with-header').is(':checked') ?
-            tableContentHeader.css('display', 'table-row') :
-            tableContentHeader.css('display', 'none');
+        displayOrHideHeaderRow();
     });
 
     // Open the creation row popover to add a row after the last
@@ -49,7 +47,13 @@ jQuery(($) => {
     $("[id*=button-col-delete-]").each((index, element) => {
         const jqueryElement = $(element);
         jqueryElement.on('click', null, {colNumber: jqueryElement.data('col-number')}, deleteColumn);
-    })
+    });
+
+    // Add add col event
+    $("[id*=button-col-add-]").each((index, element) => {
+        const jqueryElement = $(element);
+        jqueryElement.on('click', null, {colNumber: jqueryElement.data('col-number')}, addColumnAfter);
+    });
 
     // Add an html row
     $('#add-html-row').on('click', () => {
@@ -59,11 +63,23 @@ jQuery(($) => {
     // Add new row after header
     $('#button-row-0').on('click', null, {rowId: 0}, openAddRowPopover);
 
-    // Add a new column after the current column id
-    function addColumnAfter() {
+    // display or hide header row
+    function displayOrHideHeaderRow() {
+        const tableContentHeader = $('#row-0');
+
+        $('#with-header').is(':checked') ?
+            tableContentHeader.css('display', 'table-row') :
+            tableContentHeader.css('display', 'none');
+    }
+
+    // Add a new column after the specified column number
+    function addColumnAfter(event) {
         columnNumber += 1;
 
-        $('#column-row-buttons').append($('<th>', {
+        const selectedColNumber = !!event && !!event.data && !!event.data.colNumber ? event.data.colNumber : null;
+
+        // Create the action cell on the top of the table
+        const actionCell = $('<th>', {
             'data-col-number': columnNumber,
         }).append($('<div>', {
             class: 'table-col-actions-cell',
@@ -72,26 +88,53 @@ jQuery(($) => {
             'data-col-number': columnNumber,
             class: 'dashicons dashicons-minus action-button action-button-delete',
             title: 'Delete column'
-        }).on('click', null, {colNumber: columnNumber}, deleteColumn))));
+        }).on('click', null, {colNumber: columnNumber}, deleteColumn)).append($('<span>', {
+            id: 'button-col-add-' + columnNumber,
+            'data-col-number': columnNumber,
+            class: 'dashicons dashicons-plus action-button action-button-add',
+            title:' Add a column after this one',
+        }).on('click', null, {columnNumber: columnNumber}, addColumnAfter)));
 
-        $('#row-0').append($('<td>', {
+        // Create the header cell
+        const headerCell = $('<th>', {
             class: 'table-header-cell',
             'data-col-number': columnNumber
         }).append($('<input>', {
             type: 'text',
             class: 'table-header-cell-content',
             maxLength: 255
-        })));
+        }));
 
-        $('.table-content-body').children().each((index, element) => {
-            $(element).append($('<td>', {
-                class: 'table-content-cell',
-                'data-col-number': columnNumber
-            }).append($('<textarea>', {
-                maxLength: 255,
-                class: 'table-content-cell-content'
-            })));
-        });
+        if (!!selectedColNumber) {
+            actionCell.insertAfter($('#column-row-buttons>th[data-col-number="' + selectedColNumber + '"]'));
+            headerCell.insertAfter($('#row-0>th[data-col-number="' + selectedColNumber + '"]'));
+
+            $('[id*=row-]>td[data-col-number="' + selectedColNumber + '"]').each((index, element) => {
+                $('<td>', {
+                    class: 'table-content-cell',
+                    'data-col-number': columnNumber
+                }).append($('<textarea>', {
+                    maxLength: 255,
+                    class: 'table-content-cell-content'
+                })).insertAfter(element);
+            });
+
+            reallocateColumnNumbers();
+        } else {
+            $('#column-row-buttons').append(actionCell);
+            $('#row-0').append(headerCell);
+
+            // Create and add the content cells
+            $('.table-content-body').children().each((index, element) => {
+                $(element).append($('<td>', {
+                    class: 'table-content-cell',
+                    'data-col-number': columnNumber
+                }).append($('<textarea>', {
+                    maxLength: 255,
+                    class: 'table-content-cell-content'
+                })));
+            });
+        }
     }
 
     // Add a new row after the current row id
@@ -177,6 +220,17 @@ jQuery(($) => {
                 .attr('data-col-number', index)
                 .off()
                 .on('click', null, {colNumber: index}, deleteColumn);
+        });
+
+        $("[id*=button-col-add-]").each((index, element) => {
+            index += 1;
+            const jqueryElement = $(element);
+
+            jqueryElement
+                .attr('id', 'button-col-add-' + index)
+                .attr('data-col-number', index)
+                .off()
+                .on('click', null, {colNumber: index}, addColumnAfter);
         });
 
         $('[id*=row-]').each((index, element) => {
