@@ -11,13 +11,21 @@
     flex-direction: column;
 }
 
+#overview-panel {
+    display: none;
+}
+
+#popovers {
+    display: none;
+}
+
 .action-buttons {
     margin-top: 1em;
     display: flex;
     flex-direction: row;
 }
 
-.table-content {
+#table-content {
     margin-top: 1em;
     width: 100%;
 }
@@ -29,13 +37,24 @@
 .table-col-actions-cell-content {
     display: flex;
     flex-direction: row;
-    justify-content: right;
     align-items: end;
-
 
     height: 24px;
     width: 100%;
     background: #b7b7b7;
+}
+
+.table-col-actions-cell-content-drag {
+    flex-grow: 1;
+
+    display: flex;
+    justify-content: left;
+    padding-left: 3px;
+}
+
+.table-col-actions-cell-content-actions {
+    display: flex;
+    flex-direction: row;
 }
 
 .table-row-actions-cell {

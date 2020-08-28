@@ -12,12 +12,12 @@ wp_enqueue_style(
     time());
 
 wp_register_script('pop-modal', plugins_url('/affiliation-table/libs/pop-modal/pop-modal.min.js'), array('jquery'));
-
+wp_register_script('table-dragger', plugins_url('/affiliation-table/libs/table-dragger/table-dragger.min.js'));
 
 wp_enqueue_script(
     'edit-table-script',
     plugins_url('/affiliation-table/js/edit-table.js'),
-    array('jquery', 'pop-modal', 'jquery-ui-sortable'),
+    array('jquery', 'pop-modal', 'jquery-ui-sortable', 'table-dragger'),
     time()
 );
 
@@ -79,25 +79,36 @@ $defaultTableColumnNumber = 4;
                 </button>
             </div>
 
-            <table class="table-content">
+            <table id="table-content">
                 <thead class="table-content-header">
                 <tr id="column-row-buttons">
                     <th data-col-number="0"></th>
                     <?php for ($i = 1; $i <= $defaultTableColumnNumber; $i++) { ?>
-                        <th id="table-col-actions-cell-<?php echo $i; ?>" data-col-number="<?php echo $i; ?>">
+                        <th
+                                id="table-col-actions-cell-<?php echo $i; ?>"
+                                data-col-number="<?php echo $i; ?>"
+                                class="sortable-column">
                             <div class="table-col-actions-cell-content">
-                                <span
-                                        id="button-col-delete-<?php echo $i; ?>"
-                                        data-col-number="<?php echo $i; ?>"
-                                        class="dashicons dashicons-minus action-button action-button-delete"
-                                        title="Delete column">
-                                </span>
-                                <span
-                                        id="button-col-add-<?php echo $i; ?>"
-                                        data-col-number="<?php echo $i; ?>"
-                                        class="dashicons dashicons-plus action-button action-button-add"
-                                        title="Add a column after this one">
-                                </span>
+                                <div class="table-col-actions-cell-content-drag">
+                                    <span
+                                            class="dashicons dashicons-editor-expand"
+                                            title="Keep the mouse pressed to drag and drop the column">
+                                    </span>
+                                </div>
+                                <div class="table-col-actions-cell-content-actions">
+                                    <span
+                                            id="button-col-delete-<?php echo $i; ?>"
+                                            data-col-number="<?php echo $i; ?>"
+                                            class="dashicons dashicons-minus action-button action-button-delete"
+                                            title="Delete column">
+                                    </span>
+                                    <span
+                                            id="button-col-add-<?php echo $i; ?>"
+                                            data-col-number="<?php echo $i; ?>"
+                                            class="dashicons dashicons-plus action-button action-button-add"
+                                            title="Add a column after this one">
+                                    </span>
+                                </div>
                             </div>
                         </th>
                     <?php } ?>
@@ -123,7 +134,7 @@ $defaultTableColumnNumber = 4;
         </form>
     </div>
 
-    <div id="overview-panel" style="display: none;">
+    <div id="overview-panel">
     </div>
 
     <button
@@ -135,7 +146,7 @@ $defaultTableColumnNumber = 4;
         Save table
     </button>
 
-    <div style="display:none">
+    <div id="popovers">
         <div id="add-row-popover">
             <h3 class="add-row-popover-header">Row type</h3>
             <div class="add-row-popover-content">

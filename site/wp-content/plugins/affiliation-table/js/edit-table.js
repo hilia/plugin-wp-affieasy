@@ -3,13 +3,16 @@ jQuery(($) => {
     let currentRowId = null;
     let columnNumber = 4;
 
-    displayOrHideHeaderRow();
+    let columnDragger = null;
 
+    displayOrHideHeaderRow();
+    initDragAndDropColumn();
+
+    // Init sort row column
     $('.table-content-body').sortable({
         placeholder: 'sortable-placeholder'
-    });
+    }).disableSelection();
 
-    $('.table-content-body').disableSelection();
 
     // Switch to edition panel
     $('#edition-nav').on('click', () => {
@@ -87,8 +90,16 @@ jQuery(($) => {
         // Create the action cell on the top of the table
         const actionCell = $('<th>', {
             'data-col-number': columnNumber,
+            class: 'sortable-column'
         }).append($('<div>', {
             class: 'table-col-actions-cell-content',
+        }).append($('<div>', {
+            class: 'table-col-actions-cell-content-drag'
+        }).append($('<span>', {
+            class: 'dashicons dashicons-editor-expand',
+            title: 'Keep the mouse pressed to drag and drop the column'
+        }))).append($('<div>', {
+            class: 'table-col-actions-cell-content-actions'
         }).append($('<span>', {
             id: 'button-col-delete-' + columnNumber,
             'data-col-number': columnNumber,
@@ -99,7 +110,7 @@ jQuery(($) => {
             'data-col-number': columnNumber,
             class: 'dashicons dashicons-plus action-button action-button-add',
             title: 'Add a column after this one',
-        }).on('click', null, {columnNumber: columnNumber}, addColumnAfter)));
+        }).on('click', null, {columnNumber: columnNumber}, addColumnAfter))));
 
         // Create the header cell
         const headerCell = $('<th>', {
@@ -141,6 +152,8 @@ jQuery(($) => {
                 })));
             });
         }
+
+        initDragAndDropColumn();
     }
 
     // Add a new row after the current row id
@@ -254,5 +267,21 @@ jQuery(($) => {
         if (!!event && !!event.data && !!event.data.rowId) {
             document.querySelector('#row-' + event.data.rowId).remove();
         }
+    }
+
+    // Init drag and drop column options
+    function initDragAndDropColumn() {
+        if (!!columnDragger) {
+            columnDragger.destroy();
+        }
+
+        const tableContent = document.getElementById('table-content');
+        columnDragger = tableDragger.default(tableContent, {
+            dragHandler: ".sortable-column"
+        });
+
+        columnDragger.on('drop', () => {
+            reallocateColumnNumbers();
+        });
     }
 })
