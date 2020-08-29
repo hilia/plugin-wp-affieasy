@@ -1,7 +1,5 @@
 jQuery(($) => {
-    let tableRowId = 0;
     let currentRowId = null;
-    let columnNumber = 4;
 
     let columnDragger = null;
     let rowDragger = null;
@@ -48,16 +46,28 @@ jQuery(($) => {
         addColumnAfter();
     });
 
-    // Add delete col event
+    // Add delete col events
     $("[id*=button-col-delete-]").each((index, element) => {
         const jqueryElement = $(element);
-        jqueryElement.on('click', null, {colNumber: jqueryElement.data('col-number')}, deleteColumn);
+        jqueryElement.on('click', null, {colId: jqueryElement.data('col-id')}, deleteColumn);
     });
 
-    // Add add col event
+    // Add add col events
     $("[id*=button-col-add-]").each((index, element) => {
         const jqueryElement = $(element);
-        jqueryElement.on('click', null, {colNumber: jqueryElement.data('col-number')}, addColumnAfter);
+        jqueryElement.on('click', null, {colId: jqueryElement.data('col-id')}, addColumnAfter);
+    });
+
+    // Add delete row events
+    $("[id*=button-row-delete-]").each((index, element) => {
+        const jqueryElement = $(element);
+        jqueryElement.on('click', null, {rowId: jqueryElement.data('row-id')}, deleteRow);
+    });
+
+    // Add add row events
+    $("[id*=button-row-add-]").each((index, element) => {
+        const jqueryElement = $(element);
+        jqueryElement.on('click', null, {rowId: jqueryElement.data('row-id')}, openAddRowPopover);
     });
 
     // Add an html row
@@ -68,6 +78,22 @@ jQuery(($) => {
     // Add new row after header
     $('#button-row-0').on('click', null, {rowId: 0}, openAddRowPopover);
 
+    $('#form').on('submit', () => {
+        $('tr[id*="row-"]').slice($('#with-header').is(':checked') ? 1 : 2)
+            .each((rowIndex, row) => {
+                $(row).children().slice(1).each((colIndex, cellContent) => {
+                    $('#table-content-values').append($('<input>', {
+                        type: 'text',
+                        name: 'content[' + rowIndex + '][]',
+                        value: JSON.stringify({
+                            type: 'html',
+                            value: $(cellContent).children().first().val()
+                        })
+                    }))
+                });
+            });
+    })
+
     // display or hide header row
     function displayOrHideHeaderRow() {
         const tableContentHeader = $('#row-0');
@@ -77,15 +103,16 @@ jQuery(($) => {
             tableContentHeader.css('display', 'none');
     }
 
-    // Add a new column after the specified column number
+    // Add a new column after the specified column id
     function addColumnAfter(event) {
-        columnNumber += 1;
+        const colIdInput = $('#col-id');
+        const colId = Number(colIdInput.val()) + 1;
 
-        const selectedColNumber = !!event && !!event.data && !!event.data.colNumber ? event.data.colNumber : null;
+        const selectedColId = !!event && !!event.data && !!event.data.colId ? event.data.colId : null;
 
         // Create the action cell on the top of the table
         const actionCell = $('<th>', {
-            'data-col-number': columnNumber,
+            'data-col-id': colId,
             class: 'sortable-column'
         }).append($('<div>', {
             class: 'table-col-actions-cell-content',
@@ -97,51 +124,49 @@ jQuery(($) => {
         }))).append($('<div>', {
             class: 'table-col-actions-cell-content-actions'
         }).append($('<span>', {
-            id: 'button-col-delete-' + columnNumber,
-            'data-col-number': columnNumber,
+            id: 'button-col-delete-' + colId,
+            'data-col-id': colId,
             class: 'dashicons dashicons-minus action-button action-button-delete',
             title: 'Delete column'
-        }).on('click', null, {colNumber: columnNumber}, deleteColumn)).append($('<span>', {
-            id: 'button-col-add-' + columnNumber,
-            'data-col-number': columnNumber,
+        }).on('click', null, {colId}, deleteColumn)).append($('<span>', {
+            id: 'button-col-add-' + colId,
+            'data-col-id': colId,
             class: 'dashicons dashicons-plus action-button action-button-add',
             title: 'Add a column after this one',
-        }).on('click', null, {columnNumber: columnNumber}, addColumnAfter))));
+        }).on('click', null, {colId}, addColumnAfter))));
 
         // Create the header cell
         const headerCell = $('<th>', {
             class: 'table-header-cell',
-            'data-col-number': columnNumber
+            'data-col-id': colId
         }).append($('<input>', {
             type: 'text',
             class: 'table-header-cell-content',
             maxLength: 255
         }));
 
-        if (!!selectedColNumber) {
-            actionCell.insertAfter($('#column-row-buttons>th[data-col-number="' + selectedColNumber + '"]'));
-            headerCell.insertAfter($('#row-0>th[data-col-number="' + selectedColNumber + '"]'));
+        if (!!selectedColId) {
+            actionCell.insertAfter($('#column-row-buttons>th[data-col-id="' + selectedColId + '"]'));
+            headerCell.insertAfter($('#row-0>th[data-col-id="' + selectedColId + '"]'));
 
-            $('[id*=row-]>td[data-col-number="' + selectedColNumber + '"]').each((index, element) => {
+            $('[id*=row-]>td[data-col-id="' + selectedColId + '"]').each((index, element) => {
                 $('<td>', {
                     class: 'table-content-cell',
-                    'data-col-number': columnNumber
+                    'data-col-id': colId
                 }).append($('<textarea>', {
                     maxLength: 255,
                     class: 'table-content-cell-content'
                 })).insertAfter(element);
             });
-
-            reallocateColumnNumbers();
         } else {
             $('#column-row-buttons').append(actionCell);
             $('#row-0').append(headerCell);
 
             // Create and add the content cells
-            $('.table-content-body').children().each((index, element) => {
+            $('#table-content-body').children().each((index, element) => {
                 $(element).append($('<td>', {
                     class: 'table-content-cell',
-                    'data-col-number': columnNumber
+                    'data-col-id': colId
                 }).append($('<textarea>', {
                     maxLength: 255,
                     class: 'table-content-cell-content'
@@ -149,20 +174,22 @@ jQuery(($) => {
             });
         }
 
+        colIdInput.val(colId);
         initDragAndDropColumn();
     }
 
     // Add a new row after the current row id
     function addRowAfter() {
-        tableRowId += 1;
-        const tableRowIdString = tableRowId.toString();
+        const rowIdInput = $('#row-id');
+        const rowId = Number(rowIdInput.val()) + 1;
+        const rowIdString = rowId.toString();
 
         // Create the new row and place it in the table
         const tableRow = $('<tr>', {
-            id: 'row-' + tableRowIdString
+            id: 'row-' + rowIdString
         });
 
-        const tableContentBody = $('.table-content-body');
+        const tableContentBody = $('#table-content-body');
         if (currentRowId === 0) {
             tableContentBody.prepend(tableRow);
         } else {
@@ -178,25 +205,27 @@ jQuery(($) => {
             class: 'dashicons dashicons-editor-expand action-button drag-row',
             title: 'Keep the mouse pressed to drag and drop the row'
         })).append($('<span>', {
+            id: 'button-row-delete-' + rowIdString,
             class: 'dashicons dashicons-minus action-button action-button-delete',
             title: 'Delete row'
-        }).on('click', null, {rowId: tableRowIdString}, deleteRow)).append($('<span>', {
-            id: 'button-row-' + tableRowIdString,
+        }).on('click', null, {rowId: rowIdString}, deleteRow)).append($('<span>', {
+            id: 'button-row-add-' + rowIdString,
             class: 'dashicons dashicons-plus action-button action-button-add',
             title: 'Add a row after this one'
-        }).on('click', null, {rowId: tableRowIdString}, openAddRowPopover)));
+        }).on('click', null, {rowId: rowIdString}, openAddRowPopover)));
 
         // Add n cells to complete the row
-        for (let i = 1; i <= columnNumber; i++) {
+        $('.table-header-cell').each((index, element) => {
             tableRow.append($('<td>', {
                 class: 'table-content-cell',
-                'data-col-number': i
+                'data-col-id': $(element).data('col-id')
             }).append($('<textarea>', {
                 maxLength: 255,
                 class: 'table-content-cell-content'
             })));
-        }
+        });
 
+        rowIdInput.val(rowId);
         initDragAndDropRow();
     }
 
@@ -206,7 +235,7 @@ jQuery(($) => {
             const rowId = event.data.rowId;
             currentRowId = rowId;
 
-            $('#button-row-' + rowId).popModal({
+            $('#button-row-add-' + rowId).popModal({
                 html: $('#add-row-popover'),
                 placement: 'rightTop'
             });
@@ -215,49 +244,9 @@ jQuery(($) => {
 
     // Remove the specified column
     function deleteColumn(event) {
-        if (!!event && !!event.data && !!event.data.colNumber && columnNumber > 1) {
-            $("[data-col-number='" + event.data.colNumber + "']").remove();
-
-            columnNumber -= 1;
-
-            reallocateColumnNumbers();
+        if (!!event && !!event.data && !!event.data.colId && $('.table-header-cell').length > 1) {
+            $("[data-col-id='" + event.data.colId + "']").remove();
         }
-    }
-
-    // Reallocate the column numbers on each element which contains this information
-    function reallocateColumnNumbers() {
-        $('#column-row-buttons').children().each((index, element) => {
-            const jqueryElement = $(element);
-            jqueryElement.attr('data-col-number', index);
-        });
-
-        $("[id*=button-col-delete-]").each((index, element) => {
-            index += 1;
-            const jqueryElement = $(element);
-
-            jqueryElement
-                .attr('id', 'button-col-delete-' + index)
-                .attr('data-col-number', index)
-                .off()
-                .on('click', null, {colNumber: index}, deleteColumn);
-        });
-
-        $("[id*=button-col-add-]").each((index, element) => {
-            index += 1;
-            const jqueryElement = $(element);
-
-            jqueryElement
-                .attr('id', 'button-col-add-' + index)
-                .attr('data-col-number', index)
-                .off()
-                .on('click', null, {colNumber: index}, addColumnAfter);
-        });
-
-        $('[id*=row-]').each((index, element) => {
-            $(element).children().each((index, element) => {
-                $(element).attr('data-col-number', index);
-            });
-        })
     }
 
     // Remove the specified row
@@ -277,10 +266,6 @@ jQuery(($) => {
         columnDragger = tableDragger.default(tableContent, {
             dragHandler: ".sortable-column"
         });
-
-        columnDragger.on('drop', () => {
-            reallocateColumnNumbers();
-        });
     }
 
     // Init drag and drop row options
@@ -289,7 +274,7 @@ jQuery(($) => {
             rowDragger.destroy();
         }
 
-        if($('.sortable-row').length > 0) {
+        if ($('.sortable-row').length > 0) {
             const tableContent = document.getElementById('table-content');
             rowDragger = tableDragger.default(tableContent, {
                 dragHandler: ".sortable-row",

@@ -1,5 +1,6 @@
 <?php
 
+require_once 'class-table.php';
 require_once 'class-advertising-agency.php';
 require_once 'class-db-manager.php';
 require_once dirname(__DIR__) . '/constants.php';
@@ -26,6 +27,10 @@ class AffiliationTableAdmin
     {
         if (!$this->dbManager->table_exists(Constants::ADVERTISING_AGENCY_TABLE)) {
             $this->dbManager->create_advertising_agency_table($this->advertisingAgencies);
+        }
+
+        if (!$this->dbManager->table_exists(Constants::TABLE_TABLE)) {
+            $this->dbManager->create_table_table();
         }
     }
 

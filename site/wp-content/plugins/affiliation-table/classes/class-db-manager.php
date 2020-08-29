@@ -10,7 +10,8 @@ class DbManager
         $this->db = $wpdb;
     }
 
-    public function table_exists($tableName) {
+    public function table_exists($tableName)
+    {
         return $this->db->get_var("SHOW TABLES LIKE '" . $tableName . "'") != '';
     }
 
@@ -38,6 +39,22 @@ class DbManager
         }
     }
 
+    public function create_table_table()
+    {
+        require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+
+        $sql = "
+			CREATE TABLE " . Constants::TABLE_TABLE . " (
+			    id INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT,
+				name VARCHAR(255) NOT NULL,
+				withHeader BOOLEAN NOT NULL DEFAULT true,
+				content JSON NOT NULL
+			);
+		";
+
+        dbDelta($sql);
+    }
+
     public function get_advertising_agencies()
     {
         $query = "SELECT * FROM " . Constants::ADVERTISING_AGENCY_TABLE;
@@ -45,6 +62,25 @@ class DbManager
         return array_map(function ($advertisingAgency) {
             return new AdvertisingAgency($advertisingAgency["name"], $advertisingAgency["label"], $advertisingAgency["value"]);
         }, $this->db->get_results($query, ARRAY_A));
+    }
+
+    public function get_table_by_id($id)
+    {
+        $query = "SELECT * FROM " . Constants::TABLE_TABLE . " WHERE id=" . $id;
+
+        $table = $this->db->get_row($query);
+
+        $tableId = $table->id;
+
+        $content = empty($tableId) ? null : array_map(function ($row) {
+            return array_map(function ($cell) {
+                $cell->value = base64_decode($cell->value);
+
+                return $cell;
+            }, $row);
+        }, json_decode($table->content));
+
+        return new Table($tableId, $table->name, $table->withHeader, $content);
     }
 
     public function save_advertising_agency_ids($advertisingAgencies)
@@ -60,5 +96,34 @@ class DbManager
 
             dbDelta($sql);
         }
+    }
+
+    public function edit_table($table)
+    {
+        require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+
+        $parsedArray = json_encode(array_map(function ($row) {
+            return array_map(function ($cell) {
+                $cellContent = json_decode(str_replace("\\" , "", str_replace('\\\\\\"', "&quot;", $cell)));
+                $cellContent->value = base64_encode($cellContent->value);
+
+                return $cellContent;
+            }, $row);
+        }, $table->getContent()));
+
+        $tableId = $table->getId();
+        $tableName = $table->getName();
+        $isTableWithHeader = $table->isWithHeader();
+
+        $sql = empty($tableId) ?
+            "INSERT INTO " . Constants::TABLE_TABLE . " (name, withHeader, content)
+             VALUES('" . $tableName . "', " . $isTableWithHeader . ", '" . $parsedArray . "')" :
+            "UPDATE " . Constants::TABLE_TABLE .
+            " SET name = '" . $tableName . "', withHeader = " . $isTableWithHeader . ", content = '" . $parsedArray . "'" .
+            " WHERE id = " . $tableId;
+
+        dbDelta($sql);
+
+        return $this->get_table_by_id(empty($tableId) ? $this->db->insert_id : $tableId);
     }
 }
