@@ -4,15 +4,11 @@ jQuery(($) => {
     let columnNumber = 4;
 
     let columnDragger = null;
+    let rowDragger = null;
 
     displayOrHideHeaderRow();
     initDragAndDropColumn();
-
-    // Init sort row column
-    $('.table-content-body').sortable({
-        placeholder: 'sortable-placeholder'
-    }).disableSelection();
-
+    initDragAndDropRow();
 
     // Switch to edition panel
     $('#edition-nav').on('click', () => {
@@ -177,7 +173,7 @@ jQuery(($) => {
 
         // Create actions cell with add and remove button
         tableRow.append($('<td>', {
-            class: 'table-row-actions-cell',
+            class: 'table-row-actions-cell sortable-row',
         }).append($('<span>', {
             class: 'dashicons dashicons-editor-expand action-button drag-row',
             title: 'Keep the mouse pressed to drag and drop the row'
@@ -200,6 +196,8 @@ jQuery(($) => {
                 class: 'table-content-cell-content'
             })));
         }
+
+        initDragAndDropRow();
     }
 
     // Open the popover row creation choice next to the current row
@@ -283,5 +281,21 @@ jQuery(($) => {
         columnDragger.on('drop', () => {
             reallocateColumnNumbers();
         });
+    }
+
+    // Init drag and drop row options
+    function initDragAndDropRow() {
+        if (!!rowDragger) {
+            rowDragger.destroy();
+        }
+
+        if($('.sortable-row').length > 0) {
+            const tableContent = document.getElementById('table-content');
+            rowDragger = tableDragger.default(tableContent, {
+                dragHandler: ".sortable-row",
+                mode: 'row',
+                onlyBody: true
+            });
+        }
     }
 })

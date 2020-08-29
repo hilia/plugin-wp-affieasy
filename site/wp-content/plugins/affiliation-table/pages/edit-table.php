@@ -17,7 +17,7 @@ wp_register_script('table-dragger', plugins_url('/affiliation-table/libs/table-d
 wp_enqueue_script(
     'edit-table-script',
     plugins_url('/affiliation-table/js/edit-table.js'),
-    array('jquery', 'pop-modal', 'jquery-ui-sortable', 'table-dragger'),
+    array('jquery', 'pop-modal', 'table-dragger'),
     time()
 );
 

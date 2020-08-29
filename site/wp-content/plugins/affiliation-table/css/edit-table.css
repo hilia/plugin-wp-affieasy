@@ -127,15 +127,6 @@
     flex-direction: row;
 }
 
-.sortable-placeholder {
-    height: 80px;
-    background: #b7b7b7;
-}
-
-.ui-sortable-helper {
-    display: table;
-}
-
 .drag-row {
     padding-bottom: 1em;
 }
