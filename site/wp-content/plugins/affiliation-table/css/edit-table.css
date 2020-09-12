@@ -37,7 +37,7 @@
 .table-col-actions-cell-content {
     display: flex;
     flex-direction: row;
-    align-items: end;
+    align-items: flex-end;
 
     height: 24px;
     width: 100%;

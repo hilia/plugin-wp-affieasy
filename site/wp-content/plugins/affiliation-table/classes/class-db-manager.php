@@ -64,6 +64,15 @@ class DbManager
         }, $this->db->get_results($query, ARRAY_A));
     }
 
+    public function get_table_page($currentPage, $perPage)
+    {
+        $sql = $this->db->prepare(
+            "SELECT * FROM " . Constants::TABLE_TABLE . " ORDER BY id DESC LIMIT %d, %d",
+            array((($currentPage - 1) * $perPage), $perPage));
+
+        return $this->db->get_results($sql, ARRAY_A);
+    }
+
     public function get_table_by_id($id)
     {
         $query = "SELECT * FROM " . Constants::TABLE_TABLE . " WHERE id=" . $id;
@@ -81,6 +90,11 @@ class DbManager
         }, json_decode($table->content));
 
         return new Table($tableId, $table->name, $table->withHeader, $content);
+    }
+
+    public function get_tables_count()
+    {
+        return $this->db->get_var("SELECT COUNT(*) FROM " . Constants::TABLE_TABLE);
     }
 
     public function save_advertising_agency_ids($advertisingAgencies)
@@ -104,7 +118,7 @@ class DbManager
 
         $parsedArray = json_encode(array_map(function ($row) {
             return array_map(function ($cell) {
-                $cellContent = json_decode(str_replace("\\" , "", str_replace('\\\\\\"', "&quot;", $cell)));
+                $cellContent = json_decode(str_replace("\\", "", str_replace('\\\\\\"', "&quot;", $cell)));
                 $cellContent->value = base64_encode($cellContent->value);
 
                 return $cellContent;
