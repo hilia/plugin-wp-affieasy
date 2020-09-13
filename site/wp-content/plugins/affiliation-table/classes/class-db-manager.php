@@ -140,4 +140,8 @@ class DbManager
 
         return $this->get_table_by_id(empty($tableId) ? $this->db->insert_id : $tableId);
     }
+
+    public function delete_table($id) {
+        $this->db->delete( Constants::TABLE_TABLE, array( 'id' => $id ) );
+    }
 }

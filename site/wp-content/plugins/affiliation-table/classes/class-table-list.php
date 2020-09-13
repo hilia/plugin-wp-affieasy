@@ -25,7 +25,6 @@ class TableList extends WP_List_Table
     function get_columns()
     {
         return [
-            'cb' => '<input type="checkbox" />',
             'id' => 'Id',
             'name' => 'Name'
         ];
@@ -33,13 +32,14 @@ class TableList extends WP_List_Table
 
     function column_id($item)
     {
-        $actions = array(
-            'edit' => sprintf('<a href="admin.php?page=affiliationTableAdmin&action=edit-table&id=' . $item['id'] . '">Edit</a>'),
-        );
+        $id = $item['id'];
 
         return sprintf('%1$s %2$s',
             $item['id'],
-            $this->row_actions($actions)
+            $this->row_actions(array(
+                'edit' => sprintf('<a href="admin.php?page=affiliationTableAdmin&action=edit-table&id=' . $id . '">Edit</a>'),
+                'delete' => sprintf('<a href="#" class="delete-link" data-id="' . $id . '">Delete</a>')
+            ))
         );
     }
 
