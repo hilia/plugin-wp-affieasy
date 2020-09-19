@@ -72,7 +72,7 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
 ?>
 
 <div class="wrap">
-    <h1><?php echo empty($tableId) ? 'Create table' : 'Update table ' .$tableId; ?></h1>
+    <h1><?php echo empty($tableId) ? 'Create table' : 'Update table ' . $tableId; ?></h1>
 
     <?php if ($isFromSaveAction) {
         $hasErrors = count($errors) > 0;
@@ -99,10 +99,35 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
     <div id="edition-panel">
         <form id="form" class="validate" method="post">
             <input type="hidden" id="id" name="id" value="<?php echo $tableId ?>">
-            <input type="hidden" id="row-id" value="<?php echo $isFromSaveActionOrNotNew ? count($table->getContent()) - 1 : 0 ?>">
+            <input
+                    type="hidden"
+                    id="row-id"
+                    value="<?php echo $isFromSaveActionOrNotNew ? count($table->getContent()) - 1 : 0 ?>">
             <input type="hidden" id="col-id" value="<?php echo count($firstRow) ?>">
 
             <table class="form-table" role="presentation">
+                <?php if (!empty($tableId)) { ?>
+                    <tr class="form-field">
+                        <th scope="row">
+                            <label for="name">
+                                Tag
+                                <span
+                                        class="dashicons dashicons-info"
+                                        title="Put this tag in your page to include the table">
+                                </span>
+                            </label>
+                        </th>
+                        <td>
+                            <input
+                                    type="text"
+                                    class="name-input"
+                                    maxlength="255"
+                                    disabled
+                                    value="<?php echo $table->getTag(); ?>">
+                        </td>
+                    </tr>
+                <?php } ?>
+
                 <tr class="form-field">
                     <th scope="row">
                         <label for="name">
@@ -180,7 +205,7 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                         </th>
                     <?php } ?>
                 </tr>
-                <tr id="row-0" <?php echo $isTableWithHeader ? '' : 'style="display: none"'?>>
+                <tr id="row-0" <?php echo $isTableWithHeader ? '' : 'style="display: none"'; ?>>
                     <th class="table-row-actions-cell" data-col-id="0">
                                 <span
                                         id="button-row-add-0"
@@ -214,20 +239,21 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                                 </span>
                                 <span
                                         id="button-row-delete-<?php echo $rowId; ?>"
-                                        data-row-id = "<?php echo $rowId; ?>"
+                                        data-row-id="<?php echo $rowId; ?>"
                                         class="dashicons dashicons-minus action-button action-button-delete"
                                         title="Delete row">
                                 </span>
                                 <span
                                         id="button-row-add-<?php echo $rowId; ?>"
-                                        data-row-id = "<?php echo $rowId; ?>"
+                                        data-row-id="<?php echo $rowId; ?>"
                                         class="dashicons dashicons-plus action-button action-button-add"
                                         title="Add a row after this one">
                                 </span>
                             </td>
                             <?php for ($j = 0; $j < count($row); $j++) { ?>
                                 <td class="table-content-cell" data-col-id="<?php echo $j + 1; ?>">
-                                    <textarea maxLength="2048" class="table-content-cell-content"><?php echo $row[$j]->value; ?></textarea>
+                                    <textarea maxLength="2048"
+                                              class="table-content-cell-content"><?php echo $row[$j]->value; ?></textarea>
                                 </td>
                             <?php } ?>
                         </tr>

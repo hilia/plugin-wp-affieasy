@@ -2,7 +2,7 @@
 /*
  * Plugin Name: Affiliation
  * Description: Plugin allowing to generate tables and manage affiliate links
- * Version: 0.1
+ * Version: 0.2
 */
 
 require_once 'classes/class-affiliation-table-admin.php';

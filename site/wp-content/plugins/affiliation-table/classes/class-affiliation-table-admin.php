@@ -21,6 +21,8 @@ class AffiliationTableAdmin
         array_push($this->advertisingAgencies, new AdvertisingAgency('AFFILAE', 'Affilae', null));
 
         add_action('admin_menu', array($this, 'add_menu_page_affiliation_table'));
+
+        add_shortcode(Constants::TABLE_TAG, array($this, 'affiliation_table_content_callback'));
     }
 
     public function initialize()
@@ -60,5 +62,53 @@ class AffiliationTableAdmin
                 include(dirname(__DIR__) . '/pages/main.php');
                 break;
         }
+    }
+
+    public function affiliation_table_content_callback($atts)
+    {
+        ob_start();
+
+        $table = $this->dbManager->get_table_by_id(intval($atts['id']));
+        if ($table->getId() == null) { ?>
+            <h6>Table not found.</h6>
+        <?php } else {
+            $this->generateTable($table);
+        }
+
+        return ob_get_clean();
+    }
+
+    function generateTable($table)
+    {
+        $isWithHeader = $table->isWithHeader();
+        $tableContent = $table->getContent();
+        $colNumber = count($tableContent[0]);
+
+        ?>
+        <table>
+            <?php if ($isWithHeader) { ?>
+                <thead>
+                <tr>
+                    <?php $header = $tableContent[0];
+                    for ($i = 0; $i < $colNumber; $i++) { ?>
+                        <th>
+                            <?php echo $header[$i]->value; ?>
+                        </th>
+                    <?php } ?>
+                </tr>
+                </thead>
+                <tbody>
+                <?php for ($i = $isWithHeader ? 1 : 0; $i < count($tableContent); $i++) { ?>
+                    <tr>
+                        <?php $row = $tableContent[$i];
+                        for ($j = 0; $j < count($row); $j++) { ?>
+                            <td><?php echo $row[$j]->value; ?></td>
+                        <?php } ?>
+                    </tr>
+                <?php } ?>
+                </tbody>
+            <?php } ?>
+        </table>
+        <?php
     }
 }

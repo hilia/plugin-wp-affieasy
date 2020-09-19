@@ -42,6 +42,11 @@ class Table
         $this->content = $content;
     }
 
+    public function getTag()
+    {
+        return '[' . Constants::TABLE_TAG . ' id=' . $this->id . ']';
+    }
+
     public function initDefaultContent() {
         $headerRow = array();
 
