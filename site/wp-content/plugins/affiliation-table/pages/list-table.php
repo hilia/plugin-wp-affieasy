@@ -3,8 +3,8 @@
 require_once dirname(__DIR__) . '/classes/class-table-list.php';
 
 wp_enqueue_script(
-    'main-script',
-    plugins_url('/affiliation-table/js/main.js'),
+    'list-table-script',
+    plugins_url('/affiliation-table/js/list-table.js'),
     array('jquery', 'jquery-ui-dialog'),
     time()
 );

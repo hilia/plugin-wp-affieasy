@@ -98,12 +98,12 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
 
     <div id="edition-panel">
         <form id="form" class="validate" method="post">
-            <input type="hidden" id="id" name="id" value="<?php echo $tableId ?>">
+            <input type="hidden" id="id" name="id" value="<?php echo $tableId; ?>">
             <input
                     type="hidden"
                     id="row-id"
                     value="<?php echo $isFromSaveActionOrNotNew ? count($table->getContent()) - 1 : 0 ?>">
-            <input type="hidden" id="col-id" value="<?php echo count($firstRow) ?>">
+            <input type="hidden" id="col-id" value="<?php echo count($firstRow); ?>">
 
             <table class="form-table" role="presentation">
                 <?php if (!empty($tableId)) { ?>

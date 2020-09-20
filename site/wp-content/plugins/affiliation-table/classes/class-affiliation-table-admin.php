@@ -19,6 +19,10 @@ class AffiliationTableAdmin
 
     public function initialize()
     {
+        if (!$this->dbManager->table_exists(Constants::TABLE_WEBSHOP)) {
+            $this->dbManager->create_table_webshop();
+        }
+
         if (!$this->dbManager->table_exists(Constants::TABLE_TABLE)) {
             $this->dbManager->create_table_table();
         }
@@ -47,8 +51,8 @@ class AffiliationTableAdmin
 
         add_submenu_page(
             'affiliation-table-table',
-            'Web shops',
-            'Web shops',
+            'Webshops',
+            'Webshops',
             'manage_options',
             'affiliation-table-webshop',
             array($this, 'display_webshop_list')
@@ -72,10 +76,16 @@ class AffiliationTableAdmin
     public function display_webshop_list()
     {
         if (current_user_can('manage_options')) {
-            include(dirname(__DIR__) . '/pages/list-webshops.php');
+            switch ($_GET['action']) {
+                case 'edit-webshop':
+                    include(dirname(__DIR__) . '/pages/edit-webshop.php');
+                    break;
+                default:
+                    include(dirname(__DIR__) . '/pages/list-webshop.php');
+                    break;
+            }
         }
     }
-
 
     public function affiliation_table_content_callback($atts)
     {

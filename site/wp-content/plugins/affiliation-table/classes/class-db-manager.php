@@ -10,11 +10,61 @@ class DbManager
         $this->db = $wpdb;
     }
 
+    /****************************** General functions ******************************/
     public function table_exists($tableName)
     {
-        return $this->db->get_var("SHOW TABLES LIKE '" . $tableName . "'") != '';
+        return !empty($this->db->get_var("SHOW TABLES LIKE '" . $tableName . "'"));
     }
 
+    /****************************** Webshop functions ******************************/
+
+    public function create_table_webshop()
+    {
+        require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+
+        $sql = "
+			CREATE TABLE " . Constants::TABLE_WEBSHOP . " (
+			    id INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT,
+				name VARCHAR(255) NOT NULL,
+				url TEXT NOT NULL
+			);
+		";
+
+        dbDelta($sql);
+    }
+
+    public function get_webshop_by_id($id)
+    {
+        $sql = $this->db->prepare("SELECT * FROM " . Constants::TABLE_WEBSHOP . " WHERE id=%d", array($id));
+        $webshop = $this->db->get_row($sql);
+
+        return new Webshop($webshop->id, $webshop->name, $webshop->url);
+    }
+
+    public function edit_webshop($webshop)
+    {
+        require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+
+        $webshopId = $webshop->getId();
+        $webshopName = $webshop->getName();
+        $webshopUrl = $webshop->getUrl();
+
+        if (empty($webshopId)) {
+            $this->db->insert(Constants::TABLE_WEBSHOP, array(
+                "name" => $webshopName,
+                "url" => $webshopUrl));
+
+            $webshopId = $this->db->insert_id;
+        } else {
+            $this->db->update(Constants::TABLE_WEBSHOP, array(
+                    "name" => $webshopName,
+                    "url" => $webshopUrl), array("id" => $webshopId));
+        }
+
+        return $this->get_webshop_by_id($webshopId);
+    }
+
+    /****************************** Table functions ******************************/
     public function create_table_table()
     {
         require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
@@ -93,7 +143,8 @@ class DbManager
         return $this->get_table_by_id(empty($tableId) ? $this->db->insert_id : $tableId);
     }
 
-    public function delete_table($id) {
-        $this->db->delete( Constants::TABLE_TABLE, array( 'id' => $id ) );
+    public function delete_table($id)
+    {
+        $this->db->delete(Constants::TABLE_TABLE, array('id' => $id));
     }
 }
