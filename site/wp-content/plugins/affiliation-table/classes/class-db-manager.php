@@ -15,30 +15,6 @@ class DbManager
         return $this->db->get_var("SHOW TABLES LIKE '" . $tableName . "'") != '';
     }
 
-    public function create_advertising_agency_table($advertisingAgencies)
-    {
-        require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-
-        $sql = "
-			CREATE TABLE " . Constants::ADVERTISING_AGENCY_TABLE . " (
-				name VARCHAR(255) NOT NULL UNIQUE,
-				label VARCHAR(255) NOT NULL,
-				value VARCHAR(255)
-			);
-		";
-
-        dbDelta($sql);
-
-        foreach ($advertisingAgencies as $advertisingAgency) {
-            $sql = "
-                INSERT INTO " . Constants::ADVERTISING_AGENCY_TABLE . " (name, label) 
-                VALUES ('" . $advertisingAgency->getName() . "', '" . $advertisingAgency->getLabel() . "')
-            ";
-
-            dbDelta($sql);
-        }
-    }
-
     public function create_table_table()
     {
         require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
@@ -53,15 +29,6 @@ class DbManager
 		";
 
         dbDelta($sql);
-    }
-
-    public function get_advertising_agencies()
-    {
-        $query = "SELECT * FROM " . Constants::ADVERTISING_AGENCY_TABLE;
-
-        return array_map(function ($advertisingAgency) {
-            return new AdvertisingAgency($advertisingAgency["name"], $advertisingAgency["label"], $advertisingAgency["value"]);
-        }, $this->db->get_results($query, ARRAY_A));
     }
 
     public function get_table_page($currentPage, $perPage)
@@ -95,21 +62,6 @@ class DbManager
     public function get_tables_count()
     {
         return $this->db->get_var("SELECT COUNT(*) FROM " . Constants::TABLE_TABLE);
-    }
-
-    public function save_advertising_agency_ids($advertisingAgencies)
-    {
-        require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-
-        foreach ($advertisingAgencies as $advertisingAgency) {
-            $sql = "
-                UPDATE " . Constants::ADVERTISING_AGENCY_TABLE . " 
-                SET value = '" . $advertisingAgency->getValue() . "'
-                WHERE name = '" . $advertisingAgency->getName() . "'
-            ";
-
-            dbDelta($sql);
-        }
     }
 
     public function edit_table($table)

@@ -37,7 +37,7 @@ class TableList extends WP_List_Table
         return sprintf('%1$s %2$s',
             $item['id'],
             $this->row_actions(array(
-                'edit' => sprintf('<a href="admin.php?page=affiliationTableAdmin&action=edit-table&id=' . $id . '">Edit</a>'),
+                'edit' => sprintf('<a href="admin.php?page=affiliation-table-table&action=edit-table&id=' . $id . '">Edit</a>'),
                 'delete' => sprintf('<a href="#" class="delete-link" data-id="' . $id . '">Delete</a>')
             ))
         );

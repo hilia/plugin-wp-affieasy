@@ -28,13 +28,10 @@ $tableList = new TableList();
 </div>
 
 <div class="wrap">
-    <h1 class="wp-heading-inline">Affiliation tables</h1>
+    <h1 class="wp-heading-inline">Tables</h1>
 
-    <a href="admin.php?page=affiliationTableAdmin&action=edit-table" class="page-title-action">
+    <a href="admin.php?page=affiliation-table-table&action=edit-table" class="page-title-action">
         Add new table
-    </a>
-    <a href="admin.php?page=affiliationTableAdmin&action=edit-advertising-agencies" class="page-title-action">
-        Edit advertising agency ids
     </a>
 
     <hr class="wp-header-end">
