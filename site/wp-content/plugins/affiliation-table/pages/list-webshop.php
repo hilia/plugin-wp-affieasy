@@ -8,8 +8,24 @@ array('jquery', 'jquery-ui-dialog'),
 time()
 );
 
+wp_enqueue_style('wp-jquery-ui-dialog');
+
+$id = $_GET['id'];
+$isValidDeleteAction = $_GET['action'] == 'delete-webshop' && is_numeric($id);
+if ($isValidDeleteAction) {
+    $dbManager = new DbManager();
+    $dbManager->delete_webshop($id);
+}
+
 $webshopList = new WebshopList();
+
 ?>
+
+<div id="dialog-confirm-delete" title="Confirmation" hidden>
+    <p>
+        Are you sure you want to delete the webshop?
+    </p>
+</div>
 
 <div class="wrap">
     <h1 class="wp-heading-inline">Webshops</h1>
@@ -19,6 +35,12 @@ $webshopList = new WebshopList();
     </a>
 
     <hr class="wp-header-end">
+
+    <?php if ($isValidDeleteAction) { ?>
+        <div class="notice notice-success settings-error is-dismissible">
+            <p><strong>The webshop has been deleted</strong></p>
+        </div>
+    <?php } ?>
 
     <form method="GET">
         <?php

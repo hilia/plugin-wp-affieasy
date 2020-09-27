@@ -78,6 +78,11 @@ class DbManager
         return $this->get_webshop_by_id($webshopId);
     }
 
+    public function delete_webshop($id)
+    {
+        $this->db->delete(Constants::TABLE_WEBSHOP, array('id' => $id));
+    }
+
     /****************************** Table functions ******************************/
     public function create_table_table()
     {
