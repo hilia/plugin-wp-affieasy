@@ -16,6 +16,11 @@ class DbManager
         return !empty($this->db->get_var("SHOW TABLES LIKE '" . $tableName . "'"));
     }
 
+    public function get_table_count($tableName)
+    {
+        return $this->db->get_var("SELECT COUNT(*) FROM " . $tableName);
+    }
+
     /****************************** Webshop functions ******************************/
 
     public function create_table_webshop()
@@ -31,6 +36,15 @@ class DbManager
 		";
 
         dbDelta($sql);
+    }
+
+    public function get_webshop_page($currentPage, $perPage)
+    {
+        $sql = $this->db->prepare(
+            "SELECT * FROM " . Constants::TABLE_WEBSHOP . " ORDER BY id DESC LIMIT %d, %d",
+            array((($currentPage - 1) * $perPage), $perPage));
+
+        return $this->db->get_results($sql, ARRAY_A);
     }
 
     public function get_webshop_by_id($id)
@@ -107,11 +121,6 @@ class DbManager
         }, json_decode($table->content));
 
         return new Table($tableId, $table->name, $table->withHeader, $content);
-    }
-
-    public function get_tables_count()
-    {
-        return $this->db->get_var("SELECT COUNT(*) FROM " . Constants::TABLE_TABLE);
     }
 
     public function edit_table($table)
