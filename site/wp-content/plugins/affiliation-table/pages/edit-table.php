@@ -72,7 +72,13 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
 ?>
 
 <div class="wrap">
-    <h1><?php echo empty($tableId) ? 'Create table' : 'Update table ' . $tableId; ?></h1>
+    <h1 class="wp-heading-inline"><?php echo empty($tableId) ? 'Create table' : 'Update table ' . $tableName; ?></h1>
+
+    <a href="admin.php?page=affiliation-table-table" class="page-title-action">
+        Back to table list
+    </a>
+
+    <hr class="wp-header-end">
 
     <?php if ($isFromSaveAction) {
         $hasErrors = count($errors) > 0;

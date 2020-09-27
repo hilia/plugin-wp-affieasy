@@ -48,7 +48,13 @@ $webshopName = $webshop->getName();
 ?>
 
 <div class="wrap">
-    <h1><?php echo empty($webshopId) ? 'Create webshop' : 'Update webshop ' . $webshopName; ?></h1>
+    <h1 class="wp-heading-inline"><?php echo empty($webshopId) ? 'Create webshop' : 'Update webshop ' . $webshopName; ?></h1>
+
+    <a href="admin.php?page=affiliation-table-webshop" class="page-title-action">
+        Back to webshop list
+    </a>
+
+    <hr class="wp-header-end">
 
     <?php if ($isFromSaveAction) {
         $hasErrors = !empty($errors);
