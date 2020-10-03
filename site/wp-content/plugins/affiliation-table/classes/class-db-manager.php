@@ -27,15 +27,11 @@ class DbManager
     {
         require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
 
-        $sql = "
-			CREATE TABLE " . Constants::TABLE_WEBSHOP . " (
+        dbDelta(" CREATE TABLE " . Constants::TABLE_WEBSHOP . " (
 			    id INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT,
 				name VARCHAR(255) NOT NULL,
 				url TEXT NOT NULL
-			);
-		";
-
-        dbDelta($sql);
+			);");
     }
 
     public function get_webshop_page($currentPage, $perPage)
@@ -71,8 +67,8 @@ class DbManager
             $webshopId = $this->db->insert_id;
         } else {
             $this->db->update(Constants::TABLE_WEBSHOP, array(
-                    "name" => $webshopName,
-                    "url" => $webshopUrl), array("id" => $webshopId));
+                "name" => $webshopName,
+                "url" => $webshopUrl), array("id" => $webshopId));
         }
 
         return $this->get_webshop_by_id($webshopId);
@@ -88,16 +84,12 @@ class DbManager
     {
         require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
 
-        $sql = "
-			CREATE TABLE " . Constants::TABLE_TABLE . " (
+        dbDelta("CREATE TABLE " . Constants::TABLE_TABLE . " (
 			    id INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT,
 				name VARCHAR(255) NOT NULL,
 				withHeader BOOLEAN NOT NULL DEFAULT true,
 				content JSON NOT NULL
-			);
-		";
-
-        dbDelta($sql);
+			);");
     }
 
     public function get_table_page($currentPage, $perPage)
@@ -111,9 +103,8 @@ class DbManager
 
     public function get_table_by_id($id)
     {
-        $query = "SELECT * FROM " . Constants::TABLE_TABLE . " WHERE id=" . $id;
-
-        $table = $this->db->get_row($query);
+        $sql = $this->db->prepare("SELECT * FROM " . Constants::TABLE_TABLE . " WHERE id=%d", array($id));
+        $table = $this->db->get_row($sql);
 
         $tableId = $table->id;
 
@@ -135,6 +126,7 @@ class DbManager
         $parsedArray = json_encode(array_map(function ($row) {
             return array_map(function ($cell) {
                 $cellContent = json_decode(str_replace("\\", "", str_replace('\\\\\\"', "&quot;", $cell)));
+
                 $cellContent->value = base64_encode($cellContent->value);
 
                 return $cellContent;
@@ -145,16 +137,22 @@ class DbManager
         $tableName = $table->getName();
         $isTableWithHeader = $table->isWithHeader();
 
-        $sql = empty($tableId) ?
-            "INSERT INTO " . Constants::TABLE_TABLE . " (name, withHeader, content)
-             VALUES('" . $tableName . "', " . $isTableWithHeader . ", '" . $parsedArray . "')" :
-            "UPDATE " . Constants::TABLE_TABLE .
-            " SET name = '" . $tableName . "', withHeader = " . $isTableWithHeader . ", content = '" . $parsedArray . "'" .
-            " WHERE id = " . $tableId;
+        if (empty($tableId)) {
+            $this->db->insert(Constants::TABLE_TABLE, array(
+                "name" => $tableName,
+                "withHeader" => $isTableWithHeader,
+                "content" => $parsedArray));
 
-        dbDelta($sql);
 
-        return $this->get_table_by_id(empty($tableId) ? $this->db->insert_id : $tableId);
+            $tableId = $this->db->insert_id;
+        } else {
+            $this->db->update(Constants::TABLE_TABLE, array(
+                "name" => $tableName,
+                "withHeader" => $isTableWithHeader,
+                "content" => $parsedArray), array("id" => $tableId));
+        }
+
+        return $this->get_table_by_id($tableId);
     }
 
     public function delete_table($id)
