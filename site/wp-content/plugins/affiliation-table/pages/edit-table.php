@@ -24,6 +24,8 @@ wp_enqueue_script(
 $table = new Table($_POST['id'], $_POST['name'], $_POST['with-header'], $_POST['content']);
 $errors = array();
 $dbManager = new DbManager();
+$webshops = $dbManager->get_webshop_list();
+$hasNoWebShop = empty($webshops);
 
 $isFromSaveAction = $_POST['submit'] == 'save-action';
 if ($isFromSaveAction) {
@@ -291,14 +293,25 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
         <div id="add-row-popover">
             <h3 class="add-row-popover-header">Row type</h3>
             <div class="add-row-popover-content">
-                <button type="button" id="add-html-row" class="page-title-action">
+                <button type="button" id="add-html-row" class="button-primary add-row-popover-button">
                     Text / Html
                 </button>
-                <button type="button" class="page-title-action">
+                <button
+                        type="button"
+                        id="add-image-row"
+                        class="button-primary add-row-popover-button disabled"
+                        title="Not yet implemented">
                     Images
+                    <span class="dashicons dashicons-info dashicons-button-disabled"></span>
                 </button>
-                <button type="button" class="page-title-action">
+                <button
+                        type="button"
+                        class="button-primary add-row-popover-button <?php echo $hasNoWebShop ? 'disabled' : '' ?>"
+                        <?php echo $hasNoWebShop ? 'title="Create webshops to use this functionnality"' : '' ?>>
                     Affiliate links
+                    <?php if ($hasNoWebShop) { ?>
+                        <span class="dashicons dashicons-info dashicons-button-disabled"></span>
+                    <?php } ?>
                 </button>
             </div>
         </div>

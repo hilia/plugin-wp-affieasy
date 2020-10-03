@@ -34,6 +34,13 @@ class DbManager
 			);");
     }
 
+    public function get_webshop_list()
+    {
+        return array_map(function($webshop) {
+            return new Webshop(intval($webshop['id']), $webshop['name'], $webshop['url']);
+        }, $this->db->get_results('SELECT * FROM ' . Constants::TABLE_WEBSHOP, ARRAY_A));
+    }
+
     public function get_webshop_page($currentPage, $perPage)
     {
         $sql = $this->db->prepare(

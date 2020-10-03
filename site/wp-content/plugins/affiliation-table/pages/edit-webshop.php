@@ -1,7 +1,5 @@
 <?php
 
-require_once dirname(__DIR__) . '/classes/class-webshop.php';
-
 wp_enqueue_style(
     'edit-table-style',
     plugins_url('/affiliation-table/css/edit-webshop.css'),

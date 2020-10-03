@@ -129,6 +129,17 @@
 .add-row-popover-content {
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.add-row-popover-button {
+    margin-left: 5px!important;
+    margin-top: 5px!important;
+}
+
+.dashicons-button-disabled {
+    vertical-align: middle;
+    margin-bottom: 2px;
 }
 
 .drag-row {

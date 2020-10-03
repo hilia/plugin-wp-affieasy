@@ -1,5 +1,6 @@
 <?php
 
+require_once 'class-webshop.php';
 require_once 'class-table.php';
 require_once 'class-db-manager.php';
 require_once dirname(__DIR__) . '/constants.php';
