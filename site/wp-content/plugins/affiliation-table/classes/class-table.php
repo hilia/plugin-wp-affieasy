@@ -47,11 +47,21 @@ class Table
         return '[' . Constants::TABLE_TAG . ' id=' . $this->id . ']';
     }
 
-    public function initDefaultContent() {
+    public function getCellCount()
+    {
+        if ($this->id == null) {
+            return 0;
+        }
+
+        return ($this->withHeader == 1 ? count($this->content) - 1 : count($this->content)) * count($this->content[0]);
+    }
+
+    public function initDefaultContent()
+    {
         $headerRow = array();
 
         for ($i = 0; $i < $this->defaultTableColumnNumber; $i++) {
-            array_push($headerRow, (object) [
+            array_push($headerRow, (object)[
                 'type' => 'html',
                 'value' => '',
             ]);

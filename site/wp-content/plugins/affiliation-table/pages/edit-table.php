@@ -11,13 +11,15 @@ wp_enqueue_style(
     array(),
     time());
 
+wp_enqueue_style('wp-jquery-ui-dialog');
+
 wp_register_script('pop-modal', plugins_url('/affiliation-table/libs/pop-modal/pop-modal.min.js'), array('jquery'));
 wp_register_script('table-dragger', plugins_url('/affiliation-table/libs/table-dragger/table-dragger.min.js'));
 
 wp_enqueue_script(
     'edit-table-script',
     plugins_url('/affiliation-table/js/edit-table.js'),
-    array('jquery', 'pop-modal', 'table-dragger'),
+    array('jquery', 'pop-modal', 'table-dragger', 'jquery-ui-dialog'),
     time()
 );
 
@@ -73,6 +75,77 @@ $isTableWithHeader = $table->isWithHeader() == 1;
 $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
 ?>
 
+<div id="edit-affiliation-link-modal" title="Add affiliation links" hidden>
+    <table class="form-table">
+        <tbody id="edit-affiliation-body-modal">
+        <tr id="webshop-row">
+            <th scope="row">
+                <label for="webshop-select">
+                    Select webshop
+                </label>
+            </th>
+            <td>
+                <select id="webshop-select">
+                    <?php foreach ($webshops as $webshop) { ?>
+                        <option
+                                value="<?php echo $webshop->getId(); ?>"
+                                data-url="<?php echo $webshop->getUrl(); ?>"
+                                data-parameters="<?php echo implode('|||', $webshop->getParameters()); ?>">
+                            <? echo $webshop->getName(); ?>
+                        </option>
+                    <?php } ?>
+                </select>
+            </td>
+        </tr>
+        <tr id="link-text-row">
+            <th scope="row">
+                <label>
+                    Link text
+                </label>
+            </th>
+            <td>
+                <input
+                        type="text"
+                        id="link-text-input"
+                        maxlength="255">
+            </td>
+        </tr>
+        <?php
+        if (!$hasNoWebShop && !empty($webshops[0]->getParameters())) {
+            foreach ($webshops[0]->getParameters() as $parameter) { ?>
+                <tr class="affiliation-parameter-row">
+                    <th scope="row">
+                        <label>
+                            <?php echo $parameter; ?>
+                        </label>
+                    </th>
+                    <td>
+                        <input
+                                type="text"
+                                class="affiliation-parameter-input"
+                                maxlength="255"
+                                data-parameter="<?php echo $parameter; ?>"
+                                value="">
+                    </td>
+                </tr>
+            <?php } ?>
+            <tr>
+                <th scope="row">
+                    <label for="affiliation-link-overview">
+                        Link overview
+                    </label>
+                </th>
+
+                <td id="affiliation-link-overview">
+                    <?php echo $webshops[0]->getUrl(); ?>
+                </td>
+            </tr>
+        <?php }
+        ?>
+        </tbody>
+    </table>
+</div>
+
 <div class="wrap">
     <h1 class="wp-heading-inline"><?php echo empty($tableId) ? 'Create table' : 'Update table ' . $tableName; ?></h1>
 
@@ -112,6 +185,8 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                     id="row-id"
                     value="<?php echo $isFromSaveActionOrNotNew ? count($table->getContent()) - 1 : 0 ?>">
             <input type="hidden" id="col-id" value="<?php echo count($firstRow); ?>">
+            <input type="hidden" id="last-cell-id" value="<?php echo $table->getCellCount() ?>">
+            <input type="hidden" id="affiliation-url" value="<?php echo $hasNoWebShop ? '' : $webshops[0]->getUrl() ?>">
 
             <table class="form-table" role="presentation">
                 <?php if (!empty($tableId)) { ?>
@@ -235,6 +310,7 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                 </thead>
                 <tbody id="table-content-body">
                 <?php if ($isFromSaveActionOrNotNew) {
+                    $cellId = 1;
                     for ($i = $isTableWithHeader ? 1 : 0; $i < count($table->getContent()); $i++) {
                         $row = $table->getContent()[$i];
 
@@ -258,12 +334,52 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                                         title="Add a row after this one">
                                 </span>
                             </td>
-                            <?php for ($j = 0; $j < count($row); $j++) { ?>
-                                <td class="table-content-cell" data-col-id="<?php echo $j + 1; ?>">
-                                    <textarea maxLength="2048"
-                                              class="table-content-cell-content"><?php echo $row[$j]->value; ?></textarea>
-                                </td>
-                            <?php } ?>
+                            <?php for ($j = 0; $j < count($row); $j++) {
+                                $cellType = $row[$j]->type;
+                                $cellValue = $row[$j]->value;
+                                $cellId++;
+                                if ($cellType == 'HTML') { ?>
+                                    <td
+                                            id="cell-<?php echo $cellId; ?>"
+                                            class="table-content-cell-html"
+                                            data-col-id="<?php echo $j + 1; ?>"
+                                            data-cell-type="<?php echo $cellType; ?>">
+                                    <textarea
+                                            maxLength="2048"
+                                            class="table-content-cell-html-content"><?php echo $cellValue; ?></textarea>
+                                    </td>
+                                <?php } else if ($cellType == 'AFFILIATION') {
+                                    $affiliateLinks = json_decode(str_replace("&quot;", '"', $cellValue));
+                                    ?>
+                                    <td
+                                            id="cell-<?php echo $cellId; ?>"
+                                            class="table-content-cell-affiliation"
+                                            data-col-id="<?php echo $j + 1; ?>"
+                                            data-cell-type="<?php echo $cellType; ?>">
+                                        <input
+                                                id="cell-content-<?php echo $cellId; ?>"
+                                                name="cell-content-<?php echo $cellId; ?>"
+                                                type="hidden"
+                                                value="<?php echo $cellValue; ?>">
+                                        <span
+                                                class="dashicons dashicons-plus add-affiliation-link-button action-button-add"
+                                                title="Add affiliate link"
+                                                data-cell-id="<?php echo $cellId; ?>">
+                                        </span>
+                                        <div id="cell-content-link-list-<?php echo $cellId; ?>">
+                                            <?php foreach ($affiliateLinks as $affiliateLink) { ?>
+                                                <button
+                                                        type="button"
+                                                        class="button-primary cell-content-link-list-button"
+                                                        title="Edit affiliate link">
+                                                    <span class="dashicons dashicons-cart cell-content-link-list-icon"></span>
+                                                    <span><?php echo $affiliateLink->linkText; ?></span>
+                                                </button>
+                                            <?php } ?>
+                                        </div>
+                                    </td>
+                                <?php }
+                            } ?>
                         </tr>
                     <?php }
                 } ?>
@@ -306,8 +422,9 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                 </button>
                 <button
                         type="button"
+                        id="add-affiliation-row"
                         class="button-primary add-row-popover-button <?php echo $hasNoWebShop ? 'disabled' : '' ?>"
-                        <?php echo $hasNoWebShop ? 'title="Create webshops to use this functionnality"' : '' ?>>
+                    <?php echo $hasNoWebShop ? 'title="Create webshops to use this functionnality" disabled' : '' ?>>
                     Affiliate links
                     <?php if ($hasNoWebShop) { ?>
                         <span class="dashicons dashicons-info dashicons-button-disabled"></span>
