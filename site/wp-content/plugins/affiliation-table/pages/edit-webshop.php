@@ -91,7 +91,7 @@ $webshopName = $webshop->getName();
             between <strong>[[</strong> and <strong>]]</strong>.<br><br>
 
             Now You can add affiliate links for decathlon in your tables (edit table -> add row -> Affiliate links ->
-            select decathlon) parameters <strong>[[product_url]]</strong> and <strong>[[click_ref]]</strong> will be
+            select decathlon). Parameters <strong>[[product_url]]</strong> and <strong>[[click_ref]]</strong> will be
             asked during creation process and the url will be automatically generated.<br><br>
 
             If one day, the advertising agency changes for this webshop (it becomes Affilae), just update the url :

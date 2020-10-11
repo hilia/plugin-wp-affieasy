@@ -49,7 +49,7 @@ if ($isFromSaveAction) {
                 $cellContent = json_decode(str_replace("\\", "", str_replace('\\\\\\"', "&quot;", $cell)));
 
                 return (object)[
-                    'type' => 'html',
+                    'type' => $cellContent->type,
                     'value' => $cellContent->value,
                 ];
             }, $row);
@@ -75,9 +75,9 @@ $isTableWithHeader = $table->isWithHeader() == 1;
 $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
 ?>
 
-<div id="edit-affiliation-link-modal" title="Add affiliation links" hidden>
+<div id="edit-affiliation-link-modal" hidden>
     <table class="form-table">
-        <tbody id="edit-affiliation-body-modal">
+        <tbody id="edit-affiliation-link-modal-body">
         <tr id="webshop-row">
             <th scope="row">
                 <label for="webshop-select">
@@ -186,7 +186,6 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                     value="<?php echo $isFromSaveActionOrNotNew ? count($table->getContent()) - 1 : 0 ?>">
             <input type="hidden" id="col-id" value="<?php echo count($firstRow); ?>">
             <input type="hidden" id="last-cell-id" value="<?php echo $table->getCellCount() ?>">
-            <input type="hidden" id="affiliation-url" value="<?php echo $hasNoWebShop ? '' : $webshops[0]->getUrl() ?>">
 
             <table class="form-table" role="presentation">
                 <?php if (!empty($tableId)) { ?>
@@ -338,7 +337,8 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                                 $cellType = $row[$j]->type;
                                 $cellValue = $row[$j]->value;
                                 $cellId++;
-                                if ($cellType == 'HTML') { ?>
+
+                                if ($cellType == Constants::HTML) { ?>
                                     <td
                                             id="cell-<?php echo $cellId; ?>"
                                             class="table-content-cell-html"
@@ -348,7 +348,7 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                                             maxLength="2048"
                                             class="table-content-cell-html-content"><?php echo $cellValue; ?></textarea>
                                     </td>
-                                <?php } else if ($cellType == 'AFFILIATION') {
+                                <?php } else if ($cellType == Constants::AFFILIATION) {
                                     $affiliateLinks = json_decode(str_replace("&quot;", '"', $cellValue));
                                     ?>
                                     <td
@@ -360,6 +360,7 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                                                 id="cell-content-<?php echo $cellId; ?>"
                                                 name="cell-content-<?php echo $cellId; ?>"
                                                 type="hidden"
+                                                autocomplete="off"
                                                 value="<?php echo $cellValue; ?>">
                                         <span
                                                 class="dashicons dashicons-plus add-affiliation-link-button action-button-add"
@@ -371,7 +372,9 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                                                 <button
                                                         type="button"
                                                         class="button-primary cell-content-link-list-button"
-                                                        title="Edit affiliate link">
+                                                        title="Edit affiliate link"
+                                                        data-cell-id="<?php echo $cellId; ?>"
+                                                        data-id="<?php echo $affiliateLink->id; ?>">
                                                     <span class="dashicons dashicons-cart cell-content-link-list-icon"></span>
                                                     <span><?php echo $affiliateLink->linkText; ?></span>
                                                 </button>

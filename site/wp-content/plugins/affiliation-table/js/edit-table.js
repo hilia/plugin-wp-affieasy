@@ -3,10 +3,11 @@ jQuery(($) => {
     const AFFILIATION = 'AFFILIATION';
 
     let lastCellId = $('#last-cell-id').val();
-    let affiliationUrl = $('#affiliation-url').val();
 
     let currentRowId = null;
     let currentCellId = null;
+    let currentAffiliateLinkId = null;
+    let currentAffiliationUrl = '';
 
     let columnDragger = null;
     let rowDragger = null;
@@ -15,6 +16,7 @@ jQuery(($) => {
     initDragAndDropColumn();
     initDragAndDropRow();
     initAddAffiliateLinkButtons();
+    initEditAffiliateLinkButtons();
     addRecaluclationLinkEvents();
 
     // Switch to edition panel
@@ -111,31 +113,7 @@ jQuery(($) => {
 
     // Init variable parameters when webshop change (edition modal)
     $('#webshop-select').on('change', null, null, () => {
-        const selectedWebshop = $("#webshop-select option:selected");
-        affiliationUrl = selectedWebshop.data('url');
-
-        $('#link-text-input').val(selectedWebshop.text().trim());
-
-        $('.affiliation-parameter-row').remove();
-
-        selectedWebshop.data('parameters')
-            .split('|||')
-            .reverse()
-            .forEach(parameter => $('#link-text-row').after($('<tr>', {
-                class: 'affiliation-parameter-row',
-            })
-                .append($('<th>', {
-                    scope: 'row'
-                }).append(`<label>${parameter}</label>`))
-                .append($('<td>').append($('<input>', {
-                    type: 'text',
-                    class: 'affiliation-parameter-input',
-                    maxLength: 255,
-                    'data-parameter': parameter
-                })))));
-
-        $('#affiliation-link-overview').text(affiliationUrl);
-        addRecaluclationLinkEvents();
+        initAffiliateLinkInputsModal();
     });
 
     // display or hide header row
@@ -202,7 +180,7 @@ jQuery(($) => {
 
             // Create and add the content cells
             $('#table-content-body').children().each((index, element) => {
-                $(element).append(makeCell($(element).data('cell-type'), colId));
+                $(element).append(makeCell($(element).children().last().data('cell-type'), colId));
             });
         }
 
@@ -311,62 +289,98 @@ jQuery(($) => {
         }
     }
 
+    // Open modal which edit affiliation link
     function openEditAffiliationLinkModal(event) {
         if (!!event && !!event.data && !isNaN(event.data.cellId)) {
-            $('.affiliation-parameter-input').each((index, element) => {
-                $(element).val('');
-            });
-
-            $('#affiliation-link-overview').text(affiliationUrl);
-            $('#link-text-input').val($('#webshop-select option:selected').text().trim());
-
             currentCellId = event.data.cellId;
+            currentAffiliateLinkId = event.data.id;
+
+            let affilitateLinkValue = !!id ? JSON.parse($('#cell-content-' + currentCellId).val())
+                .find(affilitateLinkValue => affilitateLinkValue.id === currentAffiliateLinkId) : null;
+
+            if (!affilitateLinkValue) {
+                $('#webshop-select option:first').prop('selected', true);
+            }
+
+            initAffiliateLinkInputsModal(affilitateLinkValue);
+
+            const cancel = () => function () {
+                $(this).dialog('close');
+            }
+
+            const buttons = !!affilitateLinkValue ? {
+                'Edit': updateAffiliateLink,
+                'Remove': removeAffiliateLink,
+                'Cancel': cancel()
+            } : {
+                'Add': addAffiliateLink,
+                'Cancel': cancel()
+            };
 
             $('#edit-affiliation-link-modal').dialog({
                 resizable: true,
                 minWidth: 400,
-                buttons: {
-                    'Add': function () {
-                        const value = {
-                            url: $('#affiliation-link-overview').text()
-                        }
-
-                        $('.affiliation-parameter-input').each(((index, element) => {
-                            const jqueryElement = $(element);
-                            value[jqueryElement.data('parameter')] = jqueryElement.val();
-                        }));
-
-                        const selectedOption = $("#webshop-select");
-                        value['webshopId'] = Number(selectedOption.val());
-
-                        const textInput = $('#link-text-input').val();
-                        value['linkText'] = textInput;
-
-                        const cellContent = JSON.parse($('#cell-content-' + currentCellId).val());
-                        cellContent.push(value);
-
-                        $('#cell-content-' + currentCellId).val(JSON.stringify(cellContent));
-
-                        $('#cell-content-link-list-' + currentCellId).append($('<button>', {
-                            type: 'button',
-                            class: 'button-primary cell-content-link-list-button',
-                            title: 'Edit affiliate link'
-                        })
-                            .append($('<span>', {
-                                class: 'dashicons dashicons-cart cell-content-link-list-icon'
-                            }))
-                            .append($('<span>', {
-                                text: textInput
-                            })));
-
-                        $(this).dialog('close');
-                    },
-                    'Close': function () {
-                        $(this).dialog('close');
-                    }
-                }
+                title: !!affilitateLinkValue ? 'Edit affiliation link' : 'Create affiliation link',
+                modal: true,
+                buttons,
             });
         }
+    }
+
+    // Add new affiliate link in the selected cell
+    function addAffiliateLink() {
+        const id = Date.now();
+        const value = makeAffiliationLinkValue(id);
+
+        const cellContent = JSON.parse($('#cell-content-' + currentCellId).val());
+        cellContent.push(value);
+
+        $('#cell-content-' + currentCellId).val(JSON.stringify(cellContent));
+
+        $('#cell-content-link-list-' + currentCellId).append($('<button>', {
+            type: 'button',
+            class: 'button-primary cell-content-link-list-button',
+            title: 'Edit affiliate link',
+            'data-id': id
+        }).on('click', null, {cellId: currentCellId, id}, openEditAffiliationLinkModal)
+            .append($('<span>', {
+                class: 'dashicons dashicons-cart cell-content-link-list-icon'
+            }))
+            .append($('<span>', {
+                text: value.linkText
+            })));
+
+        $(this).dialog('close');
+    }
+
+    // Update selected affiliate link
+    function updateAffiliateLink() {
+        const affiliateLinkValues = JSON.parse($('#cell-content-' + currentCellId).val())
+            .map(affiliateLinkValue => affiliateLinkValue.id === currentAffiliateLinkId ?
+                makeAffiliationLinkValue(affiliateLinkValue.id) :
+                affiliateLinkValue);
+
+        $('#cell-content-' + currentCellId).val(JSON.stringify(affiliateLinkValues));
+
+        $(`.cell-content-link-list-button[data-id="${currentAffiliateLinkId}"]`)
+            .empty()
+            .append($('<span>', {
+                class: 'dashicons dashicons-cart cell-content-link-list-icon'
+            }))
+            .append($('<span>', {
+                text: $('#link-text-input').val()
+            }));
+
+        $(this).dialog('close');
+    }
+
+    // Remove selected affiliate link
+    function removeAffiliateLink() {
+        $('#cell-content-' + currentCellId).val(JSON.stringify(JSON.parse($('#cell-content-' + currentCellId).val())
+            .filter(affilitateLinkValue => affilitateLinkValue.id !== currentAffiliateLinkId)));
+
+        $(`.cell-content-link-list-button[data-id="${currentAffiliateLinkId}"]`).remove();
+        $(this).dialog('close');
     }
 
     // Remove the specified column
@@ -423,15 +437,93 @@ jQuery(($) => {
         });
     }
 
-    // Add recalulation link on each webshop parameter
+    // Add event openEditAffiliationLinkModal on each "Edit affiliation link" button
+    function initEditAffiliateLinkButtons() {
+        $('.cell-content-link-list-button').each((index, element) => {
+            const jqueryElement = $(element);
+
+            jqueryElement.on(
+                'click',
+                null,
+                {cellId: jqueryElement.data('cell-id'), id: jqueryElement.data('id')},
+                openEditAffiliationLinkModal);
+        });
+    }
+
+    // Add recalulation link overview on each webshop parameter
     function addRecaluclationLinkEvents() {
         $('.affiliation-parameter-input').on('change keyup paste', null, {}, () => {
-            let url = affiliationUrl;
+            recalculateAffiliationLinkOverview();
+        })
+    }
+
+    // Clear and add parameter inputs in the edit affiliation links modal depending on the selected webshop
+    function initAffiliateLinkInputsModal(affilitateLinkValue) {
+        if (!!affilitateLinkValue) {
+            $('#webshop-select').val(affilitateLinkValue.webshopId);
+            $('#link-text-input').val(affilitateLinkValue.linkText);
+        } else {
+            $('#link-text-input').val($("#webshop-select option:selected").text().trim());
+        }
+
+        const selectedWebshop = $("#webshop-select option:selected");
+        currentAffiliationUrl = selectedWebshop.data('url');
+
+        $('.affiliation-parameter-row').remove();
+        selectedWebshop.data('parameters')
+            .split('|||')
+            .reverse()
+            .forEach(parameter => $('#link-text-row').after($('<tr>', {
+                class: 'affiliation-parameter-row',
+            })
+                .append($('<th>', {
+                    scope: 'row'
+                }).append(`<label>${parameter}</label>`))
+                .append($('<td>').append($('<input>', {
+                    type: 'text',
+                    class: 'affiliation-parameter-input',
+                    maxLength: 255,
+                    'data-parameter': parameter
+                })))));
+
+        $('.affiliation-parameter-input').each((index, element) => {
+            const jqueryElement = $(element);
+            jqueryElement.val(!!affilitateLinkValue ? affilitateLinkValue[jqueryElement.data('parameter')] : '');
+        });
+
+        addRecaluclationLinkEvents();
+        recalculateAffiliationLinkOverview();
+    }
+
+    // Make affiliation link value depending on the content modal
+    function makeAffiliationLinkValue(id) {
+        const value = {
+            id,
+            url: $('#affiliation-link-overview').text()
+        }
+
+        $('.affiliation-parameter-input').each(((index, element) => {
+            const jqueryElement = $(element);
+            value[jqueryElement.data('parameter')] = jqueryElement.val();
+        }));
+
+        value['webshopId'] = Number($("#webshop-select").val());
+        value['linkText'] = $('#link-text-input').val();
+
+        return value;
+    }
+
+    // Recalculate affiliation link overview depending on modal parameters
+    function recalculateAffiliationLinkOverview() {
+        $('.affiliation-parameter-input').each(() => {
+            let url = currentAffiliationUrl;
 
             $('.affiliation-parameter-input').each((index, element) => {
                 const jqueryElement = $(element);
-
-                url = url.replace(`[[${jqueryElement.data('parameter')}]]`, jqueryElement.val());
+                const value = jqueryElement.val();
+                if (!!value) {
+                    url = url.replace(`[[${jqueryElement.data('parameter')}]]`, value.toString());
+                }
             });
 
             $('#affiliation-link-overview').text(url);
