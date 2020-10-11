@@ -125,9 +125,24 @@ class AffiliationTableAdmin
                 <?php for ($i = $isWithHeader ? 1 : 0; $i < count($tableContent); $i++) { ?>
                     <tr>
                         <?php $row = $tableContent[$i];
-                        for ($j = 0; $j < count($row); $j++) { ?>
-                            <td><?php echo $row[$j]->value; ?></td>
-                        <?php } ?>
+                        for ($j = 0; $j < count($row); $j++) {
+                            $cellType = $row[$j]->type;
+                            $cellValue = $row[$j]->value;
+                            if ($cellType === Constants::HTML) { ?>
+                                <td><?php echo $cellValue; ?></td>
+                            <?php } else if ($cellType === Constants::AFFILIATION) {
+                                $affiliateLinks = json_decode(str_replace("&quot;", '"', $cellValue));
+                            ?>
+                                <td>
+                                    <?php foreach ($affiliateLinks as $affiliateLink) { ?>
+                                        <a href="<?php echo $affiliateLink->url; ?>" class="button button-primary">
+                                            <span class="dashicons dashicons-cart cell-content-link-list-icon"></span>
+                                            <span><?php echo $affiliateLink->linkText; ?></span>
+                                        </a>
+                                    <?php } ?>
+                                </td>
+                            <?php }
+                        } ?>
                     </tr>
                 <?php } ?>
                 </tbody>

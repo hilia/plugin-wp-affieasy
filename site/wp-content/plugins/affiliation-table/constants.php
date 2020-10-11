@@ -9,4 +9,7 @@ class Constants {
     const TABLE_TAG = 'affiliation_table_content';
 
     const MANDATORY_URL_PARAM = 'product_url';
+
+    const HTML = 'HTML';
+    const AFFILIATION = 'AFFILIATION';
 }
