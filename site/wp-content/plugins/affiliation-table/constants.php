@@ -11,5 +11,6 @@ class Constants {
     const MANDATORY_URL_PARAM = 'product_url';
 
     const HTML = 'HTML';
+    const IMAGE = 'IMAGE';
     const AFFILIATION = 'AFFILIATION';
 }

@@ -1,6 +1,7 @@
 jQuery(($) => {
     const HTML = 'HTML';
     const AFFILIATION = 'AFFILIATION';
+    const IMAGE = 'IMAGE';
 
     let lastCellId = $('#last-cell-id').val();
 
@@ -16,6 +17,7 @@ jQuery(($) => {
     initDragAndDropColumn();
     initDragAndDropRow();
     initAddAffiliateLinkButtons();
+    initSelectImageButtons();
     initEditAffiliateLinkButtons();
     addRecaluclationLinkEvents();
 
@@ -81,13 +83,19 @@ jQuery(($) => {
         jqueryElement.on('click', null, {rowId: jqueryElement.data('row-id')}, openAddRowPopover);
     });
 
-    // Add an html row
+    // Add html row event
     $('#add-html-row').on('click', () => {
         addRowAfter(HTML);
     });
 
+    // Add affiliation row event
     $('#add-affiliation-row').on('click', () => {
         addRowAfter(AFFILIATION);
+    });
+
+    // Add image row event
+    $('#add-image-row').on('click', () => {
+        addRowAfter(IMAGE);
     });
 
     // Add new row after header
@@ -98,6 +106,9 @@ jQuery(($) => {
             .each((rowIndex, row) => {
                 $(row).children().slice(1).each((colIndex, cellContent) => {
                     const jqueryElement = $(cellContent);
+
+                    console.log('cellType', jqueryElement.data('cell-type'));
+                    console.log('value', jqueryElement.children().first().val());
 
                     $('#table-content-values').append($('<input>', {
                         type: 'text',
@@ -148,12 +159,12 @@ jQuery(($) => {
         }).append($('<span>', {
             id: 'button-col-delete-' + colId,
             'data-col-id': colId,
-            class: 'dashicons dashicons-minus action-button action-button-delete',
+            class: 'dashicons dashicons-minus action-button-delete pointer',
             title: 'Delete column'
         }).on('click', null, {colId}, deleteColumn)).append($('<span>', {
             id: 'button-col-add-' + colId,
             'data-col-id': colId,
-            class: 'dashicons dashicons-plus action-button action-button-add',
+            class: 'dashicons dashicons-plus action-button-add pointer',
             title: 'Add a column after this one',
         }).on('click', null, {colId}, addColumnAfter))));
 
@@ -212,15 +223,15 @@ jQuery(($) => {
         tableRow.append($('<td>', {
             class: 'table-row-actions-cell sortable-row',
         }).append($('<span>', {
-            class: 'dashicons dashicons-editor-expand action-button drag-row',
+            class: 'dashicons dashicons-editor-expand drag-row',
             title: 'Keep the mouse pressed to drag and drop the row'
         })).append($('<span>', {
             id: 'button-row-delete-' + rowIdString,
-            class: 'dashicons dashicons-minus action-button action-button-delete',
+            class: 'dashicons dashicons-minus action-button-delete pointer',
             title: 'Delete row'
         }).on('click', null, {rowId: rowIdString}, deleteRow)).append($('<span>', {
             id: 'button-row-add-' + rowIdString,
-            class: 'dashicons dashicons-plus action-button action-button-add',
+            class: 'dashicons dashicons-plus action-button-add pointer',
             title: 'Add a row after this one'
         }).on('click', null, {rowId: rowIdString}, openAddRowPopover)));
 
@@ -248,6 +259,27 @@ jQuery(($) => {
                     maxLength: 255,
                     class: 'table-content-cell-html-content'
                 }));
+            case IMAGE :
+                return $('<td>', {
+                    id: 'cell-' + lastCellId,
+                    class: 'table-content-cell-image',
+                    'data-col-id': colId,
+                    'data-cell-type': IMAGE
+                })
+                    .append($('<input>', {
+                        id: 'cell-content-' + lastCellId,
+                        name: 'cell-content-' + lastCellId,
+                        type: 'hidden',
+                        value: '',
+                    }))
+                    .append($('<span>', {
+                        class: 'dashicons dashicons-edit action-button-add pointer',
+                        title: 'Select image'
+                    }).on('click', null, {cellId: lastCellId}, openSelectImageModal))
+                    .append($('<div>', {
+                        id: 'table-content-cell-image-overview-' + lastCellId,
+                        class: 'table-content-cell-image-overview'
+                    }));
             case AFFILIATION:
                 return $('<td>', {
                     id: 'cell-' + lastCellId,
@@ -262,7 +294,7 @@ jQuery(($) => {
                         value: '[]',
                     }))
                     .append($('<span>', {
-                        class: 'dashicons dashicons-plus add-affiliation-link-button action-button-add',
+                        class: 'dashicons dashicons-plus add-affiliation-link-button action-button-add pointer',
                         title: 'Add affiliate link'
                     }).on('click', null, {cellId: lastCellId}, openEditAffiliationLinkModal))
                     .append($('<div>', {
@@ -286,6 +318,36 @@ jQuery(($) => {
                 html: $('#add-row-popover'),
                 placement: 'rightTop'
             });
+        }
+    }
+
+    // Open modal to select image
+    function openSelectImageModal(event) {
+        if (!!event && !!event.data && !!event.data.cellId) {
+            let frame = wp.media({
+                title: 'Select or Upload new image',
+                button: {
+                    text: 'Validate'
+                },
+                multiple: false
+            });
+
+            frame.on('select', () => {
+                const attachment = frame.state('').get('selection').first().toJSON();
+
+                const cellId = event.data.cellId;
+                $('#table-content-cell-image-overview-' + cellId)
+                    .empty()
+                    .append($('<img>', {
+                        src: attachment.url,
+                        alt: attachment.alt,
+                        class: 'table-content-cell-image-overview-content'
+                    }));
+
+                $('#cell-content-' + cellId).val(`<img src='${attachment.url}' alt='${attachment.alt}'>`);
+            });
+
+            frame.open();
         }
     }
 
@@ -434,6 +496,18 @@ jQuery(($) => {
                 null,
                 {cellId: jqueryElement.data('cell-id')},
                 openEditAffiliationLinkModal);
+        });
+    }
+
+    // Add event initSelectImageButtons on each "Select image" button
+    function initSelectImageButtons() {
+        $('.select-image-button').each((index, element) => {
+            const jqueryElement = $(element);
+            jqueryElement.on(
+                'click',
+                null,
+                {cellId: jqueryElement.data('cell-id')},
+                openSelectImageModal);
         });
     }
 

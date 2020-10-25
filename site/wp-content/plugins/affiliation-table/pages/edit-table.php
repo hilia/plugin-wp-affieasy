@@ -23,6 +23,8 @@ wp_enqueue_script(
     time()
 );
 
+wp_enqueue_media();
+
 $table = new Table($_POST['id'], $_POST['name'], $_POST['with-header'], $_POST['content']);
 $errors = array();
 $dbManager = new DbManager();
@@ -173,8 +175,8 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
     <? } ?>
 
     <nav class="nav-tab-wrapper wp-clearfix" aria-label="Menu secondaire">
-        <span id="edition-nav" class="nav-tab nav-tab-active" aria-current="page">Edition</span>
-        <span id="overview-nav" class="nav-tab" aria-current="page">Overview</span>
+        <span id="edition-nav" class="nav-tab pointer nav-tab-active" aria-current="page">Edition</span>
+        <span id="overview-nav" class="nav-tab pointer" aria-current="page">Overview</span>
     </nav>
 
     <div id="edition-panel">
@@ -273,13 +275,13 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                                     <span
                                             id="button-col-delete-<?php echo $i; ?>"
                                             data-col-id="<?php echo $i; ?>"
-                                            class="dashicons dashicons-minus action-button action-button-delete"
+                                            class="dashicons dashicons-minus action-button-delete pointer"
                                             title="Delete column">
                                     </span>
                                     <span
                                             id="button-col-add-<?php echo $i; ?>"
                                             data-col-id="<?php echo $i; ?>"
-                                            class="dashicons dashicons-plus action-button action-button-add"
+                                            class="dashicons dashicons-plus action-button-add pointer"
                                             title="Add a column after this one">
                                     </span>
                                 </div>
@@ -292,7 +294,7 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                                 <span
                                         id="button-row-add-0"
                                         data-row-id="0"
-                                        class="dashicons dashicons-plus action-button action-button-add"
+                                        class="dashicons dashicons-plus action-button-add pointer"
                                         title="Add a row after header">
                                 </span>
                     </th>
@@ -317,19 +319,19 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                         <tr id="row-<?php echo $rowId; ?>">
                             <td class="table-row-actions-cell sortable-row">
                                 <span
-                                        class="dashicons dashicons-editor-expand action-button drag-row"
+                                        class="dashicons dashicons-editor-expand drag-row"
                                         title="Keep the mouse pressed to drag and drop the row">
                                 </span>
                                 <span
                                         id="button-row-delete-<?php echo $rowId; ?>"
                                         data-row-id="<?php echo $rowId; ?>"
-                                        class="dashicons dashicons-minus action-button action-button-delete"
+                                        class="dashicons dashicons-minus action-button-delete pointer"
                                         title="Delete row">
                                 </span>
                                 <span
                                         id="button-row-add-<?php echo $rowId; ?>"
                                         data-row-id="<?php echo $rowId; ?>"
-                                        class="dashicons dashicons-plus action-button action-button-add"
+                                        class="dashicons dashicons-plus action-button-add pointer"
                                         title="Add a row after this one">
                                 </span>
                             </td>
@@ -348,6 +350,31 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                                             maxLength="2048"
                                             class="table-content-cell-html-content"><?php echo $cellValue; ?></textarea>
                                     </td>
+                                <?php } else if ($cellType == Constants::IMAGE) { ?>
+                                    <td
+                                            id="cell-<?php echo $cellId; ?>"
+                                            class="table-content-cell-image"
+                                            data-col-id="<?php echo $j + 1; ?>"
+                                            data-cell-type="<?php echo $cellType; ?>">
+                                        <input
+                                                id="cell-content-<?php echo $cellId; ?>"
+                                                name="cell-content-<?php echo $cellId; ?>"
+                                                type="hidden"
+                                                autocomplete="off"
+                                                value="<?php echo $cellValue; ?>">
+                                        <span
+                                                class="dashicons dashicons-edit select-image-button action-button-add pointer"
+                                                title="Select image"
+                                                data-cell-id="<?php echo $cellId; ?>">
+                                        </span>
+                                        <div
+                                                id="table-content-cell-image-overview-<?php echo $cellId; ?>"
+                                                class="table-content-cell-image-overview">
+                                            <?php echo empty($cellValue) ?
+                                                '' :
+                                                substr($cellValue, 0, -1) . " class='table-content-cell-image-overview-content'>"; ?>
+                                        </div>
+                                    </td>
                                 <?php } else if ($cellType == Constants::AFFILIATION) {
                                     $affiliateLinks = json_decode(str_replace("&quot;", '"', $cellValue));
                                     ?>
@@ -363,7 +390,7 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                                                 autocomplete="off"
                                                 value="<?php echo $cellValue; ?>">
                                         <span
-                                                class="dashicons dashicons-plus add-affiliation-link-button action-button-add"
+                                                class="dashicons dashicons-plus add-affiliation-link-button action-button-add pointer"
                                                 title="Add affiliate link"
                                                 data-cell-id="<?php echo $cellId; ?>">
                                         </span>
@@ -418,10 +445,9 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                 <button
                         type="button"
                         id="add-image-row"
-                        class="button-primary add-row-popover-button disabled"
+                        class="button-primary add-row-popover-button"
                         title="Not yet implemented">
                     Images
-                    <span class="dashicons dashicons-info dashicons-button-disabled"></span>
                 </button>
                 <button
                         type="button"
