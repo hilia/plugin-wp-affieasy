@@ -338,7 +338,6 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                             <?php for ($j = 0; $j < count($row); $j++) {
                                 $cellType = $row[$j]->type;
                                 $cellValue = $row[$j]->value;
-                                $cellId++;
 
                                 if ($cellType == Constants::HTML) { ?>
                                     <td
@@ -363,10 +362,19 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                                                 autocomplete="off"
                                                 value="<?php echo $cellValue; ?>">
                                         <span
+                                                id="select-image-button-<?php echo $cellId; ?>"
                                                 class="dashicons dashicons-edit select-image-button action-button-add pointer"
                                                 title="Select image"
                                                 data-cell-id="<?php echo $cellId; ?>">
                                         </span>
+                                        <?php if (!empty($cellValue)) { ?>
+                                            <span
+                                                    id="remove-image-button-<?php echo $cellId; ?>"
+                                                    class="dashicons dashicons-minus remove-image-button action-button-delete pointer"
+                                                    title="Remove image"
+                                                    data-cell-id="<?php echo $cellId; ?>">
+                                        </span>
+                                        <?php } ?>
                                         <div
                                                 id="table-content-cell-image-overview-<?php echo $cellId; ?>"
                                                 class="table-content-cell-image-overview">
@@ -409,6 +417,8 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                                         </div>
                                     </td>
                                 <?php }
+
+                                $cellId++;
                             } ?>
                         </tr>
                     <?php }

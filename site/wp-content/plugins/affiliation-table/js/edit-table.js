@@ -18,6 +18,7 @@ jQuery(($) => {
     initDragAndDropRow();
     initAddAffiliateLinkButtons();
     initSelectImageButtons();
+    initRemoveImagesButtons();
     initEditAffiliateLinkButtons();
     addRecaluclationLinkEvents();
 
@@ -106,9 +107,6 @@ jQuery(($) => {
             .each((rowIndex, row) => {
                 $(row).children().slice(1).each((colIndex, cellContent) => {
                     const jqueryElement = $(cellContent);
-
-                    console.log('cellType', jqueryElement.data('cell-type'));
-                    console.log('value', jqueryElement.children().first().val());
 
                     $('#table-content-values').append($('<input>', {
                         type: 'text',
@@ -273,6 +271,7 @@ jQuery(($) => {
                         value: '',
                     }))
                     .append($('<span>', {
+                        id: 'select-image-button-' + lastCellId,
                         class: 'dashicons dashicons-edit action-button-add pointer',
                         title: 'Select image'
                     }).on('click', null, {cellId: lastCellId}, openSelectImageModal))
@@ -344,10 +343,31 @@ jQuery(($) => {
                         class: 'table-content-cell-image-overview-content'
                     }));
 
+                if ($('#remove-image-button-' + cellId).length === 0) {
+                    $($('<span>', {
+                        id: 'remove-image-button-' + cellId,
+                        class: 'dashicons dashicons-minus remove-image-button action-button-delete pointer',
+                        title: 'Remove image',
+                        'data-cell-id': cellId
+                    })
+                        .on('click', null, {cellId}, removeImage))
+                        .insertAfter('#select-image-button-' + cellId);
+                }
+
                 $('#cell-content-' + cellId).val(`<img src='${attachment.url}' alt='${attachment.alt}'>`);
             });
 
             frame.open();
+        }
+    }
+
+    // Remove image for the selected cell
+    function removeImage(event) {
+        if (!!event && !!event.data && !!event.data.cellId) {
+            const cellId = event.data.cellId
+            $('#cell-content-' + cellId).val(null);
+            $('#remove-image-button-' + cellId).remove();
+            $('#table-content-cell-image-overview-' + cellId).empty();
         }
     }
 
@@ -499,7 +519,7 @@ jQuery(($) => {
         });
     }
 
-    // Add event initSelectImageButtons on each "Select image" button
+    // Add event initSelectImageButtons on each "Remove image" buttons
     function initSelectImageButtons() {
         $('.select-image-button').each((index, element) => {
             const jqueryElement = $(element);
@@ -511,7 +531,19 @@ jQuery(($) => {
         });
     }
 
-    // Add event openEditAffiliationLinkModal on each "Edit affiliation link" button
+    // Add event initRemoveImagesButtons on each "" buttons
+    function initRemoveImagesButtons() {
+        $('.remove-image-button').each((index, element) => {
+            const jqueryElement = $(element);
+            jqueryElement.on(
+                'click',
+                null,
+                {cellId: jqueryElement.data('cell-id')},
+                removeImage);
+        });
+    }
+
+    // Add event openEditAffiliationLinkModal on each "Edit affiliation link" buttons
     function initEditAffiliateLinkButtons() {
         $('.cell-content-link-list-button').each((index, element) => {
             const jqueryElement = $(element);
