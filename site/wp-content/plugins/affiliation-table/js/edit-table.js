@@ -22,24 +22,6 @@ jQuery(($) => {
     initEditAffiliateLinkButtons();
     addRecaluclationLinkEvents();
 
-    // Switch to edition panel
-    $('#edition-nav').on('click', () => {
-        $('#edition-nav').addClass('nav-tab-active');
-        $('#overview-nav').removeClass('nav-tab-active');
-
-        $('#edition-panel').css('display', 'block');
-        $('#overview-panel').css('display', 'none');
-    });
-
-    // Switch to overview panel
-    $('#overview-nav').on('click', () => {
-        $('#edition-nav').removeClass('nav-tab-active');
-        $('#overview-nav').addClass('nav-tab-active');
-
-        $('#edition-panel').css('display', 'none');
-        $('#overview-panel').css('display', 'block');
-    });
-
     // Add hide or display header row event
     $('#with-header').on('change', () => {
         displayOrHideHeaderRow();

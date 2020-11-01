@@ -49,9 +49,9 @@ if ($isFromSaveAction) {
         $table->setContent(array_map(function ($row) {
             return array_map(function ($cell) {
                 $cellContent = json_decode(
-                        str_replace("\\", "",
-                            str_replace('\\\\\\"', "&quot;",
-                                str_replace('\\n', '&NewLine;', $cell))));
+                    str_replace("\\", "",
+                        str_replace('\\\\\\"', "&quot;",
+                            str_replace('\\n', '&NewLine;', $cell))));
 
                 return (object)[
                     'type' => $cellContent->type,
@@ -177,266 +177,256 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
         </div>
     <?php } ?>
 
-    <nav class="nav-tab-wrapper wp-clearfix" aria-label="Menu secondaire">
-        <span id="edition-nav" class="nav-tab pointer nav-tab-active" aria-current="page">Edition</span>
-        <span id="overview-nav" class="nav-tab pointer" aria-current="page">Overview</span>
-    </nav>
+    <form id="form" class="validate" method="post">
+        <input type="hidden" id="id" name="id" value="<?php echo $tableId; ?>">
+        <input
+                type="hidden"
+                id="row-id"
+                value="<?php echo $isFromSaveActionOrNotNew ? count($table->getContent()) - 1 : 0 ?>">
+        <input type="hidden" id="col-id" value="<?php echo count($firstRow); ?>">
+        <input type="hidden" id="last-cell-id" value="<?php echo $table->getCellCount() ?>">
 
-    <div id="edition-panel">
-        <form id="form" class="validate" method="post">
-            <input type="hidden" id="id" name="id" value="<?php echo $tableId; ?>">
-            <input
-                    type="hidden"
-                    id="row-id"
-                    value="<?php echo $isFromSaveActionOrNotNew ? count($table->getContent()) - 1 : 0 ?>">
-            <input type="hidden" id="col-id" value="<?php echo count($firstRow); ?>">
-            <input type="hidden" id="last-cell-id" value="<?php echo $table->getCellCount() ?>">
-
-            <table class="form-table" role="presentation">
-                <?php if (!empty($tableId)) { ?>
-                    <tr class="form-field">
-                        <th scope="row">
-                            <label for="name">
-                                Tag
-                                <span
-                                        class="dashicons dashicons-info"
-                                        title="Put this tag in your page to include the table">
-                                </span>
-                            </label>
-                        </th>
-                        <td>
-                            <input
-                                    type="text"
-                                    class="name-input"
-                                    maxlength="255"
-                                    disabled
-                                    value="<?php echo $table->getTag(); ?>">
-                        </td>
-                    </tr>
-                <?php } ?>
-
+        <table class="form-table" role="presentation">
+            <?php if (!empty($tableId)) { ?>
                 <tr class="form-field">
                     <th scope="row">
                         <label for="name">
-                            Name
-                            <span class="description">(required)</span>
+                            Tag
+                            <span
+                                    class="dashicons dashicons-info"
+                                    title="Put this tag in your page to include the table">
+                                </span>
                         </label>
                     </th>
                     <td>
                         <input
                                 type="text"
-                                name="name"
-                                id="name"
                                 class="name-input"
                                 maxlength="255"
-                                value="<?php echo $tableName; ?>">
+                                disabled
+                                value="<?php echo $table->getTag(); ?>">
                     </td>
                 </tr>
-                <tr class="form-field">
-                    <th scope="row">
-                        <label for="with-header">
-                            Table with header
-                        </label>
-                    </th>
-                    <td>
-                        <input
-                                type="checkbox"
-                                id="with-header"
-                                name="with-header"
-                            <?php echo $isTableWithHeader || !$isFromSaveActionOrNotNew ? 'checked' : '' ?>>
-                    </td>
-                </tr>
-            </table>
+            <?php } ?>
 
-            <div class="action-buttons">
-                <button id="add-row-after-last" type="button" class="page-title-action">
-                    Add row
-                </button>
+            <tr class="form-field">
+                <th scope="row">
+                    <label for="name">
+                        Name
+                        <span class="description">(required)</span>
+                    </label>
+                </th>
+                <td>
+                    <input
+                            type="text"
+                            name="name"
+                            id="name"
+                            class="name-input"
+                            maxlength="255"
+                            value="<?php echo $tableName; ?>">
+                </td>
+            </tr>
+            <tr class="form-field">
+                <th scope="row">
+                    <label for="with-header">
+                        Table with header
+                    </label>
+                </th>
+                <td>
+                    <input
+                            type="checkbox"
+                            id="with-header"
+                            name="with-header"
+                        <?php echo $isTableWithHeader || !$isFromSaveActionOrNotNew ? 'checked' : '' ?>>
+                </td>
+            </tr>
+        </table>
 
-                <button id="add-column-after-last" type="button" class="page-title-action">
-                    Add column
-                </button>
-            </div>
+        <div class="action-buttons">
+            <button id="add-row-after-last" type="button" class="page-title-action">
+                Add row
+            </button>
 
-            <table id="table-content">
-                <thead class="table-content-header">
-                <tr id="column-row-buttons">
-                    <th data-col-id="0"></th>
-                    <?php for ($i = 1; $i <= count($firstRow); $i++) { ?>
-                        <th
-                                id="table-col-actions-cell-<?php echo $i; ?>"
-                                data-col-id="<?php echo $i; ?>"
-                                class="sortable-column">
-                            <div class="table-col-actions-cell-content">
-                                <div class="table-col-actions-cell-content-drag">
+            <button id="add-column-after-last" type="button" class="page-title-action">
+                Add column
+            </button>
+        </div>
+
+        <table id="table-content">
+            <thead class="table-content-header">
+            <tr id="column-row-buttons">
+                <th data-col-id="0"></th>
+                <?php for ($i = 1; $i <= count($firstRow); $i++) { ?>
+                    <th
+                            id="table-col-actions-cell-<?php echo $i; ?>"
+                            data-col-id="<?php echo $i; ?>"
+                            class="sortable-column">
+                        <div class="table-col-actions-cell-content">
+                            <div class="table-col-actions-cell-content-drag">
                                     <span
                                             class="dashicons dashicons-editor-expand"
                                             title="Keep the mouse pressed to drag and drop the column">
                                     </span>
-                                </div>
-                                <div class="table-col-actions-cell-content-actions">
+                            </div>
+                            <div class="table-col-actions-cell-content-actions">
                                     <span
                                             id="button-col-delete-<?php echo $i; ?>"
                                             data-col-id="<?php echo $i; ?>"
                                             class="dashicons dashicons-minus action-button-delete pointer"
                                             title="Delete column">
                                     </span>
-                                    <span
-                                            id="button-col-add-<?php echo $i; ?>"
-                                            data-col-id="<?php echo $i; ?>"
-                                            class="dashicons dashicons-plus action-button-add pointer"
-                                            title="Add a column after this one">
+                                <span
+                                        id="button-col-add-<?php echo $i; ?>"
+                                        data-col-id="<?php echo $i; ?>"
+                                        class="dashicons dashicons-plus action-button-add pointer"
+                                        title="Add a column after this one">
                                     </span>
-                                </div>
                             </div>
-                        </th>
-                    <?php } ?>
-                </tr>
-                <tr id="row-0" <?php echo $isTableWithHeader ? '' : 'style="display: none"'; ?>>
-                    <th class="table-row-actions-cell" data-col-id="0">
+                        </div>
+                    </th>
+                <?php } ?>
+            </tr>
+            <tr id="row-0" <?php echo $isTableWithHeader ? '' : 'style="display: none"'; ?>>
+                <th class="table-row-actions-cell" data-col-id="0">
                                 <span
                                         id="button-row-add-0"
                                         data-row-id="0"
                                         class="dashicons dashicons-plus action-button-add pointer"
                                         title="Add a row after header">
                                 </span>
+                </th>
+                <?php for ($i = 1; $i <= count($firstRow); $i++) { ?>
+                    <th class="table-header-cell" data-col-id="<?php echo $i; ?>">
+                        <input
+                                type="text"
+                                class="table-header-cell-content"
+                                maxlength="255"
+                                value="<?php echo $isTableWithHeader ? $firstRow[$i - 1]->value : ''; ?>">
                     </th>
-                    <?php for ($i = 1; $i <= count($firstRow); $i++) { ?>
-                        <th class="table-header-cell" data-col-id="<?php echo $i; ?>">
-                            <input
-                                    type="text"
-                                    class="table-header-cell-content"
-                                    maxlength="255"
-                                    value="<?php echo $isTableWithHeader ? $firstRow[$i - 1]->value : ''; ?>">
-                        </th>
-                    <?php } ?>
-                </tr>
-                </thead>
-                <tbody id="table-content-body">
-                <?php if ($isFromSaveActionOrNotNew) {
-                    $cellId = 1;
-                    for ($i = $isTableWithHeader ? 1 : 0; $i < count($table->getContent()); $i++) {
-                        $row = $table->getContent()[$i];
+                <?php } ?>
+            </tr>
+            </thead>
+            <tbody id="table-content-body">
+            <?php if ($isFromSaveActionOrNotNew) {
+                $cellId = 1;
+                for ($i = $isTableWithHeader ? 1 : 0; $i < count($table->getContent()); $i++) {
+                    $row = $table->getContent()[$i];
 
-                        $rowId = $isTableWithHeader ? $i : $i + 1; ?>
-                        <tr id="row-<?php echo $rowId; ?>">
-                            <td class="table-row-actions-cell sortable-row">
+                    $rowId = $isTableWithHeader ? $i : $i + 1; ?>
+                    <tr id="row-<?php echo $rowId; ?>">
+                        <td class="table-row-actions-cell sortable-row">
                                 <span
                                         class="dashicons dashicons-editor-expand drag-row"
                                         title="Keep the mouse pressed to drag and drop the row">
                                 </span>
-                                <span
-                                        id="button-row-delete-<?php echo $rowId; ?>"
-                                        data-row-id="<?php echo $rowId; ?>"
-                                        class="dashicons dashicons-minus action-button-delete pointer"
-                                        title="Delete row">
+                            <span
+                                    id="button-row-delete-<?php echo $rowId; ?>"
+                                    data-row-id="<?php echo $rowId; ?>"
+                                    class="dashicons dashicons-minus action-button-delete pointer"
+                                    title="Delete row">
                                 </span>
-                                <span
-                                        id="button-row-add-<?php echo $rowId; ?>"
-                                        data-row-id="<?php echo $rowId; ?>"
-                                        class="dashicons dashicons-plus action-button-add pointer"
-                                        title="Add a row after this one">
+                            <span
+                                    id="button-row-add-<?php echo $rowId; ?>"
+                                    data-row-id="<?php echo $rowId; ?>"
+                                    class="dashicons dashicons-plus action-button-add pointer"
+                                    title="Add a row after this one">
                                 </span>
-                            </td>
-                            <?php for ($j = 0; $j < count($row); $j++) {
-                                $cellType = $row[$j]->type;
-                                $cellValue = $row[$j]->value;
+                        </td>
+                        <?php for ($j = 0; $j < count($row); $j++) {
+                            $cellType = $row[$j]->type;
+                            $cellValue = $row[$j]->value;
 
-                                if ($cellType == Constants::HTML) { ?>
-                                    <td
-                                            id="cell-<?php echo $cellId; ?>"
-                                            class="table-content-cell-html"
-                                            data-col-id="<?php echo $j + 1; ?>"
-                                            data-cell-type="<?php echo $cellType; ?>">
+                            if ($cellType == Constants::HTML) { ?>
+                                <td
+                                        id="cell-<?php echo $cellId; ?>"
+                                        class="table-content-cell-html"
+                                        data-col-id="<?php echo $j + 1; ?>"
+                                        data-cell-type="<?php echo $cellType; ?>">
                                     <textarea
                                             maxLength="2048"
                                             class="table-content-cell-html-content"><?php echo $cellValue; ?></textarea>
-                                    </td>
-                                <?php } else if ($cellType == Constants::IMAGE) { ?>
-                                    <td
-                                            id="cell-<?php echo $cellId; ?>"
-                                            class="table-content-cell-image"
-                                            data-col-id="<?php echo $j + 1; ?>"
-                                            data-cell-type="<?php echo $cellType; ?>">
-                                        <input
-                                                id="cell-content-<?php echo $cellId; ?>"
-                                                name="cell-content-<?php echo $cellId; ?>"
-                                                type="hidden"
-                                                autocomplete="off"
-                                                value="<?php echo $cellValue; ?>">
+                                </td>
+                            <?php } else if ($cellType == Constants::IMAGE) { ?>
+                                <td
+                                        id="cell-<?php echo $cellId; ?>"
+                                        class="table-content-cell-image"
+                                        data-col-id="<?php echo $j + 1; ?>"
+                                        data-cell-type="<?php echo $cellType; ?>">
+                                    <input
+                                            id="cell-content-<?php echo $cellId; ?>"
+                                            name="cell-content-<?php echo $cellId; ?>"
+                                            type="hidden"
+                                            autocomplete="off"
+                                            value="<?php echo $cellValue; ?>">
+                                    <span
+                                            id="select-image-button-<?php echo $cellId; ?>"
+                                            class="dashicons dashicons-edit select-image-button action-button-add pointer"
+                                            title="Select image"
+                                            data-cell-id="<?php echo $cellId; ?>">
+                                        </span>
+                                    <?php if (!empty($cellValue)) { ?>
                                         <span
-                                                id="select-image-button-<?php echo $cellId; ?>"
-                                                class="dashicons dashicons-edit select-image-button action-button-add pointer"
-                                                title="Select image"
+                                                id="remove-image-button-<?php echo $cellId; ?>"
+                                                class="dashicons dashicons-minus remove-image-button action-button-delete pointer"
+                                                title="Remove image"
                                                 data-cell-id="<?php echo $cellId; ?>">
                                         </span>
-                                        <?php if (!empty($cellValue)) { ?>
-                                            <span
-                                                    id="remove-image-button-<?php echo $cellId; ?>"
-                                                    class="dashicons dashicons-minus remove-image-button action-button-delete pointer"
-                                                    title="Remove image"
-                                                    data-cell-id="<?php echo $cellId; ?>">
+                                    <?php } ?>
+                                    <div
+                                            id="table-content-cell-image-overview-<?php echo $cellId; ?>"
+                                            class="table-content-cell-image-overview">
+                                        <?php echo empty($cellValue) ?
+                                            '' :
+                                            substr($cellValue, 0, -1) . " class='table-content-cell-image-overview-content'>"; ?>
+                                    </div>
+                                </td>
+                            <?php } else if ($cellType == Constants::AFFILIATION) {
+                                $affiliateLinks = json_decode(str_replace("&quot;", '"', $cellValue));
+                                ?>
+                                <td
+                                        id="cell-<?php echo $cellId; ?>"
+                                        class="table-content-cell-affiliation"
+                                        data-col-id="<?php echo $j + 1; ?>"
+                                        data-cell-type="<?php echo $cellType; ?>">
+                                    <input
+                                            id="cell-content-<?php echo $cellId; ?>"
+                                            name="cell-content-<?php echo $cellId; ?>"
+                                            type="hidden"
+                                            autocomplete="off"
+                                            value="<?php echo $cellValue; ?>">
+                                    <span
+                                            class="dashicons dashicons-plus add-affiliation-link-button action-button-add pointer"
+                                            title="Add affiliate link"
+                                            data-cell-id="<?php echo $cellId; ?>">
                                         </span>
+                                    <div id="cell-content-link-list-<?php echo $cellId; ?>">
+                                        <?php foreach ($affiliateLinks as $affiliateLink) { ?>
+                                            <button
+                                                    type="button"
+                                                    class="button-primary cell-content-link-list-button"
+                                                    title="Edit affiliate link"
+                                                    data-cell-id="<?php echo $cellId; ?>"
+                                                    data-id="<?php echo $affiliateLink->id; ?>">
+                                                <span class="dashicons dashicons-cart cell-content-link-list-icon"></span>
+                                                <span><?php echo $affiliateLink->linkText; ?></span>
+                                            </button>
                                         <?php } ?>
-                                        <div
-                                                id="table-content-cell-image-overview-<?php echo $cellId; ?>"
-                                                class="table-content-cell-image-overview">
-                                            <?php echo empty($cellValue) ?
-                                                '' :
-                                                substr($cellValue, 0, -1) . " class='table-content-cell-image-overview-content'>"; ?>
-                                        </div>
-                                    </td>
-                                <?php } else if ($cellType == Constants::AFFILIATION) {
-                                    $affiliateLinks = json_decode(str_replace("&quot;", '"', $cellValue));
-                                    ?>
-                                    <td
-                                            id="cell-<?php echo $cellId; ?>"
-                                            class="table-content-cell-affiliation"
-                                            data-col-id="<?php echo $j + 1; ?>"
-                                            data-cell-type="<?php echo $cellType; ?>">
-                                        <input
-                                                id="cell-content-<?php echo $cellId; ?>"
-                                                name="cell-content-<?php echo $cellId; ?>"
-                                                type="hidden"
-                                                autocomplete="off"
-                                                value="<?php echo $cellValue; ?>">
-                                        <span
-                                                class="dashicons dashicons-plus add-affiliation-link-button action-button-add pointer"
-                                                title="Add affiliate link"
-                                                data-cell-id="<?php echo $cellId; ?>">
-                                        </span>
-                                        <div id="cell-content-link-list-<?php echo $cellId; ?>">
-                                            <?php foreach ($affiliateLinks as $affiliateLink) { ?>
-                                                <button
-                                                        type="button"
-                                                        class="button-primary cell-content-link-list-button"
-                                                        title="Edit affiliate link"
-                                                        data-cell-id="<?php echo $cellId; ?>"
-                                                        data-id="<?php echo $affiliateLink->id; ?>">
-                                                    <span class="dashicons dashicons-cart cell-content-link-list-icon"></span>
-                                                    <span><?php echo $affiliateLink->linkText; ?></span>
-                                                </button>
-                                            <?php } ?>
-                                        </div>
-                                    </td>
-                                <?php }
+                                    </div>
+                                </td>
+                            <?php }
 
-                                $cellId++;
-                            } ?>
-                        </tr>
-                    <?php }
-                } ?>
-                </tbody>
-            </table>
+                            $cellId++;
+                        } ?>
+                    </tr>
+                <?php }
+            } ?>
+            </tbody>
+        </table>
 
-            <div id="table-content-values">
+        <div id="table-content-values">
 
-            </div>
-        </form>
-    </div>
-
-    <div id="overview-panel">
-    </div>
+        </div>
+    </form>
 
     <button
             type="submit"
