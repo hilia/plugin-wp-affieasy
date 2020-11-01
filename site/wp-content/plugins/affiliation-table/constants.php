@@ -1,8 +1,8 @@
 <?php
 
 class Constants {
-    const TABLE_WEBSHOP = 'affiliation_table_webshop';
-    const TABLE_TABLE = 'affiliation_table_table';
+    const TABLE_WEBSHOP = 'wp_affiliation_table_webshop';
+    const TABLE_TABLE = 'wp_affiliation_table_table';
 
     const ITEMS_PER_PAGE = 10;
 
