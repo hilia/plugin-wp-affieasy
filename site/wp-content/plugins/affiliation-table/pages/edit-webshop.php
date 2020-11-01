@@ -69,7 +69,7 @@ $webshopName = $webshop->getName();
             <?php } ?>
             <button type="button" class="notice-dismiss"></button>
         </div>
-    <? } ?>
+    <?php } ?>
 
     <div id="helper">
         <div type="button" id="helper-title">

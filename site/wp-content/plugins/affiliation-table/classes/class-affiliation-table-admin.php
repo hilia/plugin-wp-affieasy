@@ -116,7 +116,7 @@ class AffiliationTableAdmin
                     <?php $header = $tableContent[0];
                     for ($i = 0; $i < $colNumber; $i++) { ?>
                         <th>
-                            <?php echo $header[$i]->value; ?>
+                            <?php echo str_replace('&quot;', '"', $header[$i]->value); ?>
                         </th>
                     <?php } ?>
                 </tr>
@@ -128,11 +128,11 @@ class AffiliationTableAdmin
                     <?php $row = $tableContent[$i];
                     for ($j = 0; $j < count($row); $j++) {
                         $cellType = $row[$j]->type;
-                        $cellValue = $row[$j]->value;
+                        $cellValue = str_replace('&quot;', '"', $row[$j]->value);
                         if (in_array($cellType, array(Constants::HTML, Constants::IMAGE))) { ?>
                             <td><?php echo $cellValue; ?></td>
                         <?php } else if ($cellType === Constants::AFFILIATION) {
-                            $affiliateLinks = json_decode(str_replace("&quot;", '"', $cellValue));
+                            $affiliateLinks = json_decode($cellValue);
                             ?>
                             <td>
                                 <?php foreach ($affiliateLinks as $affiliateLink) { ?>

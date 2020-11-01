@@ -117,8 +117,6 @@ class DbManager
 
         $content = empty($tableId) ? null : array_map(function ($row) {
             return array_map(function ($cell) {
-                $cell->value = base64_decode($cell->value);
-
                 return $cell;
             }, $row);
         }, json_decode($table->content));
@@ -132,11 +130,10 @@ class DbManager
 
         $parsedArray = json_encode(array_map(function ($row) {
             return array_map(function ($cell) {
-                $cellContent = json_decode(str_replace("\\", "", str_replace('\\\\\\"', "&quot;", $cell)));
-
-                $cellContent->value = base64_encode($cellContent->value);
-
-                return $cellContent;
+                return json_decode(
+                    str_replace("\\", "",
+                        str_replace('\\\\\\"', "&quot;",
+                            str_replace('\\n', '&NewLine;', $cell))));
             }, $row);
         }, $table->getContent()));
 

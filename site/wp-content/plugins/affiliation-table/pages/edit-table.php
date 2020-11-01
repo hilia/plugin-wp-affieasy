@@ -48,7 +48,10 @@ if ($isFromSaveAction) {
     } else {
         $table->setContent(array_map(function ($row) {
             return array_map(function ($cell) {
-                $cellContent = json_decode(str_replace("\\", "", str_replace('\\\\\\"', "&quot;", $cell)));
+                $cellContent = json_decode(
+                        str_replace("\\", "",
+                            str_replace('\\\\\\"', "&quot;",
+                                str_replace('\\n', '&NewLine;', $cell))));
 
                 return (object)[
                     'type' => $cellContent->type,
@@ -93,7 +96,7 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                                 value="<?php echo $webshop->getId(); ?>"
                                 data-url="<?php echo $webshop->getUrl(); ?>"
                                 data-parameters="<?php echo implode('|||', $webshop->getParameters()); ?>">
-                            <? echo $webshop->getName(); ?>
+                            <?php echo $webshop->getName(); ?>
                         </option>
                     <?php } ?>
                 </select>
@@ -172,7 +175,7 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
             <?php } ?>
             <button type="button" class="notice-dismiss"></button>
         </div>
-    <? } ?>
+    <?php } ?>
 
     <nav class="nav-tab-wrapper wp-clearfix" aria-label="Menu secondaire">
         <span id="edition-nav" class="nav-tab pointer nav-tab-active" aria-current="page">Edition</span>
