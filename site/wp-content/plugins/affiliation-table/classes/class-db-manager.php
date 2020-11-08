@@ -95,6 +95,7 @@ class DbManager
 			    id INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT,
 				name VARCHAR(255) NOT NULL,
 				withHeader BOOLEAN NOT NULL DEFAULT true,
+				headerOptions JSON NOT NULL,
 				content JSON NOT NULL
 			);");
     }
@@ -121,12 +122,18 @@ class DbManager
             }, $row);
         }, json_decode($table->content));
 
-        return new Table($tableId, $table->name, $table->withHeader, $content);
+        return new Table($tableId, $table->name, $table->withHeader, json_decode($table->headerOptions), $content);
     }
 
     public function edit_table($table)
     {
         require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+
+        $tableId = $table->getId();
+        $tableName = $table->getName();
+        $isTableWithHeader = $table->isWithHeader();
+
+        $headerOptions = str_replace('\\', '', $table->getHeaderOptions());
 
         $parsedArray = json_encode(array_map(function ($row) {
             return array_map(function ($cell) {
@@ -137,22 +144,19 @@ class DbManager
             }, $row);
         }, $table->getContent()));
 
-        $tableId = $table->getId();
-        $tableName = $table->getName();
-        $isTableWithHeader = $table->isWithHeader();
-
         if (empty($tableId)) {
             $this->db->insert(Constants::TABLE_TABLE, array(
                 "name" => $tableName,
                 "withHeader" => $isTableWithHeader,
+                "headerOptions" => $headerOptions,
                 "content" => $parsedArray));
-
 
             $tableId = $this->db->insert_id;
         } else {
             $this->db->update(Constants::TABLE_TABLE, array(
                 "name" => $tableName,
                 "withHeader" => $isTableWithHeader,
+                "headerOptions" => $headerOptions,
                 "content" => $parsedArray), array("id" => $tableId));
         }
 

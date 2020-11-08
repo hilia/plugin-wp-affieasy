@@ -70,20 +70,13 @@
     color: #ca4a1f;
 }
 
-.table-header-cell {
-    background: #23282d !important;
-}
-
 .table-header-cell-content {
     height: 60px;
     width: 100%;
-
     text-align: center;
     font-size: 14px;
     font-weight: 700;
     line-height: 1.5;
-    background: #23282d !important;
-    color: #eeeeee !important;
     border: none !important;
     border-radius: 0 !important;
 }

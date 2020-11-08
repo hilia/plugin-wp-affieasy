@@ -14,6 +14,7 @@ jQuery(($) => {
     let rowDragger = null;
 
     displayOrHideHeaderRow();
+    updateHeaderStyle();
     initDragAndDropColumn();
     initDragAndDropRow();
     initAddAffiliateLinkButtons();
@@ -21,6 +22,10 @@ jQuery(($) => {
     initRemoveImagesButtons();
     initEditAffiliateLinkButtons();
     addRecaluclationLinkEvents();
+
+    //init color pickers
+    $('#header-background-color').minicolors({});
+    $('#header-text-color').minicolors({});
 
     // Add hide or display header row event
     $('#with-header').on('change', () => {
@@ -40,6 +45,11 @@ jQuery(($) => {
     // Add a new column after the last
     $('#add-column-after-last').on('click', () => {
         addColumnAfter();
+    });
+
+    // Open the header edition options modal
+    $('#edit-header-options').on('click', () => {
+       openEditHeaderOptionsModal();
     });
 
     // Add delete col events
@@ -97,9 +107,14 @@ jQuery(($) => {
                             type: jqueryElement.data('cell-type'),
                             value: jqueryElement.children().first().val()
                         })
-                    }))
+                    }));
                 });
             });
+
+        $('#header-options').val(JSON.stringify({
+            backgroundColor: $('#header-background-color').val(),
+            textColor: $('#header-text-color').val()
+        }));
     });
 
     // Init variable parameters when webshop change (edition modal)
@@ -109,11 +124,24 @@ jQuery(($) => {
 
     // display or hide header row
     function displayOrHideHeaderRow() {
+        const editHeaderOptions = $('#edit-header-options');
         const tableContentHeader = $('#row-0');
 
-        $('#with-header').is(':checked') ?
-            tableContentHeader.css('display', 'table-row') :
+        if ($('#with-header').is(':checked')) {
+            editHeaderOptions.css('display', 'table-row');
+            tableContentHeader.css('display', 'table-row');
+        } else {
+            editHeaderOptions.css('display', 'none');
             tableContentHeader.css('display', 'none');
+        }
+    }
+
+    // Update header style : background color and text color
+    function updateHeaderStyle() {
+        const backgroundColor = $('#header-background-color').val();
+        $('.table-header-cell').css('background', backgroundColor);
+        $('.table-header-cell-content').css('background', backgroundColor);
+        $('.table-header-cell-content').css('color', $('#header-text-color').val());
     }
 
     // Add a new column after the specified column id
@@ -389,6 +417,26 @@ jQuery(($) => {
                 buttons,
             });
         }
+    }
+
+    // Open modal wich edit headerOptions
+    function openEditHeaderOptionsModal() {
+        $('#edit-header-options-modal').dialog({
+            resizable: true,
+            minWidth: 450,
+            minHeight : 400,
+            title: 'Edit header options',
+            modal: true,
+            buttons: {
+                'Cancel': function() {
+                    $(this).dialog('close');
+                },
+                'Edit': function() {
+                    updateHeaderStyle();
+                    $(this).dialog('close');
+                }
+            },
+        });
     }
 
     // Add new affiliate link in the selected cell

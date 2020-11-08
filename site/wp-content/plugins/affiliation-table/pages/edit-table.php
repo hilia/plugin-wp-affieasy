@@ -6,6 +6,12 @@ wp_enqueue_style(
     time());
 
 wp_enqueue_style(
+    'color-picker-style',
+    plugins_url('/affiliation-table/libs/color-picker/color-picker.css'),
+    array(),
+    time());
+
+wp_enqueue_style(
     'popover-modal-style',
     plugins_url('/affiliation-table/libs/pop-modal/pop-modal.min.css'),
     array(),
@@ -13,19 +19,20 @@ wp_enqueue_style(
 
 wp_enqueue_style('wp-jquery-ui-dialog');
 
+wp_register_script('color-picker', plugins_url('/affiliation-table/libs/color-picker/color-picker.min.js'));
 wp_register_script('pop-modal', plugins_url('/affiliation-table/libs/pop-modal/pop-modal.min.js'), array('jquery'));
 wp_register_script('table-dragger', plugins_url('/affiliation-table/libs/table-dragger/table-dragger.min.js'));
 
 wp_enqueue_script(
     'edit-table-script',
     plugins_url('/affiliation-table/js/edit-table.js'),
-    array('jquery', 'pop-modal', 'table-dragger', 'jquery-ui-dialog'),
+    array('jquery', 'color-picker', 'pop-modal', 'table-dragger', 'jquery-ui-dialog'),
     time()
 );
 
 wp_enqueue_media();
 
-$table = new Table($_POST['id'], $_POST['name'], $_POST['with-header'], $_POST['content']);
+$table = new Table($_POST['id'], $_POST['name'], $_POST['with-header'], $_POST['header-options'], $_POST['content']);
 $errors = array();
 $dbManager = new DbManager();
 $webshops = $dbManager->get_webshop_list();
@@ -59,6 +66,8 @@ if ($isFromSaveAction) {
                 ];
             }, $row);
         }, $table->getContent()));
+
+        $table->setHeaderOptions(json_decode(str_replace('\\', '', $table->getHeaderOptions())));
     }
 } else {
     $id = $_GET['id'];
@@ -75,6 +84,9 @@ $firstRow = $table->getContent()[0];
 
 $tableId = $table->getId();
 $tableName = $table->getName();
+$headerOptions = $table->getHeaderOptions();
+$hasHeaderOptions = !empty($headerOptions);
+
 $isTableWithHeader = $table->isWithHeader() == 1;
 
 $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
@@ -147,6 +159,40 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
             </tr>
         <?php }
         ?>
+        </tbody>
+    </table>
+</div>
+
+<div id="edit-header-options-modal" hidden>
+    <input type="hidden" autofocus>
+    <table class="form-table">
+        <tbody>
+        <tr>
+            <th scope="row">
+                <label for="header-background-color">
+                    Background color
+                </label>
+            </th>
+            <td>
+                <input
+                        type="text"
+                        id="header-background-color"
+                        value="<?php echo $hasHeaderOptions ? $headerOptions->backgroundColor : null; ?>">
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <label for="header-text-color">
+                    Text color
+                </label>
+            </th>
+            <td>
+                <input
+                        type="text"
+                        id="header-text-color"
+                        value="<?php echo $hasHeaderOptions ? $headerOptions->textColor : null; ?>">
+            </td>
+        </tr>
         </tbody>
     </table>
 </div>
@@ -249,6 +295,10 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
 
             <button id="add-column-after-last" type="button" class="page-title-action">
                 Add column
+            </button>
+
+            <button id="edit-header-options" type="button" class="page-title-action">
+                Edit header options
             </button>
         </div>
 
@@ -424,8 +474,8 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
         </table>
 
         <div id="table-content-values">
-
         </div>
+        <input type="text" id="header-options" name="header-options" hidden>
     </form>
 
     <button
