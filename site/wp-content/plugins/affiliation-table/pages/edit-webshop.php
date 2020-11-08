@@ -135,7 +135,8 @@ $webshopName = $webshop->getName();
                             name="url"
                             id="url"
                             maxlength="2048"
-                            value="<?php echo $webshop->getUrl(); ?>">
+                            value="<?php echo $webshop->getUrl(); ?>"
+                            placeholder="Ex: https://www.awin1.com/cread.php?p=[[product_url]]&clickref=[[click_ref]]">
                 </td>
             </tr>
         </table>
