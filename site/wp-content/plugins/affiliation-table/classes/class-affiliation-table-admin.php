@@ -1,7 +1,7 @@
 <?php
 
+require_once 'class-webshop.php';
 require_once 'class-table.php';
-require_once 'class-advertising-agency.php';
 require_once 'class-db-manager.php';
 require_once dirname(__DIR__) . '/constants.php';
 
@@ -9,26 +9,19 @@ class AffiliationTableAdmin
 {
     private $dbManager;
 
-    private $advertisingAgencies;
-
     function __construct()
     {
         $this->dbManager = new DbManager();
 
-        $this->advertisingAgencies = array();
-        array_push($this->advertisingAgencies, new AdvertisingAgency('AWIN', 'Awin', null));
-        array_push($this->advertisingAgencies, new AdvertisingAgency('EFFILIATION', 'Effiliation', null));
-        array_push($this->advertisingAgencies, new AdvertisingAgency('AFFILAE', 'Affilae', null));
-
-        add_action('admin_menu', array($this, 'add_menu_page_affiliation_table'));
+        add_action('admin_menu', array($this, 'add_menus_page_affiliation_table'));
 
         add_shortcode(Constants::TABLE_TAG, array($this, 'affiliation_table_content_callback'));
     }
 
     public function initialize()
     {
-        if (!$this->dbManager->table_exists(Constants::ADVERTISING_AGENCY_TABLE)) {
-            $this->dbManager->create_advertising_agency_table($this->advertisingAgencies);
+        if (!$this->dbManager->table_exists(Constants::TABLE_WEBSHOP)) {
+            $this->dbManager->create_table_webshop();
         }
 
         if (!$this->dbManager->table_exists(Constants::TABLE_TABLE)) {
@@ -36,31 +29,62 @@ class AffiliationTableAdmin
         }
     }
 
-    public function add_menu_page_affiliation_table()
+    public function add_menus_page_affiliation_table()
     {
         add_menu_page(
             'Affiliation',
             'Affiliation',
             'manage_options',
-            'affiliationTableAdmin',
-            array($this, 'select_page_to_show'),
+            'affiliation-table-table',
+            array($this, 'display_table_pages'),
             'dashicons-editor-table',
             20
         );
+
+        add_submenu_page(
+            'affiliation-table-table',
+            'Tables',
+            'Tables',
+            'manage_options',
+            'affiliation-table-table',
+            array($this, 'display_table_pages')
+        );
+
+        add_submenu_page(
+            'affiliation-table-table',
+            'Webshops',
+            'Webshops',
+            'manage_options',
+            'affiliation-table-webshop',
+            array($this, 'display_webshop_list')
+        );
     }
 
-    public function select_page_to_show()
+    public function display_table_pages()
     {
-        switch ($_GET['action']) {
-            case 'edit-advertising-agencies':
-                include(dirname(__DIR__) . '/pages/edit-advertising-agencies.php');
-                break;
-            case 'edit-table':
-                include(dirname(__DIR__) . '/pages/edit-table.php');
-                break;
-            default:
-                include(dirname(__DIR__) . '/pages/main.php');
-                break;
+        if (current_user_can('manage_options')) {
+            switch ($_GET['action']) {
+                case 'edit-table':
+                    include(dirname(__DIR__) . '/pages/edit-table.php');
+                    break;
+                default:
+                    include(dirname(__DIR__) . '/pages/list-table.php');
+                    break;
+            }
+        }
+    }
+
+    public function display_webshop_list()
+    {
+        if (current_user_can('manage_options')) {
+            switch ($_GET['action']) {
+                case 'edit-webshop':
+                    include(dirname(__DIR__) . '/pages/edit-webshop.php');
+                    break;
+                default:
+                    include(dirname(__DIR__) . '/pages/list-webshop.php');
+                    break;
+            }
         }
     }
 
@@ -92,22 +116,37 @@ class AffiliationTableAdmin
                     <?php $header = $tableContent[0];
                     for ($i = 0; $i < $colNumber; $i++) { ?>
                         <th>
-                            <?php echo $header[$i]->value; ?>
+                            <?php echo str_replace('&quot;', '"', $header[$i]->value); ?>
                         </th>
                     <?php } ?>
                 </tr>
                 </thead>
-                <tbody>
-                <?php for ($i = $isWithHeader ? 1 : 0; $i < count($tableContent); $i++) { ?>
-                    <tr>
-                        <?php $row = $tableContent[$i];
-                        for ($j = 0; $j < count($row); $j++) { ?>
-                            <td><?php echo $row[$j]->value; ?></td>
-                        <?php } ?>
-                    </tr>
-                <?php } ?>
-                </tbody>
             <?php } ?>
+            <tbody>
+            <?php for ($i = $isWithHeader ? 1 : 0; $i < count($tableContent); $i++) { ?>
+                <tr>
+                    <?php $row = $tableContent[$i];
+                    for ($j = 0; $j < count($row); $j++) {
+                        $cellType = $row[$j]->type;
+                        $cellValue = str_replace('&quot;', '"', $row[$j]->value);
+                        if (in_array($cellType, array(Constants::HTML, Constants::IMAGE))) { ?>
+                            <td><?php echo $cellValue; ?></td>
+                        <?php } else if ($cellType === Constants::AFFILIATION) {
+                            $affiliateLinks = json_decode($cellValue);
+                            ?>
+                            <td>
+                                <?php foreach ($affiliateLinks as $affiliateLink) { ?>
+                                    <a href="<?php echo $affiliateLink->url; ?>" class="button button-primary">
+                                        <span class="dashicons dashicons-cart cell-content-link-list-icon"></span>
+                                        <span><?php echo $affiliateLink->linkText; ?></span>
+                                    </a>
+                                <?php } ?>
+                            </td>
+                        <?php }
+                    } ?>
+                </tr>
+            <?php } ?>
+            </tbody>
         </table>
         <?php
     }
