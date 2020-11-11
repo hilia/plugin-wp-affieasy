@@ -112,8 +112,8 @@ jQuery(($) => {
             });
 
         $('#header-options').val(JSON.stringify({
-            backgroundColor: $('#header-background-color').val(),
-            textColor: $('#header-text-color').val()
+            background: $('#header-background-color').val(),
+            color: $('#header-text-color').val()
         }));
     });
 
@@ -138,9 +138,9 @@ jQuery(($) => {
 
     // Update header style : background color and text color
     function updateHeaderStyle() {
-        const backgroundColor = $('#header-background-color').val();
-        $('.table-header-cell').css('background', backgroundColor);
-        $('.table-header-cell-content').css('background', backgroundColor);
+        const background = $('#header-background-color').val();
+        $('.table-header-cell').css('background', background);
+        $('.table-header-cell-content').css('background', background);
         $('.table-header-cell-content').css('color', $('#header-text-color').val());
     }
 

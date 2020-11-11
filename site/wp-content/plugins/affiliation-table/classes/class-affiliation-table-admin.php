@@ -108,6 +108,13 @@ class AffiliationTableAdmin
         $tableContent = $table->getContent();
         $colNumber = count($tableContent[0]);
 
+        $headerStyle = '';
+        foreach ((array)$table->getHeaderOptions() as $key => $value) {
+            if (!empty($value)) {
+                $headerStyle .= (empty($headerStyle) ? '' : ';') . $key . ':' . $value;
+            }
+        }
+
         ?>
         <table>
             <?php if ($isWithHeader) { ?>
@@ -115,7 +122,7 @@ class AffiliationTableAdmin
                 <tr>
                     <?php $header = $tableContent[0];
                     for ($i = 0; $i < $colNumber; $i++) { ?>
-                        <th>
+                        <th <?php echo empty($headerStyle) ? "" : ('style="' . $headerStyle . '"') ?>>
                             <?php echo str_replace('&quot;', '"', $header[$i]->value); ?>
                         </th>
                     <?php } ?>

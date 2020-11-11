@@ -177,7 +177,7 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                 <input
                         type="text"
                         id="header-background-color"
-                        value="<?php echo $hasHeaderOptions ? $headerOptions->backgroundColor : null; ?>">
+                        value="<?php echo $hasHeaderOptions ? $headerOptions->background : null; ?>">
             </td>
         </tr>
         <tr>
@@ -190,7 +190,7 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                 <input
                         type="text"
                         id="header-text-color"
-                        value="<?php echo $hasHeaderOptions ? $headerOptions->textColor : null; ?>">
+                        value="<?php echo $hasHeaderOptions ? $headerOptions->color : null; ?>">
             </td>
         </tr>
         </tbody>
