@@ -30,7 +30,10 @@ class DbManager
         dbDelta(" CREATE TABLE " . Constants::TABLE_WEBSHOP . " (
 			    id INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT,
 				name VARCHAR(255) NOT NULL,
-				url TEXT NOT NULL
+				url TEXT NOT NULL,
+				linkTextPreference VARCHAR(255),
+				backgroundColorPreference VARCHAR(10),
+				textColorPreference VARCHAR(10)
 			);");
     }
 
@@ -55,7 +58,14 @@ class DbManager
         $sql = $this->db->prepare("SELECT * FROM " . Constants::TABLE_WEBSHOP . " WHERE id=%d", array($id));
         $webshop = $this->db->get_row($sql);
 
-        return new Webshop($webshop->id, $webshop->name, $webshop->url);
+        return new Webshop(
+            $webshop->id,
+            $webshop->name,
+            $webshop->url,
+            $webshop->linkTextPreference,
+            $webshop->backgroundColorPreference,
+            $webshop->textColorPreference
+        );
     }
 
     public function edit_webshop($webshop)
@@ -63,19 +73,20 @@ class DbManager
         require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
 
         $webshopId = $webshop->getId();
-        $webshopName = $webshop->getName();
-        $webshopUrl = $webshop->getUrl();
+
+        $values = array(
+            "name" => $webshop->getName(),
+            "url" => $webshop->getUrl(),
+            "linkTextPreference" => $webshop->getLinkTextPreference(),
+            "backgroundColorPreference" => $webshop->getBackgroundColorPreference(),
+            "textColorPreference" => $webshop->getTextColorPreference());
 
         if (empty($webshopId)) {
-            $this->db->insert(Constants::TABLE_WEBSHOP, array(
-                "name" => $webshopName,
-                "url" => $webshopUrl));
+            $this->db->insert(Constants::TABLE_WEBSHOP, $values);
 
             $webshopId = $this->db->insert_id;
         } else {
-            $this->db->update(Constants::TABLE_WEBSHOP, array(
-                "name" => $webshopName,
-                "url" => $webshopUrl), array("id" => $webshopId));
+            $this->db->update(Constants::TABLE_WEBSHOP, $values, array("id" => $webshopId));
         }
 
         return $this->get_webshop_by_id($webshopId);

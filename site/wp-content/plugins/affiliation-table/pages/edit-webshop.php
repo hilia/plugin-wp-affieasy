@@ -6,15 +6,32 @@ wp_enqueue_style(
     array(),
     time());
 
+wp_enqueue_style(
+    'color-picker-style',
+    plugins_url('/affiliation-table/libs/color-picker/color-picker.css'),
+    array(),
+    time());
+
+wp_register_script('color-picker', plugins_url('/affiliation-table/libs/color-picker/color-picker.min.js'));
+
 wp_enqueue_script(
     'edit-webshop-script',
     plugins_url('/affiliation-table/js/edit-webshop.js'),
-    array('jquery', 'jquery-ui-accordion'),
+    array('jquery', 'jquery-ui-accordion', 'color-picker'),
     time()
 );
 
 $dbManager = new DbManager();
-$webshop = new Webshop($_POST['id'], $_POST['name'], $_POST['url']);
+
+$webshop = new Webshop(
+    $_POST['id'],
+    $_POST['name'],
+    $_POST['url'],
+    $_POST['link-text-preference'],
+    $_POST['background-color-preference'],
+    $_POST['text-color-preference']
+);
+
 $errors = array();
 
 $id = $_GET['id'];
@@ -137,6 +154,62 @@ $webshopName = $webshop->getName();
                             maxlength="2048"
                             value="<?php echo $webshop->getUrl(); ?>"
                             placeholder="Ex: https://www.awin1.com/cread.php?p=[[product_url]]&clickref=[[click_ref]]">
+                </td>
+            </tr>
+        </table>
+
+        <h2 class="title">
+            Affiliate link preferences
+            <span
+                    class="dashicons dashicons-info"
+                    title="If you fill preferences, affiliate links fields will be automatically entered during the creation process (it will be still possible to change values)">
+            </span>
+        </h2>
+
+        <table class="form-table" role="presentation">
+            <tr class="form-field">
+                <th scope="row">
+                    <label for="link-text-preference">
+                        Link text
+                    </label>
+                </th>
+                <td>
+                    <input
+                            type="text"
+                            name="link-text-preference"
+                            id="link-text-preference"
+                            maxlength="255"
+                            value="<?php echo $webshop->getLinkTextPreference(); ?>">
+                </td>
+            </tr>
+
+            <tr class="form-field">
+                <th scope="row">
+                    <label for="background-color-preference">
+                        Background color
+                    </label>
+                </th>
+                <td>
+                    <input
+                            type="text"
+                            id="background-color-preference"
+                            name="background-color-preference"
+                            value="<?php echo $webshop->getBackgroundColorPreference(); ?>">
+                </td>
+            </tr>
+
+            <tr class="form-field">
+                <th scope="row">
+                    <label for="text-color-preference">
+                        Text color
+                    </label>
+                </th>
+                <td>
+                    <input
+                            type="text"
+                            id="text-color-preference"
+                            name="text-color-preference"
+                            value="<?php echo $webshop->getTextColorPreference(); ?>">
                 </td>
             </tr>
         </table>

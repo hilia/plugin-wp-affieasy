@@ -6,8 +6,17 @@ class Webshop
     private $name;
     private $url;
     private $parameters;
+    private $linkTextPreference;
+    private $backgroundColorPreference;
+    private $textColorPreference;
 
-    function __construct($id = null, $name = null, $url = null)
+    function __construct(
+        $id = null,
+        $name = null,
+        $url = null,
+        $linkTextPreference = null,
+        $backgroundColorPreference = null,
+        $textColorPreference = null)
     {
         $this->id = $id;
         $this->name = $name;
@@ -15,6 +24,10 @@ class Webshop
 
         preg_match_all('/\\[\\[(.*?)]]/', $url, $parseUrlResult);
         $this->parameters = $parseUrlResult[1];
+
+        $this->linkTextPreference = $linkTextPreference;
+        $this->backgroundColorPreference = $backgroundColorPreference;
+        $this->textColorPreference = $textColorPreference;
     }
 
     public function getId()
@@ -35,5 +48,19 @@ class Webshop
     public function getParameters()
     {
         return $this->parameters;
+    }
+
+    public function getLinkTextPreference() {
+        return $this->linkTextPreference;
+    }
+
+    public function getBackgroundColorPreference()
+    {
+        return $this->backgroundColorPreference;
+    }
+
+    public function getTextColorPreference()
+    {
+        return $this->textColorPreference;
     }
 }
