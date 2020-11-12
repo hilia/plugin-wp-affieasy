@@ -141,34 +141,26 @@ class DbManager
         require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
 
         $tableId = $table->getId();
-        $tableName = $table->getName();
-        $isTableWithHeader = $table->isWithHeader();
 
-        $headerOptions = str_replace('\\', '', $table->getHeaderOptions());
-
-        $parsedArray = json_encode(array_map(function ($row) {
-            return array_map(function ($cell) {
-                return json_decode(
-                    str_replace("\\", "",
-                        str_replace('\\\\\\"', "&quot;",
-                            str_replace('\\n', '&NewLine;', $cell))));
-            }, $row);
-        }, $table->getContent()));
+        $values = array(
+            "name" => $table->getName(),
+            "withHeader" => $table->isWithHeader(),
+            "headerOptions" => str_replace('\\', '', $table->getHeaderOptions()),
+            "content" => json_encode(array_map(function ($row) {
+                return array_map(function ($cell) {
+                    return json_decode(
+                        str_replace("\\", "",
+                            str_replace('\\\\\\"', "&quot;",
+                                str_replace('\\n', '&NewLine;', $cell))));
+                }, $row);
+            }, $table->getContent())));
 
         if (empty($tableId)) {
-            $this->db->insert(Constants::TABLE_TABLE, array(
-                "name" => $tableName,
-                "withHeader" => $isTableWithHeader,
-                "headerOptions" => $headerOptions,
-                "content" => $parsedArray));
+            $this->db->insert(Constants::TABLE_TABLE, $values);
 
             $tableId = $this->db->insert_id;
         } else {
-            $this->db->update(Constants::TABLE_TABLE, array(
-                "name" => $tableName,
-                "withHeader" => $isTableWithHeader,
-                "headerOptions" => $headerOptions,
-                "content" => $parsedArray), array("id" => $tableId));
+            $this->db->update(Constants::TABLE_TABLE, $values, array("id" => $tableId));
         }
 
         return $this->get_table_by_id($tableId);
