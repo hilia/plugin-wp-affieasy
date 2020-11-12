@@ -30,6 +30,8 @@ wp_enqueue_script(
     time()
 );
 
+$headerFontWeights = array('lighter', 'normal', 'bold', 'bolder');
+
 wp_enqueue_media();
 
 $table = new Table($_POST['id'], $_POST['name'], $_POST['with-header'], $_POST['header-options'], $_POST['content']);
@@ -193,6 +195,45 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                         value="<?php echo $hasHeaderOptions ? $headerOptions->color : null; ?>">
             </td>
         </tr>
+        <tr>
+            <th scope="row">
+                <label for="header-font-weight">
+                    Font weight
+                </label>
+            </th>
+            <td>
+                <select id="header-font-weight">
+                    <?php foreach ($headerFontWeights as $fontWeight) { ?>
+                        <option
+                                value="<?php echo $fontWeight; ?>"
+                                <?php echo $headerOptions->{'font-weight'} == $fontWeight ? 'selected' : ''; ?>>
+                            <?php echo ucfirst($fontWeight); ?>
+                        </option>
+                    <?php } ?>
+                </select>
+            </td>
+        </tr>
+
+        <tr>
+            <th scope="row">
+                <label for="header-font-size">
+                    Font size
+                </label>
+            </th>
+            <td>
+                <select id="header-font-size">
+                    <?php for ($fontSize = 10; $fontSize <= 35; $fontSize++) { ?>
+                        <option
+                                value="<?php echo $fontSize . 'px'; ?>"
+                            <?php echo $headerOptions->{'font-size'} == $fontSize ? 'selected' : ''; ?>>
+                            <?php echo $fontSize; ?>
+                        </option>
+                    <?php } ?>
+                </select>
+            </td>
+        </tr>
+
+
         </tbody>
     </table>
 </div>

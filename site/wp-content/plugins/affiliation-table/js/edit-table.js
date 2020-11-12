@@ -113,7 +113,9 @@ jQuery(($) => {
 
         $('#header-options').val(JSON.stringify({
             background: $('#header-background-color').val(),
-            color: $('#header-text-color').val()
+            color: $('#header-text-color').val(),
+            'font-weight': $('#header-font-weight').val(),
+            'font-size': $('#header-font-size').val()
         }));
     });
 
@@ -140,8 +142,11 @@ jQuery(($) => {
     function updateHeaderStyle() {
         const background = $('#header-background-color').val();
         $('.table-header-cell').css('background', background);
-        $('.table-header-cell-content').css('background', background);
-        $('.table-header-cell-content').css('color', $('#header-text-color').val());
+        $('.table-header-cell-content')
+            .css('background', background)
+            .css('color', $('#header-text-color').val())
+            .css('font-weight', $('#header-font-weight').val())
+            .css('font-size', $('#header-font-size').val());
     }
 
     // Add a new column after the specified column id

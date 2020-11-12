@@ -5,6 +5,8 @@ class Table
     private $defaultTableColumnNumber = 4;
     private $defaultHeaderBackgroundColor = '#707070';
     private $defaultHeaderTextColor = '#ffffff';
+    private $defaultHeaderFontWeight = 'bold';
+    private $defaultHeaderFontSize = 18;
 
     private $id;
     private $name;
@@ -73,6 +75,8 @@ class Table
         $this->headerOptions = (object)[
           'background' => $this->defaultHeaderBackgroundColor,
           'color' => $this->defaultHeaderTextColor,
+          'font-weight' => $this->defaultHeaderFontWeight,
+          'font-size' => $this->defaultHeaderFontSize
         ];
 
         $headerRow = array();
