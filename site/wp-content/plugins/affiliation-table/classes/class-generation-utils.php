@@ -58,7 +58,10 @@ class GenerationUtils
                             <td>
                                 <div class="affiliation-table-affiliate-links">
                                 <?php foreach ($affiliateLinks as $affiliateLink) { ?>
-                                    <a href="<?php echo $affiliateLink->url; ?>" class="affiliation-table-affiliate-link" <?php echo GenerationUtils::getAffiliateLinkStyle($affiliateLink) ?>>
+                                    <a
+                                            href="<?php echo $affiliateLink->url; ?>" class="affiliation-table-affiliate-link"
+                                            <?php echo GenerationUtils::getAffiliateLinkStyle($affiliateLink) ?>
+                                            rel="nofollow">
                                         <span class="dashicons dashicons-cart cell-content-link-list-icon"></span>
                                         <span><?php echo $affiliateLink->linkText; ?></span>
                                     </a>
