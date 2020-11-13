@@ -1,8 +1,28 @@
+.affiliation-table-table {
+    text-align: center;
+}
+
+.affiliation-table-affiliate-links {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding-bottom: 10px;
+}
+
 .affiliation-table-affiliate-link {
-    font-size: 13px;
-    padding: 0 15px;
-    border-width: 0;
+    white-space: nowrap;
+    text-decoration: none;
     border-radius: 3px;
-    line-height: 32px;
-    cursor: pointer;
+    padding: 7px 15px;
+    margin-top: 10px;
+}
+
+.affiliation-table-affiliate-link:hover {
+    opacity: 0.9;
+}
+
+.affiliation-table-img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
 }

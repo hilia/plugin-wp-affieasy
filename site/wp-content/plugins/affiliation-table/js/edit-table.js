@@ -458,7 +458,7 @@ jQuery(($) => {
 
         $('#cell-content-link-list-' + currentCellId).append($('<button>', {
             type: 'button',
-            class: 'affiliation-table-affiliate-link cell-content-link-list-button',
+            class: 'cell-content-link-list-button',
             style: getAffiliateLinkStyle(value.background, value.color),
             title: 'Edit affiliate link',
             'data-id': id

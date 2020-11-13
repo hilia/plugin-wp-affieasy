@@ -30,7 +30,7 @@ class GenerationUtils
         }
 
         ?>
-        <table>
+        <table class="affiliation-table-table">
             <?php if ($isWithHeader) { ?>
                 <thead>
                 <tr>
@@ -56,12 +56,14 @@ class GenerationUtils
                             $affiliateLinks = json_decode($cellValue);
                             ?>
                             <td>
+                                <div class="affiliation-table-affiliate-links">
                                 <?php foreach ($affiliateLinks as $affiliateLink) { ?>
-                                    <a href="<?php echo $affiliateLink->url; ?>" class="button button-primary">
+                                    <a href="<?php echo $affiliateLink->url; ?>" class="affiliation-table-affiliate-link" <?php echo GenerationUtils::getAffiliateLinkStyle($affiliateLink) ?>>
                                         <span class="dashicons dashicons-cart cell-content-link-list-icon"></span>
                                         <span><?php echo $affiliateLink->linkText; ?></span>
                                     </a>
                                 <?php } ?>
+                                </div>
                             </td>
                         <?php }
                     } ?>

@@ -17,6 +17,12 @@ class AffiliationTableAdmin
         add_action('admin_menu', array($this, 'add_menus_page_affiliation_table'));
 
         add_shortcode(Constants::TABLE_TAG, array($this, 'affiliation_table_content_callback'));
+
+        wp_enqueue_style(
+            'rendering-style',
+            plugins_url('/affiliation-table/css/rendering.css'),
+            array(),
+            time());
     }
 
     public function initialize()

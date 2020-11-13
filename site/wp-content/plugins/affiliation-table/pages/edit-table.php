@@ -6,12 +6,6 @@ wp_enqueue_style(
     time());
 
 wp_enqueue_style(
-    'rendering-style',
-    plugins_url('/affiliation-table/css/rendering.css'),
-    array(),
-    time());
-
-wp_enqueue_style(
     'color-picker-style',
     plugins_url('/affiliation-table/libs/color-picker/color-picker.css'),
     array(),
