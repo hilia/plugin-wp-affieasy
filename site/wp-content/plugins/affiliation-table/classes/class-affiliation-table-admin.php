@@ -3,6 +3,7 @@
 require_once 'class-webshop.php';
 require_once 'class-table.php';
 require_once 'class-db-manager.php';
+require_once 'class-generation-utils.php';
 require_once dirname(__DIR__) . '/constants.php';
 
 class AffiliationTableAdmin
@@ -106,7 +107,6 @@ class AffiliationTableAdmin
     {
         $isWithHeader = $table->isWithHeader();
         $tableContent = $table->getContent();
-        $colNumber = count($tableContent[0]);
 
         $headerStyle = '';
         foreach ((array)$table->getHeaderOptions() as $key => $value) {
@@ -121,7 +121,7 @@ class AffiliationTableAdmin
                 <thead>
                 <tr>
                     <?php $header = $tableContent[0];
-                    for ($i = 0; $i < $colNumber; $i++) { ?>
+                    for ($i = 0; $i < count($tableContent[0]); $i++) { ?>
                         <th <?php echo empty($headerStyle) ? "" : ('style="' . $headerStyle . '"') ?>>
                             <?php echo str_replace('&quot;', '"', $header[$i]->value); ?>
                         </th>

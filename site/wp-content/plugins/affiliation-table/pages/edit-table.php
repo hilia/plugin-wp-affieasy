@@ -6,6 +6,12 @@ wp_enqueue_style(
     time());
 
 wp_enqueue_style(
+    'rendering-style',
+    plugins_url('/affiliation-table/css/rendering.css'),
+    array(),
+    time());
+
+wp_enqueue_style(
     'color-picker-style',
     plugins_url('/affiliation-table/libs/color-picker/color-picker.css'),
     array(),
@@ -109,14 +115,17 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                         <option
                                 value="<?php echo $webshop->getId(); ?>"
                                 data-url="<?php echo $webshop->getUrl(); ?>"
-                                data-parameters="<?php echo implode('|||', $webshop->getParameters()); ?>">
+                                data-parameters="<?php echo implode('|||', $webshop->getParameters()); ?>"
+                                data-link-text-preference="<?php echo $webshop->getLinkTextPreference(); ?>"
+                                data-background-color-preference="<?php echo $webshop->getBackgroundColorPreference(); ?>"
+                                data-text-color-preference="<?php echo $webshop->getTextColorPreference(); ?>">
                             <?php echo $webshop->getName(); ?>
                         </option>
                     <?php } ?>
                 </select>
             </td>
         </tr>
-        <tr id="link-text-row">
+        <tr>
             <th scope="row">
                 <label>
                     Link text
@@ -127,6 +136,30 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                         type="text"
                         id="link-text-input"
                         maxlength="255">
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <label for="link-background-color">
+                    Background color
+                </label>
+            </th>
+            <td>
+                <input
+                        type="text"
+                        id="link-background-color">
+            </td>
+        </tr>
+        <tr id="link-text-color-row">
+            <th scope="row">
+                <label for="link-text-color">
+                    Text color
+                </label>
+            </th>
+            <td>
+                <input
+                        type="text"
+                        id="link-text-color">
             </td>
         </tr>
         <?php
@@ -206,7 +239,7 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                     <?php foreach ($headerFontWeights as $fontWeight) { ?>
                         <option
                                 value="<?php echo $fontWeight; ?>"
-                                <?php echo $headerOptions->{'font-weight'} == $fontWeight ? 'selected' : ''; ?>>
+                            <?php echo $headerOptions->{'font-weight'} == $fontWeight ? 'selected' : ''; ?>>
                             <?php echo ucfirst($fontWeight); ?>
                         </option>
                     <?php } ?>
@@ -232,8 +265,6 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                 </select>
             </td>
         </tr>
-
-
         </tbody>
     </table>
 </div>
@@ -491,10 +522,11 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                                             data-cell-id="<?php echo $cellId; ?>">
                                         </span>
                                     <div id="cell-content-link-list-<?php echo $cellId; ?>">
-                                        <?php foreach ($affiliateLinks as $affiliateLink) { ?>
+                                        <?php foreach ($affiliateLinks as $affiliateLink) {?>
                                             <button
                                                     type="button"
-                                                    class="button-primary cell-content-link-list-button"
+                                                    class="affiliation-table-affiliate-link cell-content-link-list-button"
+                                                    <?php echo GenerationUtils::getAffiliateLinkStyle($affiliateLink); ?>
                                                     title="Edit affiliate link"
                                                     data-cell-id="<?php echo $cellId; ?>"
                                                     data-id="<?php echo $affiliateLink->id; ?>">

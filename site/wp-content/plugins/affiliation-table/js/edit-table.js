@@ -26,6 +26,8 @@ jQuery(($) => {
     //init color pickers
     $('#header-background-color').minicolors({});
     $('#header-text-color').minicolors({});
+    $('#link-background-color').minicolors({});
+    $('#link-text-color').minicolors({});
 
     // Add hide or display header row event
     $('#with-header').on('change', () => {
@@ -456,7 +458,8 @@ jQuery(($) => {
 
         $('#cell-content-link-list-' + currentCellId).append($('<button>', {
             type: 'button',
-            class: 'button-primary cell-content-link-list-button',
+            class: 'affiliation-table-affiliate-link cell-content-link-list-button',
+            style: getAffiliateLinkStyle(value.background, value.color),
             title: 'Edit affiliate link',
             'data-id': id
         }).on('click', null, {cellId: currentCellId, id}, openEditAffiliationLinkModal)
@@ -480,6 +483,7 @@ jQuery(($) => {
         $('#cell-content-' + currentCellId).val(JSON.stringify(affiliateLinkValues));
 
         $(`.cell-content-link-list-button[data-id="${currentAffiliateLinkId}"]`)
+            .attr('style', getAffiliateLinkStyle($('#link-background-color').val(), $('#link-text-color').val()))
             .empty()
             .append($('<span>', {
                 class: 'dashicons dashicons-cart cell-content-link-list-icon'
@@ -489,6 +493,24 @@ jQuery(($) => {
             }));
 
         $(this).dialog('close');
+    }
+
+     // extract background color and color from affiliate link if parameters exists and return them as string
+    function getAffiliateLinkStyle(background, color) {
+        if (!background && !color) {
+            return null;
+        }
+
+        let style = null;
+        if (!!background) {
+            style = 'background:' + background;
+        }
+
+        if (color) {
+            style = style + (!!style ? ';' : '') + 'color:' + color;
+        }
+
+        return style;
     }
 
     // Remove selected affiliate link
@@ -598,23 +620,32 @@ jQuery(($) => {
         })
     }
 
-    // Clear and add parameter inputs in the edit affiliation links modal depending on the selected webshop
+    // Clear and add preferences / selected values in the edit affiliation links modal depending on the selected webshop
     function initAffiliateLinkInputsModal(affilitateLinkValue) {
+        let selectedWebshop = $("#webshop-select option:selected");
+
         if (!!affilitateLinkValue) {
             $('#webshop-select').val(affilitateLinkValue.webshopId);
-            $('#link-text-input').val(affilitateLinkValue.linkText);
+            selectedWebshop = $("#webshop-select option:selected");
+
+            updateAffiateInputsModal(
+                affilitateLinkValue.linkText,
+                affilitateLinkValue.background,
+                affilitateLinkValue.color);
         } else {
-            $('#link-text-input').val($("#webshop-select option:selected").text().trim());
+            updateAffiateInputsModal(
+                selectedWebshop.data('linkTextPreference'),
+                selectedWebshop.data('backgroundColorPreference'),
+                selectedWebshop.data('textColorPreference'));
         }
 
-        const selectedWebshop = $("#webshop-select option:selected");
         currentAffiliationUrl = selectedWebshop.data('url');
 
         $('.affiliation-parameter-row').remove();
         selectedWebshop.data('parameters')
             .split('|||')
             .reverse()
-            .forEach(parameter => $('#link-text-row').after($('<tr>', {
+            .forEach(parameter => $('#link-text-color-row').after($('<tr>', {
                 class: 'affiliation-parameter-row',
             })
                 .append($('<th>', {
@@ -636,11 +667,26 @@ jQuery(($) => {
         recalculateAffiliationLinkOverview();
     }
 
+    // Update editAffiliationLinkModalInputs (preferences if new, else filled values)
+    function updateAffiateInputsModal(linkText, background, color) {
+        $('#link-text-input').val(linkText);
+
+        const backgroundColorInput = $('#link-background-color');
+        backgroundColorInput.val(background);
+        backgroundColorInput.next().children().css('background-color', background);
+
+        const textColorInput = $('#link-text-color');
+        textColorInput.val(color);
+        textColorInput.next().children().css('background-color', color);
+    }
+
     // Make affiliation link value depending on the content modal
     function makeAffiliationLinkValue(id) {
         const value = {
             id,
-            url: $('#affiliation-link-overview').text()
+            url: $('#affiliation-link-overview').text(),
+            background: $('#link-background-color').val(),
+            color: $('#link-text-color').val()
         }
 
         $('.affiliation-parameter-input').each(((index, element) => {
