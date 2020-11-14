@@ -1,6 +1,10 @@
 jQuery(($) => {
     let isHelpOpened = false;
 
+    //init color pickers
+    $('#background-color-preference').minicolors({});
+    $('#text-color-preference').minicolors({});
+
     $('#helper-title').on('click', () => {
         const helperContent = $('#helper-content');
         const helperIcon = $('#helper-icon');
@@ -22,5 +26,5 @@ jQuery(($) => {
 
             isHelpOpened = true;
         }
-    })
+    });
 });

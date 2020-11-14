@@ -14,6 +14,7 @@ jQuery(($) => {
     let rowDragger = null;
 
     displayOrHideHeaderRow();
+    updateHeaderStyle();
     initDragAndDropColumn();
     initDragAndDropRow();
     initAddAffiliateLinkButtons();
@@ -21,6 +22,12 @@ jQuery(($) => {
     initRemoveImagesButtons();
     initEditAffiliateLinkButtons();
     addRecaluclationLinkEvents();
+
+    //init color pickers
+    $('#header-background-color').minicolors({});
+    $('#header-text-color').minicolors({});
+    $('#link-background-color').minicolors({});
+    $('#link-text-color').minicolors({});
 
     // Add hide or display header row event
     $('#with-header').on('change', () => {
@@ -40,6 +47,11 @@ jQuery(($) => {
     // Add a new column after the last
     $('#add-column-after-last').on('click', () => {
         addColumnAfter();
+    });
+
+    // Open the header edition options modal
+    $('#edit-header-options').on('click', () => {
+       openEditHeaderOptionsModal();
     });
 
     // Add delete col events
@@ -97,9 +109,16 @@ jQuery(($) => {
                             type: jqueryElement.data('cell-type'),
                             value: jqueryElement.children().first().val()
                         })
-                    }))
+                    }));
                 });
             });
+
+        $('#header-options').val(JSON.stringify({
+            background: $('#header-background-color').val(),
+            color: $('#header-text-color').val(),
+            'font-weight': $('#header-font-weight').val(),
+            'font-size': $('#header-font-size').val()
+        }));
     });
 
     // Init variable parameters when webshop change (edition modal)
@@ -109,11 +128,27 @@ jQuery(($) => {
 
     // display or hide header row
     function displayOrHideHeaderRow() {
+        const editHeaderOptions = $('#edit-header-options');
         const tableContentHeader = $('#row-0');
 
-        $('#with-header').is(':checked') ?
-            tableContentHeader.css('display', 'table-row') :
+        if ($('#with-header').is(':checked')) {
+            editHeaderOptions.css('display', 'table-row');
+            tableContentHeader.css('display', 'table-row');
+        } else {
+            editHeaderOptions.css('display', 'none');
             tableContentHeader.css('display', 'none');
+        }
+    }
+
+    // Update header style : background color and text color
+    function updateHeaderStyle() {
+        const background = $('#header-background-color').val();
+        $('.table-header-cell').css('background', background);
+        $('.table-header-cell-content')
+            .css('background', background)
+            .css('color', $('#header-text-color').val())
+            .css('font-weight', $('#header-font-weight').val())
+            .css('font-size', $('#header-font-size').val());
     }
 
     // Add a new column after the specified column id
@@ -391,6 +426,26 @@ jQuery(($) => {
         }
     }
 
+    // Open modal wich edit headerOptions
+    function openEditHeaderOptionsModal() {
+        $('#edit-header-options-modal').dialog({
+            resizable: true,
+            minWidth: 450,
+            minHeight : 400,
+            title: 'Edit header options',
+            modal: true,
+            buttons: {
+                'Cancel': function() {
+                    $(this).dialog('close');
+                },
+                'Edit': function() {
+                    updateHeaderStyle();
+                    $(this).dialog('close');
+                }
+            },
+        });
+    }
+
     // Add new affiliate link in the selected cell
     function addAffiliateLink() {
         const id = Date.now();
@@ -403,7 +458,8 @@ jQuery(($) => {
 
         $('#cell-content-link-list-' + currentCellId).append($('<button>', {
             type: 'button',
-            class: 'button-primary cell-content-link-list-button',
+            class: 'cell-content-link-list-button',
+            style: getAffiliateLinkStyle(value.background, value.color),
             title: 'Edit affiliate link',
             'data-id': id
         }).on('click', null, {cellId: currentCellId, id}, openEditAffiliationLinkModal)
@@ -427,6 +483,7 @@ jQuery(($) => {
         $('#cell-content-' + currentCellId).val(JSON.stringify(affiliateLinkValues));
 
         $(`.cell-content-link-list-button[data-id="${currentAffiliateLinkId}"]`)
+            .attr('style', getAffiliateLinkStyle($('#link-background-color').val(), $('#link-text-color').val()))
             .empty()
             .append($('<span>', {
                 class: 'dashicons dashicons-cart cell-content-link-list-icon'
@@ -436,6 +493,24 @@ jQuery(($) => {
             }));
 
         $(this).dialog('close');
+    }
+
+     // extract background color and color from affiliate link if parameters exists and return them as string
+    function getAffiliateLinkStyle(background, color) {
+        if (!background && !color) {
+            return null;
+        }
+
+        let style = null;
+        if (!!background) {
+            style = 'background:' + background;
+        }
+
+        if (color) {
+            style = style + (!!style ? ';' : '') + 'color:' + color;
+        }
+
+        return style;
     }
 
     // Remove selected affiliate link
@@ -545,23 +620,32 @@ jQuery(($) => {
         })
     }
 
-    // Clear and add parameter inputs in the edit affiliation links modal depending on the selected webshop
+    // Clear and add preferences / selected values in the edit affiliation links modal depending on the selected webshop
     function initAffiliateLinkInputsModal(affilitateLinkValue) {
+        let selectedWebshop = $("#webshop-select option:selected");
+
         if (!!affilitateLinkValue) {
             $('#webshop-select').val(affilitateLinkValue.webshopId);
-            $('#link-text-input').val(affilitateLinkValue.linkText);
+            selectedWebshop = $("#webshop-select option:selected");
+
+            updateAffiateInputsModal(
+                affilitateLinkValue.linkText,
+                affilitateLinkValue.background,
+                affilitateLinkValue.color);
         } else {
-            $('#link-text-input').val($("#webshop-select option:selected").text().trim());
+            updateAffiateInputsModal(
+                selectedWebshop.data('linkTextPreference'),
+                selectedWebshop.data('backgroundColorPreference'),
+                selectedWebshop.data('textColorPreference'));
         }
 
-        const selectedWebshop = $("#webshop-select option:selected");
         currentAffiliationUrl = selectedWebshop.data('url');
 
         $('.affiliation-parameter-row').remove();
         selectedWebshop.data('parameters')
             .split('|||')
             .reverse()
-            .forEach(parameter => $('#link-text-row').after($('<tr>', {
+            .forEach(parameter => $('#link-text-color-row').after($('<tr>', {
                 class: 'affiliation-parameter-row',
             })
                 .append($('<th>', {
@@ -583,11 +667,26 @@ jQuery(($) => {
         recalculateAffiliationLinkOverview();
     }
 
+    // Update editAffiliationLinkModalInputs (preferences if new, else filled values)
+    function updateAffiateInputsModal(linkText, background, color) {
+        $('#link-text-input').val(linkText);
+
+        const backgroundColorInput = $('#link-background-color');
+        backgroundColorInput.val(background);
+        backgroundColorInput.next().children().css('background-color', background);
+
+        const textColorInput = $('#link-text-color');
+        textColorInput.val(color);
+        textColorInput.next().children().css('background-color', color);
+    }
+
     // Make affiliation link value depending on the content modal
     function makeAffiliationLinkValue(id) {
         const value = {
             id,
-            url: $('#affiliation-link-overview').text()
+            url: $('#affiliation-link-overview').text(),
+            background: $('#link-background-color').val(),
+            color: $('#link-text-color').val()
         }
 
         $('.affiliation-parameter-input').each(((index, element) => {

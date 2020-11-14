@@ -45,6 +45,10 @@
     width: 75em!important;
 }
 
+#link-text-preference {
+    width: 25em!important;
+}
+
 .edit-button-bottom {
     margin-top: 2em !important;
 }

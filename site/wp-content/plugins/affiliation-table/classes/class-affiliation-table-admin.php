@@ -3,6 +3,7 @@
 require_once 'class-webshop.php';
 require_once 'class-table.php';
 require_once 'class-db-manager.php';
+require_once 'class-generation-utils.php';
 require_once dirname(__DIR__) . '/constants.php';
 
 class AffiliationTableAdmin
@@ -16,6 +17,12 @@ class AffiliationTableAdmin
         add_action('admin_menu', array($this, 'add_menus_page_affiliation_table'));
 
         add_shortcode(Constants::TABLE_TAG, array($this, 'affiliation_table_content_callback'));
+
+        wp_enqueue_style(
+            'rendering-style',
+            plugins_url('/affiliation-table/css/rendering.css'),
+            array(),
+            time());
     }
 
     public function initialize()
@@ -96,58 +103,9 @@ class AffiliationTableAdmin
         if ($table->getId() == null) { ?>
             <h6>Table not found.</h6>
         <?php } else {
-            $this->generateTable($table);
+            GenerationUtils::generateTable($table);
         }
 
         return ob_get_clean();
-    }
-
-    function generateTable($table)
-    {
-        $isWithHeader = $table->isWithHeader();
-        $tableContent = $table->getContent();
-        $colNumber = count($tableContent[0]);
-
-        ?>
-        <table>
-            <?php if ($isWithHeader) { ?>
-                <thead>
-                <tr>
-                    <?php $header = $tableContent[0];
-                    for ($i = 0; $i < $colNumber; $i++) { ?>
-                        <th>
-                            <?php echo str_replace('&quot;', '"', $header[$i]->value); ?>
-                        </th>
-                    <?php } ?>
-                </tr>
-                </thead>
-            <?php } ?>
-            <tbody>
-            <?php for ($i = $isWithHeader ? 1 : 0; $i < count($tableContent); $i++) { ?>
-                <tr>
-                    <?php $row = $tableContent[$i];
-                    for ($j = 0; $j < count($row); $j++) {
-                        $cellType = $row[$j]->type;
-                        $cellValue = str_replace('&quot;', '"', $row[$j]->value);
-                        if (in_array($cellType, array(Constants::HTML, Constants::IMAGE))) { ?>
-                            <td><?php echo $cellValue; ?></td>
-                        <?php } else if ($cellType === Constants::AFFILIATION) {
-                            $affiliateLinks = json_decode($cellValue);
-                            ?>
-                            <td>
-                                <?php foreach ($affiliateLinks as $affiliateLink) { ?>
-                                    <a href="<?php echo $affiliateLink->url; ?>" class="button button-primary">
-                                        <span class="dashicons dashicons-cart cell-content-link-list-icon"></span>
-                                        <span><?php echo $affiliateLink->linkText; ?></span>
-                                    </a>
-                                <?php } ?>
-                            </td>
-                        <?php }
-                    } ?>
-                </tr>
-            <?php } ?>
-            </tbody>
-        </table>
-        <?php
     }
 }

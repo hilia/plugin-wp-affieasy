@@ -3,17 +3,23 @@
 class Table
 {
     private $defaultTableColumnNumber = 4;
+    private $defaultHeaderBackgroundColor = '#707070';
+    private $defaultHeaderTextColor = '#ffffff';
+    private $defaultHeaderFontWeight = 'bold';
+    private $defaultHeaderFontSize = 18;
 
     private $id;
     private $name;
     private $withHeader;
+    private $headerOptions;
     private $content;
 
-    function __construct($id = null, $name = null, $withHeader = null, $content = null)
+    function __construct($id = null, $name = null, $withHeader = null, $headerOptions = null, $content = null)
     {
         $this->id = $id;
         $this->name = $name;
         $this->withHeader = $withHeader == 'on' || $withHeader == 1 ? 1 : 0;
+        $this->headerOptions = $headerOptions;
         $this->content = $content;
     }
 
@@ -30,6 +36,14 @@ class Table
     public function isWithHeader()
     {
         return $this->withHeader;
+    }
+
+    public function getHeaderOptions() {
+        return $this->headerOptions;
+    }
+
+    public function setHeaderOptions($headerOptions) {
+        return $this->headerOptions = $headerOptions;
     }
 
     public function getContent()
@@ -58,6 +72,13 @@ class Table
 
     public function initDefaultContent()
     {
+        $this->headerOptions = (object)[
+          'background' => $this->defaultHeaderBackgroundColor,
+          'color' => $this->defaultHeaderTextColor,
+          'font-weight' => $this->defaultHeaderFontWeight,
+          'font-size' => $this->defaultHeaderFontSize
+        ];
+
         $headerRow = array();
 
         for ($i = 0; $i < $this->defaultTableColumnNumber; $i++) {

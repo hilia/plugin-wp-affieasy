@@ -6,6 +6,12 @@ wp_enqueue_style(
     time());
 
 wp_enqueue_style(
+    'color-picker-style',
+    plugins_url('/affiliation-table/libs/color-picker/color-picker.css'),
+    array(),
+    time());
+
+wp_enqueue_style(
     'popover-modal-style',
     plugins_url('/affiliation-table/libs/pop-modal/pop-modal.min.css'),
     array(),
@@ -13,19 +19,22 @@ wp_enqueue_style(
 
 wp_enqueue_style('wp-jquery-ui-dialog');
 
+wp_register_script('color-picker', plugins_url('/affiliation-table/libs/color-picker/color-picker.min.js'));
 wp_register_script('pop-modal', plugins_url('/affiliation-table/libs/pop-modal/pop-modal.min.js'), array('jquery'));
 wp_register_script('table-dragger', plugins_url('/affiliation-table/libs/table-dragger/table-dragger.min.js'));
 
 wp_enqueue_script(
     'edit-table-script',
     plugins_url('/affiliation-table/js/edit-table.js'),
-    array('jquery', 'pop-modal', 'table-dragger', 'jquery-ui-dialog'),
+    array('jquery', 'color-picker', 'pop-modal', 'table-dragger', 'jquery-ui-dialog'),
     time()
 );
 
+$headerFontWeights = array('lighter', 'normal', 'bold', 'bolder');
+
 wp_enqueue_media();
 
-$table = new Table($_POST['id'], $_POST['name'], $_POST['with-header'], $_POST['content']);
+$table = new Table($_POST['id'], $_POST['name'], $_POST['with-header'], $_POST['header-options'], $_POST['content']);
 $errors = array();
 $dbManager = new DbManager();
 $webshops = $dbManager->get_webshop_list();
@@ -59,6 +68,8 @@ if ($isFromSaveAction) {
                 ];
             }, $row);
         }, $table->getContent()));
+
+        $table->setHeaderOptions(json_decode(str_replace('\\', '', $table->getHeaderOptions())));
     }
 } else {
     $id = $_GET['id'];
@@ -75,6 +86,9 @@ $firstRow = $table->getContent()[0];
 
 $tableId = $table->getId();
 $tableName = $table->getName();
+$headerOptions = $table->getHeaderOptions();
+$hasHeaderOptions = !empty($headerOptions);
+
 $isTableWithHeader = $table->isWithHeader() == 1;
 
 $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
@@ -95,14 +109,17 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                         <option
                                 value="<?php echo $webshop->getId(); ?>"
                                 data-url="<?php echo $webshop->getUrl(); ?>"
-                                data-parameters="<?php echo implode('|||', $webshop->getParameters()); ?>">
+                                data-parameters="<?php echo implode('|||', $webshop->getParameters()); ?>"
+                                data-link-text-preference="<?php echo $webshop->getLinkTextPreference(); ?>"
+                                data-background-color-preference="<?php echo $webshop->getBackgroundColorPreference(); ?>"
+                                data-text-color-preference="<?php echo $webshop->getTextColorPreference(); ?>">
                             <?php echo $webshop->getName(); ?>
                         </option>
                     <?php } ?>
                 </select>
             </td>
         </tr>
-        <tr id="link-text-row">
+        <tr>
             <th scope="row">
                 <label>
                     Link text
@@ -113,6 +130,30 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                         type="text"
                         id="link-text-input"
                         maxlength="255">
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <label for="link-background-color">
+                    Background color
+                </label>
+            </th>
+            <td>
+                <input
+                        type="text"
+                        id="link-background-color">
+            </td>
+        </tr>
+        <tr id="link-text-color-row">
+            <th scope="row">
+                <label for="link-text-color">
+                    Text color
+                </label>
+            </th>
+            <td>
+                <input
+                        type="text"
+                        id="link-text-color">
             </td>
         </tr>
         <?php
@@ -147,6 +188,77 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
             </tr>
         <?php }
         ?>
+        </tbody>
+    </table>
+</div>
+
+<div id="edit-header-options-modal" hidden>
+    <input type="hidden" autofocus>
+    <table class="form-table">
+        <tbody>
+        <tr>
+            <th scope="row">
+                <label for="header-background-color">
+                    Background color
+                </label>
+            </th>
+            <td>
+                <input
+                        type="text"
+                        id="header-background-color"
+                        value="<?php echo $hasHeaderOptions ? $headerOptions->background : null; ?>">
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <label for="header-text-color">
+                    Text color
+                </label>
+            </th>
+            <td>
+                <input
+                        type="text"
+                        id="header-text-color"
+                        value="<?php echo $hasHeaderOptions ? $headerOptions->color : null; ?>">
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <label for="header-font-weight">
+                    Font weight
+                </label>
+            </th>
+            <td>
+                <select id="header-font-weight">
+                    <?php foreach ($headerFontWeights as $fontWeight) { ?>
+                        <option
+                                value="<?php echo $fontWeight; ?>"
+                            <?php echo $headerOptions->{'font-weight'} == $fontWeight ? 'selected' : ''; ?>>
+                            <?php echo ucfirst($fontWeight); ?>
+                        </option>
+                    <?php } ?>
+                </select>
+            </td>
+        </tr>
+
+        <tr>
+            <th scope="row">
+                <label for="header-font-size">
+                    Font size
+                </label>
+            </th>
+            <td>
+                <select id="header-font-size">
+                    <?php for ($fontSize = 10; $fontSize <= 35; $fontSize++) { ?>
+                        <option
+                                value="<?php echo $fontSize . 'px'; ?>"
+                            <?php echo $headerOptions->{'font-size'} == $fontSize ? 'selected' : ''; ?>>
+                            <?php echo $fontSize; ?>
+                        </option>
+                    <?php } ?>
+                </select>
+            </td>
+        </tr>
         </tbody>
     </table>
 </div>
@@ -249,6 +361,10 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
 
             <button id="add-column-after-last" type="button" class="page-title-action">
                 Add column
+            </button>
+
+            <button id="edit-header-options" type="button" class="page-title-action">
+                Edit header options
             </button>
         </div>
 
@@ -400,10 +516,11 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                                             data-cell-id="<?php echo $cellId; ?>">
                                         </span>
                                     <div id="cell-content-link-list-<?php echo $cellId; ?>">
-                                        <?php foreach ($affiliateLinks as $affiliateLink) { ?>
+                                        <?php foreach ($affiliateLinks as $affiliateLink) {?>
                                             <button
                                                     type="button"
-                                                    class="button-primary cell-content-link-list-button"
+                                                    class="affiliation-table-affiliate-link cell-content-link-list-button"
+                                                    <?php echo GenerationUtils::getAffiliateLinkStyle($affiliateLink); ?>
                                                     title="Edit affiliate link"
                                                     data-cell-id="<?php echo $cellId; ?>"
                                                     data-id="<?php echo $affiliateLink->id; ?>">
@@ -424,8 +541,8 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
         </table>
 
         <div id="table-content-values">
-
         </div>
+        <input type="text" id="header-options" name="header-options" hidden>
     </form>
 
     <button
