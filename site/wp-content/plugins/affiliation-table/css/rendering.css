@@ -3,9 +3,7 @@
 }
 
 .affiliation-table-affiliate-links {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+    display: inline-grid;
     padding-bottom: 10px;
 }
 
