@@ -24,6 +24,7 @@
 #table-content {
     margin-top: 1em;
     width: 100%;
+    table-layout: fixed;
 }
 
 .table-col-actions {
@@ -118,9 +119,10 @@
 }
 
 div[id^="cell-content-link-list-"] {
-    display: table-caption;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     width: 100%;
-    text-align: center;
     height: 80px;
     overflow: auto;
 }
@@ -134,6 +136,7 @@ div[id^="cell-content-link-list-"] {
     border-width: 0;
     border-radius: 3px;
     line-height: 32px;
+    max-height: 32px;
     cursor: pointer;
 }
 
