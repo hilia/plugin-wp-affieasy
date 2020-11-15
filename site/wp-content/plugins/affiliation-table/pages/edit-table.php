@@ -429,8 +429,8 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                     $row = $table->getContent()[$i];
 
                     $rowId = $isTableWithHeader ? $i : $i + 1; ?>
-                    <tr id="row-<?php echo $rowId; ?>">
-                        <td class="table-row-actions-cell sortable-row">
+                    <tr id="row-<?php echo $rowId; ?>" class="sortable-row">
+                        <th class="table-row-actions-cell">
                                 <span
                                         class="dashicons dashicons-editor-expand drag-row"
                                         title="Keep the mouse pressed to drag and drop the row">
@@ -446,8 +446,8 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                                     data-row-id="<?php echo $rowId; ?>"
                                     class="dashicons dashicons-plus action-button-add pointer"
                                     title="Add a row after this one">
-                                </span>
-                        </td>
+                            </span>
+                        </th>
                         <?php for ($j = 0; $j < count($row); $j++) {
                             $cellType = $row[$j]->type;
                             $cellValue = $row[$j]->value;
@@ -516,11 +516,11 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                                             data-cell-id="<?php echo $cellId; ?>">
                                         </span>
                                     <div id="cell-content-link-list-<?php echo $cellId; ?>">
-                                        <?php foreach ($affiliateLinks as $affiliateLink) {?>
+                                        <?php foreach ($affiliateLinks as $affiliateLink) { ?>
                                             <button
                                                     type="button"
                                                     class="affiliation-table-affiliate-link cell-content-link-list-button"
-                                                    <?php echo GenerationUtils::getAffiliateLinkStyle($affiliateLink); ?>
+                                                <?php echo GenerationUtils::getAffiliateLinkStyle($affiliateLink); ?>
                                                     title="Edit affiliate link"
                                                     data-cell-id="<?php echo $cellId; ?>"
                                                     data-id="<?php echo $affiliateLink->id; ?>">
