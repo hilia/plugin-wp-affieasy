@@ -50,8 +50,13 @@ class GenerationUtils
                     for ($j = 0; $j < count($row); $j++) {
                         $cellType = $row[$j]->type;
                         $cellValue = str_replace('&quot;', '"', $row[$j]->value);
-                        if (in_array($cellType, array(Constants::HTML, Constants::IMAGE))) { ?>
+                        if ($cellType === Constants::HTML) { ?>
                             <td><?php echo $cellValue; ?></td>
+                        <?php } else if ($cellType === Constants::IMAGE) { ?>
+                            <td><?php echo empty($cellValue) ?
+                                    '' :
+                                    substr($cellValue, 0, -1) . " class='affiliation-table-img'>"; ?>
+                            </td>
                         <?php } else if ($cellType === Constants::AFFILIATION) {
                             $affiliateLinks = json_decode($cellValue);
                             ?>
