@@ -371,7 +371,7 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
         <table id="table-content">
             <thead class="table-content-header">
             <tr id="column-row-buttons">
-                <th data-col-id="0"></th>
+                <th data-col-id="0" class="table-col-actions"></th>
                 <?php for ($i = 1; $i <= count($firstRow); $i++) { ?>
                     <th
                             id="table-col-actions-cell-<?php echo $i; ?>"
