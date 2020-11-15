@@ -30,6 +30,10 @@
     width: 20px;
 }
 
+.table-col-actions-cell {
+    padding: 0;
+}
+
 .table-col-actions-cell-content {
     display: flex;
     flex-direction: row;

@@ -161,7 +161,7 @@ jQuery(($) => {
         // Create the action cell on the top of the table
         const actionCell = $('<th>', {
             'data-col-id': colId,
-            class: 'sortable-column'
+            class: 'sortable-column table-col-actions-cell'
         }).append($('<div>', {
             class: 'table-col-actions-cell-content',
         }).append($('<div>', {

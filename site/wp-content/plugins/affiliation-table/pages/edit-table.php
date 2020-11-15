@@ -376,7 +376,7 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                     <th
                             id="table-col-actions-cell-<?php echo $i; ?>"
                             data-col-id="<?php echo $i; ?>"
-                            class="sortable-column">
+                            class="sortable-column table-col-actions-cell">
                         <div class="table-col-actions-cell-content">
                             <div class="table-col-actions-cell-content-drag">
                                     <span
