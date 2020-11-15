@@ -429,8 +429,8 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                     $row = $table->getContent()[$i];
 
                     $rowId = $isTableWithHeader ? $i : $i + 1; ?>
-                    <tr id="row-<?php echo $rowId; ?>" class="sortable-row">
-                        <th class="table-row-actions-cell">
+                    <tr id="row-<?php echo $rowId; ?>">
+                        <th class="table-row-actions-cell sortable-row">
                                 <span
                                         class="dashicons dashicons-editor-expand drag-row"
                                         title="Keep the mouse pressed to drag and drop the row">
