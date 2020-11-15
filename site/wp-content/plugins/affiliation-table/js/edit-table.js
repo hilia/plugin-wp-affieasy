@@ -212,6 +212,7 @@ jQuery(($) => {
 
         colIdInput.val(colId);
         initDragAndDropColumn();
+        updateHeaderStyle();
     }
 
     // Add a new row after the current row id
