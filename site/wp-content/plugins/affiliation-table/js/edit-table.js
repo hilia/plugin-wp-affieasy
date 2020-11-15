@@ -224,7 +224,6 @@ jQuery(($) => {
         // Create the new row and place it in the table
         const tableRow = $('<tr>', {
             id: 'row-' + rowIdString,
-            class: 'sortable-row'
         });
 
         const tableContentBody = $('#table-content-body');
@@ -237,8 +236,8 @@ jQuery(($) => {
         }
 
         // Create actions cell with add and remove button
-        tableRow.append($('<td>', {
-            class: 'table-row-actions-cell',
+        tableRow.append($('<th>', {
+            class: 'table-row-actions-cell sortable-row',
         }).append($('<span>', {
             class: 'dashicons dashicons-editor-expand drag-row',
             title: 'Keep the mouse pressed to drag and drop the row'
