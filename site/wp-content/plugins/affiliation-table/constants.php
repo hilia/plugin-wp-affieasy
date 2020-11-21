@@ -13,4 +13,13 @@ class Constants {
     const HTML = 'HTML';
     const IMAGE = 'IMAGE';
     const AFFILIATION = 'AFFILIATION';
+
+    const HEADER_FONT_WEIGHTS = array('lighter', 'normal', 'bold', 'bolder');
+
+    const HEADERS_TYPES = array(
+        'COLUMN_HEADER' => 'Column header',
+        'ROW_HEADER' => 'Row header',
+        'BOTH' => 'Both',
+        'NONE' => 'None'
+    );
 }

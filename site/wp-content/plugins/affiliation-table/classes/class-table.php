@@ -10,15 +10,15 @@ class Table
 
     private $id;
     private $name;
-    private $withHeader;
+    private $headerType;
     private $headerOptions;
     private $content;
 
-    function __construct($id = null, $name = null, $withHeader = null, $headerOptions = null, $content = null)
+    function __construct($id = null, $name = null, $headerType = null, $headerOptions = null, $content = null)
     {
         $this->id = $id;
         $this->name = $name;
-        $this->withHeader = $withHeader == 'on' || $withHeader == 1 ? 1 : 0;
+        $this->headerType = $headerType;
         $this->headerOptions = $headerOptions;
         $this->content = $content;
     }
@@ -33,9 +33,9 @@ class Table
         return $this->name;
     }
 
-    public function isWithHeader()
+    public function getHeaderType()
     {
-        return $this->withHeader;
+        return $this->headerType;
     }
 
     public function getHeaderOptions() {
@@ -67,12 +67,14 @@ class Table
             return 0;
         }
 
-        return ($this->withHeader == 1 ? count($this->content) - 1 : count($this->content)) * count($this->content[0]);
+        return (in_array($this->headerType, array('COLUMN_HEADER', 'BOTH')) ?
+                count($this->content) - 1 :
+                count($this->content)) * count($this->content[0]);
     }
 
     public function initDefaultContent()
     {
-        $this->withHeader = 1;
+        $this->headerType = 'COLUMN_HEADER';
 
         $this->headerOptions = (object)[
           'background' => $this->defaultHeaderBackgroundColor,

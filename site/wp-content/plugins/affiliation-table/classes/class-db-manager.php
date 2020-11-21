@@ -112,7 +112,7 @@ class DbManager
         dbDelta("CREATE TABLE " . Constants::TABLE_TABLE . " (
 			    id INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT,
 				name VARCHAR(255) NOT NULL,
-				withHeader BOOLEAN NOT NULL DEFAULT true,
+				headerType ENUM('COLUMN_HEADER', 'ROW_HEADER', 'BOTH', 'NONE') NOT NULL DEFAULT 'COLUMN_HEADER',
 				headerOptions JSON NOT NULL,
 				content JSON NOT NULL
 			);");
@@ -140,7 +140,7 @@ class DbManager
             }, $row);
         }, json_decode($table->content));
 
-        return new Table($tableId, $table->name, $table->withHeader, json_decode($table->headerOptions), $content);
+        return new Table($tableId, $table->name, $table->headerType, json_decode($table->headerOptions), $content);
     }
 
     public function edit_table($table)
@@ -151,7 +151,7 @@ class DbManager
 
         $values = array(
             "name" => $table->getName(),
-            "withHeader" => $table->isWithHeader(),
+            "headerType" => $table->getHeaderType(),
             "headerOptions" => str_replace('\\', '', $table->getHeaderOptions()),
             "content" => json_encode(array_map(function ($row) {
                 return array_map(function ($cell) {

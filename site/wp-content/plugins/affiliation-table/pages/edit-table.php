@@ -30,11 +30,9 @@ wp_enqueue_script(
     time()
 );
 
-$headerFontWeights = array('lighter', 'normal', 'bold', 'bolder');
-
 wp_enqueue_media();
 
-$table = new Table($_POST['id'], $_POST['name'], $_POST['with-header'], $_POST['header-options'], $_POST['content']);
+$table = new Table($_POST['id'], $_POST['name'], $_POST['header-type'], $_POST['header-options'], $_POST['content']);
 $errors = array();
 $dbManager = new DbManager();
 $webshops = $dbManager->get_webshop_list();
@@ -47,9 +45,9 @@ if ($isFromSaveAction) {
     }
 
     $isNullTableContent = $table->getContent() == null;
-    $isTableWithHeader = $table->isWithHeader() == 1;
+    $isTableWithColumnHeader = in_array($table->getHeaderType(), array('COLUMN_HEADER', 'BOTH'));
     $tableContentSize = $isNullTableContent ? 0 : count($table->getContent());
-    if ($isTableWithHeader && $tableContentSize < 2 || !$isTableWithHeader && $tableContentSize < 1) {
+    if ($isTableWithColumnHeader && $tableContentSize < 2 || !$isTableWithColumnHeader && $tableContentSize < 1) {
         array_push($errors, 'Table must contains at least one row');
     }
 
@@ -91,10 +89,12 @@ $firstRow = $table->getContent()[0];
 
 $tableId = $table->getId();
 $tableName = $table->getName();
+$headerType = $table->getHeaderType();
 $headerOptions = $table->getHeaderOptions();
 $hasHeaderOptions = !empty($headerOptions);
 
-$isTableWithHeader = $table->isWithHeader() == 1;
+$isTableWithColumnHeader = in_array($headerType, array('COLUMN_HEADER', 'BOTH'));
+$isTableWithRowHeader = in_array($headerType, array('ROW_HEADER', 'BOTH'));
 
 $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
 ?>
@@ -235,7 +235,7 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
             </th>
             <td>
                 <select id="header-font-weight">
-                    <?php foreach ($headerFontWeights as $fontWeight) { ?>
+                    <?php foreach (Constants::HEADER_FONT_WEIGHTS as $fontWeight) { ?>
                         <option
                                 value="<?php echo $fontWeight; ?>"
                             <?php echo $headerOptions->{'font-weight'} == $fontWeight ? 'selected' : ''; ?>>
@@ -302,6 +302,7 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                 value="<?php echo $isFromSaveActionOrNotNew ? count($table->getContent()) - 1 : 0 ?>">
         <input type="hidden" id="col-id" value="<?php echo count($firstRow); ?>">
         <input type="hidden" id="last-cell-id" value="<?php echo $table->getCellCount() ?>">
+        <input type="hidden" id="initial-header-type" value="<?php echo $table->getHeaderType() ?>">
 
         <table class="form-table" role="presentation">
             <?php if (!empty($tableId)) { ?>
@@ -345,16 +346,18 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
             </tr>
             <tr class="form-field">
                 <th scope="row">
-                    <label for="with-header">
-                        Table with header
+                    <label for="header-type">
+                        Header(s)
                     </label>
                 </th>
                 <td>
-                    <input
-                            type="checkbox"
-                            id="with-header"
-                            name="with-header"
-                        <?php echo $isTableWithHeader || !$isFromSaveActionOrNotNew ? 'checked' : '' ?>>
+                    <select id="header-type" name="header-type">
+                        <?php foreach (Constants::HEADERS_TYPES as $key => $value) { ?>
+                            <option value="<?php echo $key ?>">
+                                <?php echo $value?>
+                            </option>
+                        <?php } ?>
+                    </select>
                 </td>
             </tr>
         </table>
@@ -376,11 +379,26 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
         <table id="table-content">
             <thead class="table-content-header">
             <tr id="column-row-buttons">
-                <th data-col-id="0" class="table-col-actions"></th>
-                <?php for ($i = 1; $i <= count($firstRow); $i++) { ?>
+                <th class="table-col-actions"></th>
+                <th id="table-col-actions-cell-0" data-col-id="0" class="table-col-actions-cell table-content-header-row">
+                    <div class="table-col-actions-cell-content">
+                        <div class="table-col-actions-cell-content-drag"></div>
+                        <div class="table-col-actions-cell-content-actions">
+                            <span
+                                    id="button-col-add-0"
+                                    data-col-id="0"
+                                    class="dashicons dashicons-plus action-button-add pointer"
+                                    title="Add a column after header">
+                                    </span>
+                        </div>
+                    </div>
+                </th>
+                <?php for ($i = 0; $i < count($firstRow) - ($headerType === 'ROW_HEADER' ? 1 : 0); $i++) {
+                    $colId = $i + 1;
+                ?>
                     <th
-                            id="table-col-actions-cell-<?php echo $i; ?>"
-                            data-col-id="<?php echo $i; ?>"
+                            id="table-col-actions-cell-<?php echo $colId; ?>"
+                            data-col-id="<?php echo $colId; ?>"
                             class="sortable-column table-col-actions-cell">
                         <div class="table-col-actions-cell-content">
                             <div class="table-col-actions-cell-content-drag">
@@ -391,14 +409,14 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                             </div>
                             <div class="table-col-actions-cell-content-actions">
                                     <span
-                                            id="button-col-delete-<?php echo $i; ?>"
-                                            data-col-id="<?php echo $i; ?>"
+                                            id="button-col-delete-<?php echo $colId; ?>"
+                                            data-col-id="<?php echo $colId; ?>"
                                             class="dashicons dashicons-minus action-button-delete pointer"
                                             title="Delete column">
                                     </span>
                                 <span
-                                        id="button-col-add-<?php echo $i; ?>"
-                                        data-col-id="<?php echo $i; ?>"
+                                        id="button-col-add-<?php echo $colId; ?>"
+                                        data-col-id="<?php echo $colId; ?>"
                                         class="dashicons dashicons-plus action-button-add pointer"
                                         title="Add a column after this one">
                                     </span>
@@ -407,8 +425,8 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                     </th>
                 <?php } ?>
             </tr>
-            <tr id="row-0" <?php echo $isTableWithHeader ? '' : 'style="display: none"'; ?>>
-                <th class="table-row-actions-cell" data-col-id="0">
+            <tr id="row-0" <?php echo $isTableWithColumnHeader ? '' : 'style="display: none"'; ?>>
+                <th class="table-row-actions-cell">
                                 <span
                                         id="button-row-add-0"
                                         data-row-id="0"
@@ -416,13 +434,14 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                                         title="Add a row after header">
                                 </span>
                 </th>
-                <?php for ($i = 1; $i <= count($firstRow); $i++) { ?>
-                    <th class="table-header-cell" data-col-id="<?php echo $i; ?>">
+                <th class="table-header-cell table-content-header-row without-value" data-col-id="0"></th>
+                <?php for ($i = 0; $i < count($firstRow) - ($headerType === 'ROW_HEADER' ? 1 : 0); $i++) { ?>
+                    <th class="table-header-cell" data-col-id="<?php echo $i + 1; ?>">
                         <input
                                 type="text"
                                 class="table-header-cell-content"
                                 maxlength="255"
-                                value="<?php echo $isTableWithHeader ? $firstRow[$i - 1]->value : ''; ?>">
+                                value="<?php echo $isTableWithColumnHeader ? $firstRow[$i]->value : ''; ?>">
                     </th>
                 <?php } ?>
             </tr>
@@ -430,16 +449,16 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
             <tbody id="table-content-body">
             <?php if ($isFromSaveActionOrNotNew) {
                 $cellId = 1;
-                for ($i = $isTableWithHeader ? 1 : 0; $i < count($table->getContent()); $i++) {
+                for ($i = $isTableWithColumnHeader ? 1 : 0; $i < count($table->getContent()); $i++) {
                     $row = $table->getContent()[$i];
 
-                    $rowId = $isTableWithHeader ? $i : $i + 1; ?>
+                    $rowId = $isTableWithColumnHeader ? $i : $i + 1; ?>
                     <tr id="row-<?php echo $rowId; ?>">
                         <th class="table-row-actions-cell sortable-row">
-                                <span
-                                        class="dashicons dashicons-editor-expand drag-row"
-                                        title="Keep the mouse pressed to drag and drop the row">
-                                </span>
+                            <span
+                                    class="dashicons dashicons-editor-expand drag-row"
+                                    title="Keep the mouse pressed to drag and drop the row">
+                            </span>
                             <span
                                     id="button-row-delete-<?php echo $rowId; ?>"
                                     data-row-id="<?php echo $rowId; ?>"
@@ -453,15 +472,27 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                                     title="Add a row after this one">
                             </span>
                         </th>
-                        <?php for ($j = 0; $j < count($row); $j++) {
+                        <td
+                                id="cell-0"
+                                class="table-content-cell-html table-content-header-row"
+                                data-col-id="0"
+                                data-cell-type="<?php echo $row[1]->type; ?>">
+                                <input
+                                        type="text"
+                                        maxLength="255"
+                                        class="table-header-row-cell-content"
+                                        value="<?php echo $isTableWithRowHeader ? $row[0]->value : ''; ?>">
+                        </td>
+                        <?php for ($j = $isTableWithRowHeader ? 1 : 0; $j < count($row); $j++) {
                             $cellType = $row[$j]->type;
                             $cellValue = $row[$j]->value;
 
+                            $colId = $isTableWithRowHeader ? $j : $j + 1;
                             if ($cellType == Constants::HTML) { ?>
                                 <td
                                         id="cell-<?php echo $cellId; ?>"
                                         class="table-content-cell-html"
-                                        data-col-id="<?php echo $j + 1; ?>"
+                                        data-col-id="<?php echo $colId; ?>"
                                         data-cell-type="<?php echo $cellType; ?>">
                                     <textarea
                                             maxLength="2048"
@@ -471,7 +502,7 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                                 <td
                                         id="cell-<?php echo $cellId; ?>"
                                         class="table-content-cell-image"
-                                        data-col-id="<?php echo $j + 1; ?>"
+                                        data-col-id="<?php echo $colId; ?>"
                                         data-cell-type="<?php echo $cellType; ?>">
                                     <input
                                             id="cell-content-<?php echo $cellId; ?>"
@@ -507,7 +538,7 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                                 <td
                                         id="cell-<?php echo $cellId; ?>"
                                         class="table-content-cell-affiliation"
-                                        data-col-id="<?php echo $j + 1; ?>"
+                                        data-col-id="<?php echo $colId; ?>"
                                         data-cell-type="<?php echo $cellType; ?>">
                                     <input
                                             id="cell-content-<?php echo $cellId; ?>"

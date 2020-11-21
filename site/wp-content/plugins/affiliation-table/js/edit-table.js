@@ -13,7 +13,13 @@ jQuery(($) => {
     let columnDragger = null;
     let rowDragger = null;
 
-    displayOrHideHeaderRow();
+    // Force initial col-id
+    $('#col-id').val($('.table-header-cell-content').size());
+
+    // init header type value
+    $('#header-type').val($('#initial-header-type').val());
+
+    displayOrHideHeaders();
     updateHeaderStyle();
     initDragAndDropColumn();
     initDragAndDropRow();
@@ -29,9 +35,9 @@ jQuery(($) => {
     $('#link-background-color').minicolors({});
     $('#link-text-color').minicolors({});
 
-    // Add hide or display header row event
-    $('#with-header').on('change', () => {
-        displayOrHideHeaderRow();
+    // Add hide or display headers event
+    $('#header-type').on('change', () => {
+        displayOrHideHeaders();
     });
 
     // Open the creation row popover to add a row after the last
@@ -51,7 +57,7 @@ jQuery(($) => {
 
     // Open the header edition options modal
     $('#edit-header-options').on('click', () => {
-       openEditHeaderOptionsModal();
+        openEditHeaderOptionsModal();
     });
 
     // Add delete col events
@@ -97,20 +103,25 @@ jQuery(($) => {
     $('#button-row-0').on('click', null, {rowId: 0}, openAddRowPopover);
 
     $('#form').on('submit', () => {
-        $('tr[id*="row-"]').slice($('#with-header').is(':checked') ? 1 : 2)
-            .each((rowIndex, row) => {
-                $(row).children().slice(1).each((colIndex, cellContent) => {
-                    const jqueryElement = $(cellContent);
+        const headerType = $('#header-type').val();
 
-                    $('#table-content-values').append($('<input>', {
-                        type: 'text',
-                        name: 'content[' + rowIndex + '][]',
-                        value: JSON.stringify({
-                            type: jqueryElement.data('cell-type'),
-                            value: jqueryElement.children().first().val()
-                        })
-                    }));
-                });
+        $('tr[id*="row-"]').slice(['COLUMN_HEADER', 'BOTH'].includes(headerType) ? 1 : 2)
+            .each((rowIndex, row) => {
+                $(row).children().slice(['ROW_HEADER', 'BOTH'].includes(headerType) ? 1 : 2)
+                    .each((colIndex, cellContent) => {
+                        const jqueryElement = $(cellContent);
+
+                        if (!jqueryElement.hasClass('without-value')) {
+                            $('#table-content-values').append($('<input>', {
+                                type: 'text',
+                                name: 'content[' + rowIndex + '][]',
+                                value: JSON.stringify({
+                                    type: jqueryElement.data('cell-type'),
+                                    value: jqueryElement.children().first().val()
+                                })
+                            }));
+                        }
+                    });
             });
 
         $('#header-options').val(JSON.stringify({
@@ -126,17 +137,29 @@ jQuery(($) => {
         initAffiliateLinkInputsModal();
     });
 
-    // display or hide header row
-    function displayOrHideHeaderRow() {
-        const editHeaderOptions = $('#edit-header-options');
-        const tableContentHeader = $('#row-0');
+    // display or hide headers depending on selection
+    function displayOrHideHeaders() {
+        const headerType = $('#header-type').val();
 
-        if ($('#with-header').is(':checked')) {
-            editHeaderOptions.css('display', 'table-row');
-            tableContentHeader.css('display', 'table-row');
+        const headerColumnRow = $('#row-0');
+        if (['COLUMN_HEADER', 'BOTH'].includes(headerType)) {
+            headerColumnRow.show();
         } else {
-            editHeaderOptions.css('display', 'none');
-            tableContentHeader.css('display', 'none');
+            headerColumnRow.hide();
+        }
+
+        const headerRowsCells = $('.table-content-header-row');
+        if (['ROW_HEADER', 'BOTH'].includes(headerType)) {
+            headerRowsCells.show();
+        } else {
+            headerRowsCells.hide();
+        }
+
+        const headerOptionsButton = $('#edit-header-options');
+        if (headerType !== 'NONE') {
+            headerOptionsButton.show();
+        } else {
+            headerOptionsButton.hide();
         }
     }
 
@@ -156,7 +179,9 @@ jQuery(($) => {
         const colIdInput = $('#col-id');
         const colId = Number(colIdInput.val()) + 1;
 
-        const selectedColId = !!event && !!event.data && !!event.data.colId ? event.data.colId : null;
+        const selectedColId = !!event && !!event.data && (!!event.data.colId || event.data.colId === 0) ?
+            event.data.colId :
+            null;
 
         // Create the action cell on the top of the table
         const actionCell = $('<th>', {
@@ -193,7 +218,7 @@ jQuery(($) => {
             maxLength: 255
         }));
 
-        if (!!selectedColId) {
+        if (!!selectedColId || selectedColId === 0) {
             actionCell.insertAfter($('#column-row-buttons>th[data-col-id="' + selectedColId + '"]'));
             headerCell.insertAfter($('#row-0>th[data-col-id="' + selectedColId + '"]'));
 
@@ -251,8 +276,23 @@ jQuery(($) => {
             title: 'Add a row after this one'
         }).on('click', null, {rowId: rowIdString}, openAddRowPopover)));
 
+        // Add the header row cell (hidden if column header or none selected)
+        lastCellId++;
+        const headerType = $('#header-type').val();
+        tableRow.append($('<td>', {
+            id: 'cell-' + lastCellId,
+            class: 'table-content-cell-html table-content-header-row ',
+            style: ['ROW_HEADER', 'BOTH'].includes(headerType) ? '' : 'display: none',
+            'data-col-id': 0,
+            'data-cell-type': type,
+        }).append($('<input>', {
+            type: 'text',
+            maxLength: 255,
+            class: 'table-header-row-cell-content'
+        })));
+
         // Add cells to complete the row
-        $('.table-header-cell').each((index, element) => {
+        $('.table-header-cell').slice(1).each((index, element) => {
             tableRow.append(makeCell(type, $(element).data('col-id')));
         });
 
@@ -432,14 +472,14 @@ jQuery(($) => {
         $('#edit-header-options-modal').dialog({
             resizable: true,
             minWidth: 450,
-            minHeight : 400,
+            minHeight: 400,
             title: 'Edit header options',
             modal: true,
             buttons: {
-                'Cancel': function() {
+                'Cancel': function () {
                     $(this).dialog('close');
                 },
-                'Edit': function() {
+                'Edit': function () {
                     updateHeaderStyle();
                     $(this).dialog('close');
                 }
@@ -496,7 +536,7 @@ jQuery(($) => {
         $(this).dialog('close');
     }
 
-     // extract background color and color from affiliate link if parameters exists and return them as string
+    // extract background color and color from affiliate link if parameters exists and return them as string
     function getAffiliateLinkStyle(background, color) {
         if (!background && !color) {
             return null;
