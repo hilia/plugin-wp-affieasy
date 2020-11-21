@@ -72,6 +72,8 @@ class Table
 
     public function initDefaultContent()
     {
+        $this->withHeader = 1;
+
         $this->headerOptions = (object)[
           'background' => $this->defaultHeaderBackgroundColor,
           'color' => $this->defaultHeaderTextColor,

@@ -46,8 +46,9 @@ if ($isFromSaveAction) {
         array_push($errors, 'Name must not be empty');
     }
 
+    $isNullTableContent = $table->getContent() == null;
     $isTableWithHeader = $table->isWithHeader() == 1;
-    $tableContentSize = count($table->getContent());
+    $tableContentSize = $isNullTableContent ? 0 : count($table->getContent());
     if ($isTableWithHeader && $tableContentSize < 2 || !$isTableWithHeader && $tableContentSize < 1) {
         array_push($errors, 'Table must contains at least one row');
     }
@@ -55,21 +56,25 @@ if ($isFromSaveAction) {
     if (count($errors) == 0) {
         $table = $dbManager->edit_table($table);
     } else {
-        $table->setContent(array_map(function ($row) {
-            return array_map(function ($cell) {
-                $cellContent = json_decode(
-                    str_replace("\\", "",
-                        str_replace('\\\\\\"', "&quot;",
-                            str_replace('\\n', '&NewLine;', $cell))));
+        if ($isNullTableContent) {
+            $table->initDefaultContent();
+        } else {
+            $table->setContent(array_map(function ($row) {
+                return array_map(function ($cell) {
+                    $cellContent = json_decode(
+                        str_replace("\\", "",
+                            str_replace('\\\\\\"', "&quot;",
+                                str_replace('\\n', '&NewLine;', $cell))));
 
-                return (object)[
-                    'type' => $cellContent->type,
-                    'value' => $cellContent->value,
-                ];
-            }, $row);
-        }, $table->getContent()));
+                    return (object)[
+                        'type' => $cellContent->type,
+                        'value' => $cellContent->value,
+                    ];
+                }, $row);
+            }, $table->getContent()));
 
-        $table->setHeaderOptions(json_decode(str_replace('\\', '', $table->getHeaderOptions())));
+            $table->setHeaderOptions(json_decode(str_replace('\\', '', $table->getHeaderOptions())));
+        }
     }
 } else {
     $id = $_GET['id'];
