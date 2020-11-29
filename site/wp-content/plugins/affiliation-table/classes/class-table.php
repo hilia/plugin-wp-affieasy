@@ -77,10 +77,14 @@ class Table
         $this->headerType = 'COLUMN_HEADER';
 
         $this->headerOptions = (object)[
-          'background' => $this->defaultHeaderBackgroundColor,
-          'color' => $this->defaultHeaderTextColor,
-          'font-weight' => $this->defaultHeaderFontWeight,
-          'font-size' => $this->defaultHeaderFontSize
+          'column-background' => $this->defaultHeaderBackgroundColor,
+          'column-color' => $this->defaultHeaderTextColor,
+          'column-font-weight' => $this->defaultHeaderFontWeight,
+          'column-font-size' => $this->defaultHeaderFontSize,
+          'row-background' => $this->defaultHeaderBackgroundColor,
+          'row-color' => $this->defaultHeaderTextColor,
+          'row-font-weight' => $this->defaultHeaderFontWeight,
+          'row-font-size' => $this->defaultHeaderFontSize,
         ];
 
         $headerRow = array();

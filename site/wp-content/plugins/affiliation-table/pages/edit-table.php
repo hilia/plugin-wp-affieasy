@@ -199,73 +199,151 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
 
 <div id="edit-header-options-modal" hidden>
     <input type="hidden" autofocus>
-    <table class="form-table">
-        <tbody>
-        <tr>
-            <th scope="row">
-                <label for="header-background-color">
-                    Background color
-                </label>
-            </th>
-            <td>
-                <input
-                        type="text"
-                        id="header-background-color"
-                        value="<?php echo $hasHeaderOptions ? $headerOptions->background : null; ?>">
-            </td>
-        </tr>
-        <tr>
-            <th scope="row">
-                <label for="header-text-color">
-                    Text color
-                </label>
-            </th>
-            <td>
-                <input
-                        type="text"
-                        id="header-text-color"
-                        value="<?php echo $hasHeaderOptions ? $headerOptions->color : null; ?>">
-            </td>
-        </tr>
-        <tr>
-            <th scope="row">
-                <label for="header-font-weight">
-                    Font weight
-                </label>
-            </th>
-            <td>
-                <select id="header-font-weight">
-                    <?php foreach (Constants::HEADER_FONT_WEIGHTS as $fontWeight) { ?>
-                        <option
-                                value="<?php echo $fontWeight; ?>"
-                            <?php echo $headerOptions->{'font-weight'} == $fontWeight ? 'selected' : ''; ?>>
-                            <?php echo ucfirst($fontWeight); ?>
-                        </option>
-                    <?php } ?>
-                </select>
-            </td>
-        </tr>
+    <div id="edit-header-options-modal-column-options">
+        <h3 class="wp-heading-inline">Column header options</h3>
+        <table class="form-table">
+            <tbody>
+            <tr>
+                <th scope="row">
+                    <label for="header-column-background">
+                        Background color
+                    </label>
+                </th>
+                <td>
+                    <input
+                            type="text"
+                            id="header-column-background"
+                            value="<?php echo $hasHeaderOptions ? $headerOptions->{'column-background'} : null; ?>">
+                </td>
+            </tr>
 
-        <tr>
-            <th scope="row">
-                <label for="header-font-size">
-                    Font size
-                </label>
-            </th>
-            <td>
-                <select id="header-font-size">
-                    <?php for ($fontSize = 10; $fontSize <= 35; $fontSize++) { ?>
-                        <option
-                                value="<?php echo $fontSize . 'px'; ?>"
-                            <?php echo $headerOptions->{'font-size'} == $fontSize ? 'selected' : ''; ?>>
-                            <?php echo $fontSize; ?>
-                        </option>
-                    <?php } ?>
-                </select>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+            <tr>
+                <th scope="row">
+                    <label for="header-column-color">
+                        Text color
+                    </label>
+                </th>
+                <td>
+                    <input
+                            type="text"
+                            id="header-column-color"
+                            value="<?php echo $hasHeaderOptions ? $headerOptions->{'column-color'} : null; ?>">
+                </td>
+            </tr>
+
+            <tr>
+                <th scope="row">
+                    <label for="header-column-font-weight">
+                        Font weight
+                    </label>
+                </th>
+                <td>
+                    <select id="header-column-font-weight">
+                        <?php foreach (Constants::HEADER_FONT_WEIGHTS as $fontWeight) { ?>
+                            <option
+                                    value="<?php echo $fontWeight; ?>"
+                                <?php echo $headerOptions->{'column-font-weight'} == $fontWeight ? 'selected' : ''; ?>>
+                                <?php echo ucfirst($fontWeight); ?>
+                            </option>
+                        <?php } ?>
+                    </select>
+                </td>
+            </tr>
+
+            <tr>
+                <th scope="row">
+                    <label for="header-column-font-size">
+                        Font size
+                    </label>
+                </th>
+                <td>
+                    <select id="header-column-font-size">
+                        <?php for ($fontSize = 10; $fontSize <= 35; $fontSize++) { ?>
+                            <option
+                                    value="<?php echo $fontSize . 'px'; ?>"
+                                <?php echo $headerOptions->{'column-font-size'} == $fontSize ? 'selected' : ''; ?>>
+                                <?php echo $fontSize; ?>
+                            </option>
+                        <?php } ?>
+                    </select>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div id="edit-header-options-modal-row-options">
+        <h3 class="wp-heading-inline">Row header options</h3>
+        <table class="form-table">
+            <tbody>
+            <tr>
+                <th scope="row">
+                    <label for="header-row-background">
+                        Background color
+                    </label>
+                </th>
+                <td>
+                    <input
+                            type="text"
+                            id="header-row-background"
+                            value="<?php echo $hasHeaderOptions ? $headerOptions->{'row-background'} : null; ?>">
+                </td>
+            </tr>
+
+            <tr>
+                <th scope="row">
+                    <label for="header-row-color">
+                        Text color
+                    </label>
+                </th>
+                <td>
+                    <input
+                            type="text"
+                            id="header-row-color"
+                            value="<?php echo $hasHeaderOptions ? $headerOptions->{'row-color'} : null; ?>">
+                </td>
+            </tr>
+
+            <tr>
+                <th scope="row">
+                    <label for="header-row-font-weight">
+                        Font weight
+                    </label>
+                </th>
+                <td>
+                    <select id="header-row-font-weight">
+                        <?php foreach (Constants::HEADER_FONT_WEIGHTS as $fontWeight) { ?>
+                            <option
+                                    value="<?php echo $fontWeight; ?>"
+                                <?php echo $headerOptions->{'row-font-weight'} == $fontWeight ? 'selected' : ''; ?>>
+                                <?php echo ucfirst($fontWeight); ?>
+                            </option>
+                        <?php } ?>
+                    </select>
+                </td>
+            </tr>
+
+            <tr>
+                <th scope="row">
+                    <label for="header-row-font-size">
+                        Font size
+                    </label>
+                </th>
+                <td>
+                    <select id="header-row-font-size">
+                        <?php for ($fontSize = 10; $fontSize <= 35; $fontSize++) { ?>
+                            <option
+                                    value="<?php echo $fontSize . 'px'; ?>"
+                                <?php echo $headerOptions->{'row-font-size'} == $fontSize ? 'selected' : ''; ?>>
+                                <?php echo $fontSize; ?>
+                            </option>
+                        <?php } ?>
+                    </select>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
 
 <div class="wrap">
@@ -354,7 +432,7 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                     <select id="header-type" name="header-type">
                         <?php foreach (Constants::HEADERS_TYPES as $key => $value) { ?>
                             <option value="<?php echo $key ?>">
-                                <?php echo $value?>
+                                <?php echo $value ?>
                             </option>
                         <?php } ?>
                     </select>
@@ -380,7 +458,8 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
             <thead class="table-content-header">
             <tr id="column-row-buttons">
                 <th class="table-col-actions"></th>
-                <th id="table-col-actions-cell-0" data-col-id="0" class="table-col-actions-cell table-content-header-row">
+                <th id="table-col-actions-cell-0" data-col-id="0"
+                    class="table-col-actions-cell table-content-header-row">
                     <div class="table-col-actions-cell-content">
                         <div class="table-col-actions-cell-content-drag"></div>
                         <div class="table-col-actions-cell-content-actions">
@@ -395,7 +474,7 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                 </th>
                 <?php for ($i = 0; $i < count($firstRow) - ($headerType === 'ROW_HEADER' ? 1 : 0); $i++) {
                     $colId = $i + 1;
-                ?>
+                    ?>
                     <th
                             id="table-col-actions-cell-<?php echo $colId; ?>"
                             data-col-id="<?php echo $colId; ?>"
@@ -434,7 +513,7 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                                         title="Add a row after header">
                                 </span>
                 </th>
-                <th class="table-header-cell table-content-header-row without-value" data-col-id="0"></th>
+                <th class="table-header-cell table-content-header-row header-without-value" data-col-id="0"></th>
                 <?php for ($i = 0; $i < count($firstRow) - ($headerType === 'ROW_HEADER' ? 1 : 0); $i++) { ?>
                     <th class="table-header-cell" data-col-id="<?php echo $i + 1; ?>">
                         <input
@@ -477,11 +556,11 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                                 class="table-content-cell-html table-content-header-row"
                                 data-col-id="0"
                                 data-cell-type="<?php echo $row[1]->type; ?>">
-                                <input
-                                        type="text"
-                                        maxLength="255"
-                                        class="table-header-row-cell-content"
-                                        value="<?php echo $isTableWithRowHeader ? $row[0]->value : ''; ?>">
+                            <input
+                                    type="text"
+                                    maxLength="255"
+                                    class="table-header-row-cell-content"
+                                    value="<?php echo $isTableWithRowHeader ? $row[0]->value : ''; ?>">
                         </td>
                         <?php for ($j = $isTableWithRowHeader ? 1 : 0; $j < count($row); $j++) {
                             $cellType = $row[$j]->type;
@@ -578,7 +657,8 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
 
         <div id="table-content-values">
         </div>
-        <input type="text" id="header-options" name="header-options" hidden>
+        <input type="text" id="header-options" name="header-options" value='<?php echo json_encode($headerOptions); ?>'
+               hidden>
     </form>
 
     <button

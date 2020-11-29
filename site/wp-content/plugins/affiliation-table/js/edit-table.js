@@ -30,8 +30,10 @@ jQuery(($) => {
     addRecaluclationLinkEvents();
 
     //init color pickers
-    $('#header-background-color').minicolors({});
-    $('#header-text-color').minicolors({});
+    $('#header-column-background').minicolors({});
+    $('#header-column-color').minicolors({});
+    $('#header-row-background').minicolors({});
+    $('#header-row-color').minicolors({});
     $('#link-background-color').minicolors({});
     $('#link-text-color').minicolors({});
 
@@ -111,7 +113,7 @@ jQuery(($) => {
                     .each((colIndex, cellContent) => {
                         const jqueryElement = $(cellContent);
 
-                        if (!jqueryElement.hasClass('without-value')) {
+                        if (!jqueryElement.hasClass('header-without-value')) {
                             $('#table-content-values').append($('<input>', {
                                 type: 'text',
                                 name: 'content[' + rowIndex + '][]',
@@ -123,13 +125,6 @@ jQuery(($) => {
                         }
                     });
             });
-
-        $('#header-options').val(JSON.stringify({
-            background: $('#header-background-color').val(),
-            color: $('#header-text-color').val(),
-            'font-weight': $('#header-font-weight').val(),
-            'font-size': $('#header-font-size').val()
-        }));
     });
 
     // Init variable parameters when webshop change (edition modal)
@@ -142,17 +137,23 @@ jQuery(($) => {
         const headerType = $('#header-type').val();
 
         const headerColumnRow = $('#row-0');
+        const editHeaderOptionsModalColumnOptions = $('#edit-header-options-modal-column-options');
         if (['COLUMN_HEADER', 'BOTH'].includes(headerType)) {
             headerColumnRow.show();
+            editHeaderOptionsModalColumnOptions.show();
         } else {
             headerColumnRow.hide();
+            editHeaderOptionsModalColumnOptions.hide();
         }
 
         const headerRowsCells = $('.table-content-header-row');
+        const editHeaderOptionsModalRowOptions = $('#edit-header-options-modal-row-options');
         if (['ROW_HEADER', 'BOTH'].includes(headerType)) {
             headerRowsCells.show();
+            editHeaderOptionsModalRowOptions.show();
         } else {
             headerRowsCells.hide();
+            editHeaderOptionsModalRowOptions.hide();
         }
 
         const headerOptionsButton = $('#edit-header-options');
@@ -163,15 +164,25 @@ jQuery(($) => {
         }
     }
 
-    // Update header style : background color and text color
+    // Update headers styles : background color, text color, font weight, and font size (for column and row headers)
     function updateHeaderStyle() {
-        const background = $('#header-background-color').val();
-        $('.table-header-cell').css('background', background);
-        $('.table-header-cell-content')
-            .css('background', background)
-            .css('color', $('#header-text-color').val())
-            .css('font-weight', $('#header-font-weight').val())
-            .css('font-size', $('#header-font-size').val());
+        // Column header options
+        const columnBackground = $('#header-column-background').val();
+        $('.table-header-cell:not(.without-value)').css('background', columnBackground);
+        $('.table-header-cell-content:not(.without-value)')
+            .css('background', columnBackground)
+            .css('color', $('#header-column-color').val())
+            .css('font-weight', $('#header-column-font-weight').val())
+            .css('font-size', $('#header-column-font-size').val());
+
+        // Row header options
+        const rowBackground = $('#header-row-background').val();
+        $('.table-content-header-row:not(.without-value)').css('background', rowBackground);
+        $('.table-header-row-cell-content:not(.without-value)')
+            .css('background', rowBackground)
+            .css('color', $('#header-row-color').val())
+            .css('font-weight', $('#header-row-font-weight').val())
+            .css('font-size', $('#header-row-font-size').val());
     }
 
     // Add a new column after the specified column id
@@ -298,6 +309,7 @@ jQuery(($) => {
 
         rowIdInput.val(rowId);
         initDragAndDropRow();
+        updateHeaderStyle();
     }
 
     // Create cell depending on the type
@@ -469,6 +481,8 @@ jQuery(($) => {
 
     // Open modal wich edit headerOptions
     function openEditHeaderOptionsModal() {
+        initHeaderOptionsModalParameters();
+
         $('#edit-header-options-modal').dialog({
             resizable: true,
             minWidth: 450,
@@ -480,11 +494,42 @@ jQuery(($) => {
                     $(this).dialog('close');
                 },
                 'Edit': function () {
+                    $('#header-options').val(JSON.stringify({
+                        'column-background': $('#header-column-background').val(),
+                        'column-color': $('#header-column-color').val(),
+                        'column-font-weight': $('#header-column-font-weight').val(),
+                        'column-font-size': $('#header-column-font-size').val(),
+                        'row-background': $('#header-row-background').val(),
+                        'row-color': $('#header-row-color').val(),
+                        'row-font-weight': $('#header-row-font-weight').val(),
+                        'row-font-size': $('#header-row-font-size').val(),
+                    }));
+
                     updateHeaderStyle();
                     $(this).dialog('close');
                 }
             },
         });
+    }
+
+    // Init header options modal parameter fields
+    function initHeaderOptionsModalParameters() {
+        Object.entries(JSON.parse($('#header-options').val()))
+            .filter(([key,]) => !!key)
+            .forEach(([key, value]) => {
+                    if (key.endsWith('font-size')) {
+                        $('#header-' + key + ' option[value="' + value + '"]').prop("selected", true);
+                    } else {
+                        const input = $('#header-' + key);
+                        const stringValue = !!value ? value.toString() : '';
+
+                        input.val(stringValue);
+                        if (!key.endsWith('font-weight')) {
+                            input.next().children().css('background-color', stringValue);
+                        }
+                    }
+                }
+            );
     }
 
     // Add new affiliate link in the selected cell
