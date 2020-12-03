@@ -114,7 +114,8 @@ class DbManager
 				name VARCHAR(255) NOT NULL,
 				headerType ENUM('COLUMN_HEADER', 'ROW_HEADER', 'BOTH', 'NONE') NOT NULL DEFAULT 'COLUMN_HEADER',
 				headerOptions JSON NOT NULL,
-				content JSON NOT NULL
+				content JSON NOT NULL,
+				responsiveBreakpoint INTEGER
 			);");
     }
 
@@ -140,7 +141,14 @@ class DbManager
             }, $row);
         }, json_decode($table->content));
 
-        return new Table($tableId, $table->name, $table->headerType, json_decode($table->headerOptions), $content);
+        return new Table(
+            $tableId,
+            $table->name,
+            $table->headerType,
+            json_decode($table->headerOptions),
+            $content,
+            $table->responsiveBreakpoint
+        );
     }
 
     public function edit_table($table)
@@ -149,6 +157,7 @@ class DbManager
 
         $tableId = $table->getId();
 
+        $responsiveBreakpoint = $table->getResponsiveBreakpoint();
         $values = array(
             "name" => $table->getName(),
             "headerType" => $table->getHeaderType(),
@@ -159,8 +168,10 @@ class DbManager
                         str_replace("\\", "",
                             str_replace('\\\\\\"', "&quot;",
                                 str_replace('\\n', '&NewLine;', $cell))));
+
                 }, $row);
-            }, $table->getContent())));
+            }, $table->getContent())),
+            "responsiveBreakpoint" => is_numeric($responsiveBreakpoint) ? $responsiveBreakpoint : null);
 
         if (empty($tableId)) {
             $this->db->insert(Constants::TABLE_TABLE, $values);

@@ -32,7 +32,15 @@ wp_enqueue_script(
 
 wp_enqueue_media();
 
-$table = new Table($_POST['id'], $_POST['name'], $_POST['header-type'], $_POST['header-options'], $_POST['content']);
+$table = new Table(
+        $_POST['id'],
+        $_POST['name'],
+        $_POST['header-type'],
+        $_POST['header-options'],
+        $_POST['content'],
+        $_POST['responsive-breakpoint']
+);
+
 $errors = array();
 $dbManager = new DbManager();
 $webshops = $dbManager->get_webshop_list();
@@ -49,6 +57,11 @@ if ($isFromSaveAction) {
     $tableContentSize = $isNullTableContent ? 0 : count($table->getContent());
     if ($isTableWithColumnHeader && $tableContentSize < 2 || !$isTableWithColumnHeader && $tableContentSize < 1) {
         array_push($errors, 'Table must contains at least one row');
+    }
+
+    $responsiveBreakpoint = $table->getResponsiveBreakpoint();
+    if ($responsiveBreakpoint !== '' && (!is_numeric($responsiveBreakpoint) || $responsiveBreakpoint < 0)) {
+        array_push($errors, 'Responsive breakpoint must be a positive number');
     }
 
     if (count($errors) == 0) {
@@ -385,7 +398,7 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
         <table class="form-table" role="presentation">
             <?php if (!empty($tableId)) { ?>
                 <tr class="form-field">
-                    <th scope="row">
+                    <th scope="row" class="general-form-label">
                         <label for="name">
                             Tag
                             <span
@@ -397,7 +410,7 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                     <td>
                         <input
                                 type="text"
-                                class="name-input"
+                                class="general-input"
                                 maxlength="255"
                                 disabled
                                 value="<?php echo $table->getTag(); ?>">
@@ -406,7 +419,7 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
             <?php } ?>
 
             <tr class="form-field">
-                <th scope="row">
+                <th scope="row" class="general-form-label">
                     <label for="name">
                         Name
                         <span class="description">(required)</span>
@@ -417,25 +430,45 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                             type="text"
                             name="name"
                             id="name"
-                            class="name-input"
+                            class="general-input"
                             maxlength="255"
                             value="<?php echo $tableName; ?>">
                 </td>
             </tr>
             <tr class="form-field">
-                <th scope="row">
+                <th scope="row" class="general-form-label">
                     <label for="header-type">
                         Header(s)
                     </label>
                 </th>
                 <td>
-                    <select id="header-type" name="header-type">
+                    <select id="header-type" name="header-type" class="general-input">
                         <?php foreach (Constants::HEADERS_TYPES as $key => $value) { ?>
                             <option value="<?php echo $key ?>">
                                 <?php echo $value ?>
                             </option>
                         <?php } ?>
                     </select>
+                </td>
+            </tr>
+            <tr>
+                <th scope="row" class="general-form-label">
+                    <label for="name">
+                        Responsive breakpoint
+                        <span
+                                class="dashicons dashicons-info"
+                                title="Select below wich resolution the table take its responsive form (in pixels)">
+                                </span>
+                    </label>
+                </th>
+                <td>
+                    <input
+                            type="text"
+                            name="responsive-breakpoint"
+                            id="responsive-breakpoint"
+                            class="general-input"
+                            maxlength="5"
+                            value="<?php echo $table->getResponsiveBreakpoint(); ?>">
                 </td>
             </tr>
         </table>

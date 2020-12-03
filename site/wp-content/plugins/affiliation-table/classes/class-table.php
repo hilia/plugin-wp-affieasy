@@ -13,14 +13,16 @@ class Table
     private $headerType;
     private $headerOptions;
     private $content;
+    private $responsiveBreakpoint;
 
-    function __construct($id = null, $name = null, $headerType = null, $headerOptions = null, $content = null)
+    function __construct($id = null, $name = null, $headerType = null, $headerOptions = null, $content = null, $responsiveBreakpoint = null)
     {
         $this->id = $id;
         $this->name = $name;
         $this->headerType = $headerType;
         $this->headerOptions = $headerOptions;
         $this->content = $content;
+        $this->responsiveBreakpoint = $responsiveBreakpoint;
     }
 
     public function getId()
@@ -54,6 +56,10 @@ class Table
     public function setContent($content)
     {
         $this->content = $content;
+    }
+
+    public function getResponsiveBreakpoint() {
+        return $this->responsiveBreakpoint;
     }
 
     public function getTag()
