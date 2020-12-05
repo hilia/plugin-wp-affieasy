@@ -23,7 +23,7 @@ $webshopList = new WebshopList();
 
 <div id="dialog-confirm-delete" title="Confirmation" hidden>
     <p>
-        Are you sure you want to delete the webshop?
+        Are you sure you want to delete the webshop (all related links will be removed)?
     </p>
 </div>
 

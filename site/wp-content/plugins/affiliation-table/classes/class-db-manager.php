@@ -11,6 +11,7 @@ class DbManager
     }
 
     /****************************** General functions ******************************/
+
     public function table_exists($tableName)
     {
         return !empty($this->db->get_var("SHOW TABLES LIKE '" . $tableName . "'"));
@@ -39,7 +40,7 @@ class DbManager
 
     public function get_webshop_list()
     {
-        return array_map(function($webshop) {
+        return array_map(function ($webshop) {
             return new Webshop(
                 intval($webshop['id']),
                 $webshop['name'],
@@ -54,7 +55,7 @@ class DbManager
     public function get_webshop_page($currentPage, $perPage)
     {
         $sql = $this->db->prepare(
-            "SELECT * FROM " . Constants::TABLE_WEBSHOP . " ORDER BY id DESC LIMIT %d, %d",
+            "SELECT id, name FROM " . Constants::TABLE_WEBSHOP . " ORDER BY id DESC LIMIT %d, %d",
             array((($currentPage - 1) * $perPage), $perPage));
 
         return $this->db->get_results($sql, ARRAY_A);
@@ -102,9 +103,11 @@ class DbManager
     public function delete_webshop($id)
     {
         $this->db->delete(Constants::TABLE_WEBSHOP, array('id' => $id));
+        $this->remove_affiliate_links_in_table_by_webshop_id($id);
     }
 
     /****************************** Table functions ******************************/
+
     public function create_table_table()
     {
         require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
@@ -119,10 +122,24 @@ class DbManager
 			);");
     }
 
+    public function get_table_list()
+    {
+        return array_map(function ($table) {
+            return new Table(
+                intval($table['id']),
+                $table['name'],
+                $table['headerType'],
+                json_decode($table['headerOptions']),
+                $this->table_row_content_to_table_content($table['content']),
+                $table['responsiveBreakpoint']
+            );
+        }, $this->db->get_results('SELECT * FROM ' . Constants::TABLE_TABLE, ARRAY_A));
+    }
+
     public function get_table_page($currentPage, $perPage)
     {
         $sql = $this->db->prepare(
-            "SELECT * FROM " . Constants::TABLE_TABLE . " ORDER BY id DESC LIMIT %d, %d",
+            "SELECT id, name FROM " . Constants::TABLE_TABLE . " ORDER BY id DESC LIMIT %d, %d",
             array((($currentPage - 1) * $perPage), $perPage));
 
         return $this->db->get_results($sql, ARRAY_A);
@@ -133,25 +150,17 @@ class DbManager
         $sql = $this->db->prepare("SELECT * FROM " . Constants::TABLE_TABLE . " WHERE id=%d", array($id));
         $table = $this->db->get_row($sql);
 
-        $tableId = $table->id;
-
-        $content = empty($tableId) ? null : array_map(function ($row) {
-            return array_map(function ($cell) {
-                return $cell;
-            }, $row);
-        }, json_decode($table->content));
-
         return new Table(
-            $tableId,
+            $table->id,
             $table->name,
             $table->headerType,
             json_decode($table->headerOptions),
-            $content,
+            $this->table_row_content_to_table_content($table->content),
             $table->responsiveBreakpoint
         );
     }
 
-    public function edit_table($table)
+    public function edit_table($table, $isUpdateFromWebshopEdition)
     {
         require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
 
@@ -161,14 +170,15 @@ class DbManager
         $values = array(
             "name" => $table->getName(),
             "headerType" => $table->getHeaderType(),
-            "headerOptions" => str_replace('\\', '', $table->getHeaderOptions()),
-            "content" => json_encode(array_map(function ($row) {
+            "headerOptions" => $isUpdateFromWebshopEdition ?
+                json_encode($table->getHeaderOptions()) :
+                str_replace('\\', '', $table->getHeaderOptions()),
+            "content" => json_encode($isUpdateFromWebshopEdition ? $table->getContent() : array_map(function ($row) {
                 return array_map(function ($cell) {
                     return json_decode(
                         str_replace("\\", "",
                             str_replace('\\\\\\"', "&quot;",
                                 str_replace('\\n', '&NewLine;', $cell))));
-
                 }, $row);
             }, $table->getContent())),
             "responsiveBreakpoint" => is_numeric($responsiveBreakpoint) ? $responsiveBreakpoint : null);
@@ -188,4 +198,54 @@ class DbManager
     {
         $this->db->delete(Constants::TABLE_TABLE, array('id' => $id));
     }
+
+    private function remove_affiliate_links_in_table_by_webshop_id($id)
+    {
+        foreach ($this->get_table_list() as $table) {
+            $shouldUpdate = false;
+            $updatedContent = array();
+
+            foreach ($table->getContent() as $rows) {
+                $updatedRow = array();
+                $isFirst = true;
+
+                foreach ($rows as $cell) {
+                    if ($cell->type === Constants::AFFILIATION && (!in_array($table->getHeaderType(), array('ROW_HEADER', 'BOTH')) || !$isFirst)) {
+                        $affiliateLinks = array();
+
+                        foreach (json_decode(str_replace("&quot;", '"', $cell->value)) as $affiliateLink) {
+                            if ($affiliateLink->webshopId == $id) {
+                                $shouldUpdate = true;
+                            } else {
+                                array_push($affiliateLinks, $affiliateLink);
+                            }
+                        }
+                        $cell->value = json_encode(str_replace('"', '&quot;', $affiliateLinks));
+                    }
+
+                    $isFirst = false;
+                    array_push($updatedRow, $cell);
+                }
+                array_push($updatedContent, $updatedRow);
+            }
+
+            $table->setContent($updatedContent);
+
+            if ($shouldUpdate) {
+                $table->setContent($updatedContent);
+                $this->edit_table($table, true);
+            }
+        }
+    }
+
+    /****************************** Utils functions ******************************/
+    private function table_row_content_to_table_content($tableRowContent)
+    {
+        return empty($tableRowContent) ? null : array_map(function ($row) {
+            return array_map(function ($cell) {
+                return $cell;
+            }, $row);
+        }, json_decode($tableRowContent));
+    }
+
 }

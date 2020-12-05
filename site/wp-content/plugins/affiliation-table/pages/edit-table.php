@@ -65,7 +65,7 @@ if ($isFromSaveAction) {
     }
 
     if (count($errors) == 0) {
-        $table = $dbManager->edit_table($table);
+        $table = $dbManager->edit_table($table, false);
     } else {
         if ($isNullTableContent) {
             $table->initDefaultContent();
