@@ -14,7 +14,7 @@ class Constants {
     const IMAGE = 'IMAGE';
     const AFFILIATION = 'AFFILIATION';
 
-    const HEADER_FONT_WEIGHTS = array('lighter', 'normal', 'bold', 'bolder');
+    const HEADER_FONT_WEIGHTS = array('normal', 'bold', 'bolder');
 
     const HEADERS_TYPES = array(
         'COLUMN_HEADER' => 'Column header',

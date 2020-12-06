@@ -4,6 +4,7 @@ jQuery(($) => {
     const IMAGE = 'IMAGE';
 
     let lastCellId = $('#last-cell-id').val();
+    let hasNoWebshop = $('#has-no-webshop').val();
 
     let currentRowId = null;
     let currentCellId = null;
@@ -460,14 +461,22 @@ jQuery(($) => {
                 $(this).dialog('close');
             }
 
-            const buttons = !!affilitateLinkValue ? {
-                'Edit': updateAffiliateLink,
-                'Remove': removeAffiliateLink,
-                'Cancel': cancel()
-            } : {
-                'Add': addAffiliateLink,
-                'Cancel': cancel()
-            };
+            let buttons;
+
+            if (hasNoWebshop) {
+             buttons = {
+                 'Close': cancel()
+             };
+            } else {
+                buttons = !!affilitateLinkValue ? {
+                    'Edit': updateAffiliateLink,
+                    'Remove': removeAffiliateLink,
+                    'Cancel': cancel()
+                } : {
+                    'Add': addAffiliateLink,
+                    'Cancel': cancel()
+                };
+            }
 
             $('#edit-affiliation-link-modal').dialog({
                 resizable: true,
@@ -708,6 +717,10 @@ jQuery(($) => {
 
     // Clear and add preferences / selected values in the edit affiliation links modal depending on the selected webshop
     function initAffiliateLinkInputsModal(affilitateLinkValue) {
+        if (hasNoWebshop) {
+            return;
+        }
+
         let selectedWebshop = $("#webshop-select option:selected");
 
         if (!!affilitateLinkValue) {

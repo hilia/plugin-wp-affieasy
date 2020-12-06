@@ -113,101 +113,108 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
 ?>
 
 <div id="edit-affiliation-link-modal" hidden>
-    <table class="form-table">
-        <tbody id="edit-affiliation-link-modal-body">
-        <tr id="webshop-row">
-            <th scope="row">
-                <label for="webshop-select">
-                    Select webshop
-                </label>
-            </th>
-            <td>
-                <select id="webshop-select">
-                    <?php foreach ($webshops as $webshop) { ?>
-                        <option
-                                value="<?php echo $webshop->getId(); ?>"
-                                data-url="<?php echo $webshop->getUrl(); ?>"
-                                data-parameters="<?php echo implode('|||', $webshop->getParameters()); ?>"
-                                data-link-text-preference="<?php echo $webshop->getLinkTextPreference(); ?>"
-                                data-background-color-preference="<?php echo $webshop->getBackgroundColorPreference(); ?>"
-                                data-text-color-preference="<?php echo $webshop->getTextColorPreference(); ?>">
-                            <?php echo $webshop->getName(); ?>
-                        </option>
-                    <?php } ?>
-                </select>
-            </td>
-        </tr>
-        <tr>
-            <th scope="row">
-                <label>
-                    Link text
-                </label>
-            </th>
-            <td>
-                <input
-                        type="text"
-                        id="link-text-input"
-                        maxlength="255">
-            </td>
-        </tr>
-        <tr>
-            <th scope="row">
-                <label for="link-background-color">
-                    Background color
-                </label>
-            </th>
-            <td>
-                <input
-                        type="text"
-                        id="link-background-color">
-            </td>
-        </tr>
-        <tr id="link-text-color-row">
-            <th scope="row">
-                <label for="link-text-color">
-                    Text color
-                </label>
-            </th>
-            <td>
-                <input
-                        type="text"
-                        id="link-text-color">
-            </td>
-        </tr>
-        <?php
-        if (!$hasNoWebShop && !empty($webshops[0]->getParameters())) {
-            foreach ($webshops[0]->getParameters() as $parameter) { ?>
-                <tr class="affiliation-parameter-row">
-                    <th scope="row">
-                        <label>
-                            <?php echo $parameter; ?>
-                        </label>
-                    </th>
-                    <td>
-                        <input
-                                type="text"
-                                class="affiliation-parameter-input"
-                                maxlength="255"
-                                data-parameter="<?php echo $parameter; ?>"
-                                value="">
-                    </td>
-                </tr>
-            <?php } ?>
-            <tr>
+    <?php if ($hasNoWebShop) { ?>
+        <p>
+            <span class="dashicons dashicons-info"></span>
+            Add webshops to use this functionnality.
+        </p>
+    <?php } else { ?>
+        <table class="form-table">
+            <tbody id="edit-affiliation-link-modal-body">
+            <tr id="webshop-row">
                 <th scope="row">
-                    <label for="affiliation-link-overview">
-                        Link overview
+                    <label for="webshop-select">
+                        Select webshop
                     </label>
                 </th>
-
-                <td id="affiliation-link-overview">
-                    <?php echo $webshops[0]->getUrl(); ?>
+                <td>
+                    <select id="webshop-select">
+                        <?php foreach ($webshops as $webshop) { ?>
+                            <option
+                                    value="<?php echo $webshop->getId(); ?>"
+                                    data-url="<?php echo $webshop->getUrl(); ?>"
+                                    data-parameters="<?php echo implode('|||', $webshop->getParameters()); ?>"
+                                    data-link-text-preference="<?php echo $webshop->getLinkTextPreference(); ?>"
+                                    data-background-color-preference="<?php echo $webshop->getBackgroundColorPreference(); ?>"
+                                    data-text-color-preference="<?php echo $webshop->getTextColorPreference(); ?>">
+                                <?php echo $webshop->getName(); ?>
+                            </option>
+                        <?php } ?>
+                    </select>
                 </td>
             </tr>
-        <?php }
-        ?>
-        </tbody>
-    </table>
+            <tr>
+                <th scope="row">
+                    <label>
+                        Link text
+                    </label>
+                </th>
+                <td>
+                    <input
+                            type="text"
+                            id="link-text-input"
+                            maxlength="255">
+                </td>
+            </tr>
+            <tr>
+                <th scope="row">
+                    <label for="link-background-color">
+                        Background color
+                    </label>
+                </th>
+                <td>
+                    <input
+                            type="text"
+                            id="link-background-color">
+                </td>
+            </tr>
+            <tr id="link-text-color-row">
+                <th scope="row">
+                    <label for="link-text-color">
+                        Text color
+                    </label>
+                </th>
+                <td>
+                    <input
+                            type="text"
+                            id="link-text-color">
+                </td>
+            </tr>
+            <?php
+            if (!empty($webshops[0]->getParameters())) {
+                foreach ($webshops[0]->getParameters() as $parameter) { ?>
+                    <tr class="affiliation-parameter-row">
+                        <th scope="row">
+                            <label>
+                                <?php echo $parameter; ?>
+                            </label>
+                        </th>
+                        <td>
+                            <input
+                                    type="text"
+                                    class="affiliation-parameter-input"
+                                    maxlength="255"
+                                    data-parameter="<?php echo $parameter; ?>"
+                                    value="">
+                        </td>
+                    </tr>
+                <?php } ?>
+                <tr>
+                    <th scope="row">
+                        <label for="affiliation-link-overview">
+                            Link overview
+                        </label>
+                    </th>
+
+                    <td id="affiliation-link-overview">
+                        <?php echo $webshops[0]->getUrl(); ?>
+                    </td>
+                </tr>
+            <?php }
+            ?>
+            </tbody>
+        </table>
+    <?php } ?>
 </div>
 
 <div id="edit-header-options-modal" hidden>
@@ -390,10 +397,11 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
         <input
                 type="hidden"
                 id="row-id"
-                value="<?php echo $isFromSaveActionOrNotNew ? count($table->getContent()) - 1 : 0 ?>">
+                value="<?php echo $isFromSaveActionOrNotNew ? count($table->getContent()) - 1 : 0; ?>">
         <input type="hidden" id="col-id" value="<?php echo count($firstRow); ?>">
-        <input type="hidden" id="last-cell-id" value="<?php echo $table->getCellCount() ?>">
-        <input type="hidden" id="initial-header-type" value="<?php echo $table->getHeaderType() ?>">
+        <input type="hidden" id="last-cell-id" value="<?php echo $table->getCellCount(); ?>">
+        <input type="hidden" id="initial-header-type" value="<?php echo $table->getHeaderType(); ?>">
+        <input type="hidden" id="has-no-webshop" value="<?php echo $hasNoWebShop; ?>">
 
         <table class="form-table" role="presentation">
             <?php if (!empty($tableId)) { ?>
@@ -722,7 +730,7 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                         type="button"
                         id="add-affiliation-row"
                         class="button-primary add-row-popover-button <?php echo $hasNoWebShop ? 'disabled' : '' ?>"
-                    <?php echo $hasNoWebShop ? 'title="Create webshops to use this functionnality" disabled' : '' ?>>
+                    <?php echo $hasNoWebShop ? 'title="Add webshops to use this functionnality" disabled' : '' ?>>
                     Affiliate links
                     <?php if ($hasNoWebShop) { ?>
                         <span class="dashicons dashicons-info dashicons-button-disabled"></span>
