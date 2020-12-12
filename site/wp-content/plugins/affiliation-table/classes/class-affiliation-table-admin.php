@@ -103,7 +103,7 @@ class AffiliationTableAdmin
         if ($table->getId() == null) { ?>
             <h6>Table not found.</h6>
         <?php } else {
-            GenerationUtils::generateTable($table);
+            GenerationUtils::generate_table($table);
         }
 
         return ob_get_clean();

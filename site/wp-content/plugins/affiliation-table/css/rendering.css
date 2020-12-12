@@ -1,25 +1,40 @@
-.affiliation-table-table {
-    text-align: center;
+.affieasy-table {
+    display: grid;
+    border: 1px solid #c2c2c2;
+    border-bottom: none;
+    border-right: none;
+    max-width: 100%!important;
 }
 
-.affiliation-table-affiliate-links {
-    display: inline-grid;
-    padding-bottom: 10px;
+.affieasy-table-cell {
+    border-right: 1px solid #c2c2c2;
+    border-bottom: 1px solid #c2c2c2;
+
+    display: flex!important;
+    align-items: center!important;
+    justify-content: center!important;
 }
 
-.affiliation-table-affiliate-link {
+.affieasy-table-cell-links {
+    flex-direction: column;
+    padding: 15px;
+}
+
+.affieasy-table-cell-link {
     white-space: nowrap;
     text-decoration: none;
     border-radius: 3px;
     padding: 7px 15px;
-    margin-top: 10px;
 }
 
-.affiliation-table-affiliate-link:hover {
-    opacity: 0.9;
+.affieasy-table-cell-link-with-margin {
+    margin-top: 15px;
 }
 
-.affiliation-table-img {
-    margin-left: auto;
-    margin-right: auto;
+.affieasy-table-cell-link-icon {
+    line-height: inherit!important;
+}
+
+.affieasy-table-cell-link:hover {
+    opacity: 0.8;
 }

@@ -1,8 +1,8 @@
 <?php
 
 class Constants {
-    const TABLE_WEBSHOP = 'wp_affieasy_table_webshop';
-    const TABLE_TABLE = 'wp_affieasy_table_table';
+    const TABLE_WEBSHOP = 'wp_affieasy_webshop';
+    const TABLE_TABLE = 'wp_affieasy_table';
 
     const ITEMS_PER_PAGE = 10;
 
@@ -13,6 +13,9 @@ class Constants {
     const HTML = 'HTML';
     const IMAGE = 'IMAGE';
     const AFFILIATION = 'AFFILIATION';
+
+    const COLUMN = 'COLUMN';
+    const ROW = 'ROW';
 
     const HEADER_FONT_WEIGHTS = array('normal', 'bold', 'bolder');
 

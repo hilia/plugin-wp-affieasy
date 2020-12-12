@@ -676,7 +676,7 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                                             <button
                                                     type="button"
                                                     class="affiliation-table-affiliate-link cell-content-link-list-button"
-                                                <?php echo GenerationUtils::getAffiliateLinkStyle($affiliateLink); ?>
+                                                <?php echo GenerationUtils::get_affiliate_link_style($affiliateLink); ?>
                                                     title="Edit affiliate link"
                                                     data-cell-id="<?php echo $cellId; ?>"
                                                     data-id="<?php echo $affiliateLink->id; ?>">
