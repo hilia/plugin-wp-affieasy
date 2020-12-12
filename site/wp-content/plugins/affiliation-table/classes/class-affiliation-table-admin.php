@@ -16,7 +16,7 @@ class AffiliationTableAdmin
 
         add_action('admin_menu', array($this, 'add_menus_page_affiliation_table'));
 
-        add_shortcode(Constants::TABLE_TAG, array($this, 'affiliation_table_content_callback'));
+        add_shortcode(Constants::TABLE_TAG, array($this, 'affieasy_table_content_callback'));
 
         wp_enqueue_style(
             'rendering-style',
@@ -39,8 +39,8 @@ class AffiliationTableAdmin
     public function add_menus_page_affiliation_table()
     {
         add_menu_page(
-            'Affiliation',
-            'Affiliation',
+            'AffiEasy',
+            'AffiEasy',
             'manage_options',
             'affiliation-table-table',
             array($this, 'display_table_pages'),
@@ -95,7 +95,7 @@ class AffiliationTableAdmin
         }
     }
 
-    public function affiliation_table_content_callback($atts)
+    public function affieasy_table_content_callback($atts)
     {
         ob_start();
 
