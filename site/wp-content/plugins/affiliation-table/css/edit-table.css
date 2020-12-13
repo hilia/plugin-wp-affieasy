@@ -1,9 +1,14 @@
+.general-table-options {
+    display: flex;
+    flex-direction: row;
+}
+
 .general-form-label {
     width: 215px!important;
 }
 
 .general-input {
-    width: 25em !important;
+    width: 19em !important;
 }
 
 #edition-panel {

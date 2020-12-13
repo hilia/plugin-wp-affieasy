@@ -118,7 +118,8 @@ class DbManager
 				headerType ENUM('COLUMN_HEADER', 'ROW_HEADER', 'BOTH', 'NONE') NOT NULL DEFAULT 'COLUMN_HEADER',
 				headerOptions JSON NOT NULL,
 				content JSON NOT NULL,
-				responsiveBreakpoint INTEGER
+				responsiveBreakpoint INTEGER,
+				maxWidth INTEGER
 			);");
     }
 
@@ -131,7 +132,8 @@ class DbManager
                 $table['headerType'],
                 json_decode($table['headerOptions']),
                 $this->table_row_content_to_table_content($table['content']),
-                $table['responsiveBreakpoint']
+                $table['responsiveBreakpoint'],
+                $table['maxWidth']
             );
         }, $this->db->get_results('SELECT * FROM ' . Constants::TABLE_TABLE, ARRAY_A));
     }
@@ -156,7 +158,8 @@ class DbManager
             $table->headerType,
             json_decode($table->headerOptions),
             $this->table_row_content_to_table_content($table->content),
-            $table->responsiveBreakpoint
+            $table->responsiveBreakpoint,
+            $table->maxWidth
         );
     }
 
@@ -167,6 +170,7 @@ class DbManager
         $tableId = $table->getId();
 
         $responsiveBreakpoint = $table->getResponsiveBreakpoint();
+        $maxWidth = $table->getMaxWidth();
         $values = array(
             "name" => $table->getName(),
             "headerType" => $table->getHeaderType(),
@@ -181,7 +185,8 @@ class DbManager
                                 str_replace('\\n', '&NewLine;', $cell))));
                 }, $row);
             }, $table->getContent())),
-            "responsiveBreakpoint" => is_numeric($responsiveBreakpoint) ? $responsiveBreakpoint : null);
+            "responsiveBreakpoint" => is_numeric($responsiveBreakpoint) ? $responsiveBreakpoint : null,
+            "maxWidth" => is_numeric($maxWidth) ? $maxWidth : null);
 
         if (empty($tableId)) {
             $this->db->insert(Constants::TABLE_TABLE, $values);

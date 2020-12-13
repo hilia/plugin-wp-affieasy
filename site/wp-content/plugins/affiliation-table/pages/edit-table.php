@@ -38,7 +38,8 @@ $table = new Table(
         $_POST['header-type'],
         $_POST['header-options'],
         $_POST['content'],
-        $_POST['responsive-breakpoint']
+        $_POST['responsive-breakpoint'],
+        $_POST['max-width']
 );
 
 $errors = array();
@@ -62,6 +63,11 @@ if ($isFromSaveAction) {
     $responsiveBreakpoint = $table->getResponsiveBreakpoint();
     if ($responsiveBreakpoint !== '' && (!is_numeric($responsiveBreakpoint) || $responsiveBreakpoint < 0)) {
         array_push($errors, 'Responsive breakpoint must be a positive number');
+    }
+
+    $maxWidth = $table->getMaxWidth();
+    if ($maxWidth !== '' && (!is_numeric($maxWidth) || $maxWidth < 0)) {
+        array_push($errors, 'Max width must be a positive number');
     }
 
     if (count($errors) == 0) {
@@ -403,83 +409,110 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
         <input type="hidden" id="initial-header-type" value="<?php echo $table->getHeaderType(); ?>">
         <input type="hidden" id="has-no-webshop" value="<?php echo $hasNoWebShop; ?>">
 
-        <table class="form-table" role="presentation">
-            <?php if (!empty($tableId)) { ?>
+        <div class="general-table-options">
+            <table class="form-table" role="presentation">
+                <?php if (!empty($tableId)) { ?>
+                    <tr class="form-field">
+                        <th scope="row" class="general-form-label">
+                            <label for="name">
+                                Tag
+                                <span
+                                        class="dashicons dashicons-info"
+                                        title="Put this tag in your page to include the table">
+                                </span>
+                            </label>
+                        </th>
+                        <td>
+                            <input
+                                    type="text"
+                                    class="general-input"
+                                    maxlength="255"
+                                    disabled
+                                    value="<?php echo $table->getTag(); ?>">
+                        </td>
+                    </tr>
+                <?php } ?>
+
                 <tr class="form-field">
                     <th scope="row" class="general-form-label">
                         <label for="name">
-                            Tag
+                            Name
+                            <span class="description">(required)</span>
+                        </label>
+                    </th>
+                    <td>
+                        <input
+                                type="text"
+                                name="name"
+                                id="name"
+                                class="general-input"
+                                maxlength="255"
+                                value="<?php echo $tableName; ?>">
+                    </td>
+                </tr>
+
+                <tr class="form-field">
+                    <th scope="row" class="general-form-label">
+                        <label for="header-type">
+                            Header(s)
+                        </label>
+                    </th>
+                    <td>
+                        <select id="header-type" name="header-type" class="general-input">
+                            <?php foreach (Constants::HEADERS_TYPES as $key => $value) { ?>
+                                <option value="<?php echo $key ?>">
+                                    <?php echo $value ?>
+                                </option>
+                            <?php } ?>
+                        </select>
+                    </td>
+                </tr>
+            </table>
+
+            <table class="form-table" role="presentation">
+                <tr>
+                    <th scope="row" class="general-form-label">
+                        <label for="name">
+                            Max width
                             <span
                                     class="dashicons dashicons-info"
-                                    title="Put this tag in your page to include the table">
+                                    title="Max width in pixels allowed for the table (100% of available space if not filled)">
                                 </span>
                         </label>
                     </th>
                     <td>
                         <input
                                 type="text"
+                                name="max-width"
+                                id="max-width"
                                 class="general-input"
-                                maxlength="255"
-                                disabled
-                                value="<?php echo $table->getTag(); ?>">
+                                maxlength="5"
+                                value="<?php echo $table->getMaxWidth(); ?>">
                     </td>
                 </tr>
-            <?php } ?>
 
-            <tr class="form-field">
-                <th scope="row" class="general-form-label">
-                    <label for="name">
-                        Name
-                        <span class="description">(required)</span>
-                    </label>
-                </th>
-                <td>
-                    <input
-                            type="text"
-                            name="name"
-                            id="name"
-                            class="general-input"
-                            maxlength="255"
-                            value="<?php echo $tableName; ?>">
-                </td>
-            </tr>
-            <tr class="form-field">
-                <th scope="row" class="general-form-label">
-                    <label for="header-type">
-                        Header(s)
-                    </label>
-                </th>
-                <td>
-                    <select id="header-type" name="header-type" class="general-input">
-                        <?php foreach (Constants::HEADERS_TYPES as $key => $value) { ?>
-                            <option value="<?php echo $key ?>">
-                                <?php echo $value ?>
-                            </option>
-                        <?php } ?>
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <th scope="row" class="general-form-label">
-                    <label for="name">
-                        Responsive breakpoint
-                        <span
-                                class="dashicons dashicons-info"
-                                title="Select below wich resolution the table take its responsive form (in pixels)">
+                <tr>
+                    <th scope="row" class="general-form-label">
+                        <label for="name">
+                            Responsive breakpoint
+                            <span
+                                    class="dashicons dashicons-info"
+                                    title="Resolution in pixels below wich the table take its responsive form">
                                 </span>
-                    </label>
-                </th>
-                <td>
-                    <input
-                            type="text"
-                            name="responsive-breakpoint"
-                            id="responsive-breakpoint"
-                            class="general-input"
-                            maxlength="5"
-                            value="<?php echo $table->getResponsiveBreakpoint(); ?>">
-                </td>
-            </tr>
-        </table>
+                        </label>
+                    </th>
+                    <td>
+                        <input
+                                type="text"
+                                name="responsive-breakpoint"
+                                id="responsive-breakpoint"
+                                class="general-input"
+                                maxlength="5"
+                                value="<?php echo $table->getResponsiveBreakpoint(); ?>">
+                    </td>
+                </tr>
+            </table>
+        </div>
 
         <div class="action-buttons">
             <button id="add-row-after-last" type="button" class="page-title-action">

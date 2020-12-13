@@ -14,8 +14,16 @@ class Table
     private $headerOptions;
     private $content;
     private $responsiveBreakpoint;
+    private $maxWidth;
 
-    function __construct($id = null, $name = null, $headerType = null, $headerOptions = null, $content = null, $responsiveBreakpoint = null)
+    function __construct(
+        $id = null,
+        $name = null,
+        $headerType = null,
+        $headerOptions = null,
+        $content = null,
+        $responsiveBreakpoint = null,
+        $maxWidth = null)
     {
         $this->id = $id;
         $this->name = $name;
@@ -23,6 +31,7 @@ class Table
         $this->headerOptions = $headerOptions;
         $this->content = $content;
         $this->responsiveBreakpoint = $responsiveBreakpoint;
+        $this->maxWidth = $maxWidth;
     }
 
     public function getId()
@@ -58,8 +67,14 @@ class Table
         $this->content = $content;
     }
 
-    public function getResponsiveBreakpoint() {
+    public function getResponsiveBreakpoint()
+    {
         return $this->responsiveBreakpoint;
+    }
+
+    public function getMaxWidth()
+    {
+        return $this->maxWidth;
     }
 
     public function getTag()

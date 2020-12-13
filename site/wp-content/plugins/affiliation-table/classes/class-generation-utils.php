@@ -2,7 +2,6 @@
 
 class GenerationUtils
 {
-
     // extract background color and color from affiliate link if parameters exists and return style="color:.." or empty
     static function get_affiliate_link_style($affiliateLink)
     {
@@ -32,7 +31,7 @@ class GenerationUtils
         $rowHeaderStyle = GenerationUtils::get_header_style(Constants::ROW, $table->getHeaderOptions())
         ?>
 
-        <div class="affieasy-table" <?php echo GenerationUtils::get_table_style($columnCount); ?>>
+        <div class="affieasy-table" <?php echo GenerationUtils::get_table_style($table, $columnCount); ?>>
             <?php if ($isTableWithBothHeader) { ?>
                 <div class="affieasy-table-cell" <?php echo $columnHeaderStyle; ?>></div>
             <?php } ?>
@@ -80,9 +79,12 @@ class GenerationUtils
         <?php
     }
 
-    private static function get_table_style($columnCount)
+    private static function get_table_style($table, $columnCount)
     {
-        return 'style="grid-template-columns: repeat(' . $columnCount . ', auto);"';
+        $maxWidth = $table->getMaxWidth();
+        $style = is_numeric($maxWidth) && $maxWidth > 0 ? 'max-width: ' . $maxWidth . 'px!important;' : '';
+
+        return 'style="' . $style . 'grid-template-columns: repeat(' . $columnCount . ', auto);"';
     }
 
     private static function get_header_style($headerType, $headerOptions)

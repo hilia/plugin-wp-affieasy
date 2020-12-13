@@ -9,6 +9,8 @@
 .affieasy-table-cell {
     border-right: 1px solid #c2c2c2;
     border-bottom: 1px solid #c2c2c2;
+    min-width: 50px;
+    min-height: 30px;
 
     display: flex!important;
     align-items: center!important;
@@ -24,7 +26,7 @@
     white-space: nowrap;
     text-decoration: none;
     border-radius: 3px;
-    padding: 7px 15px;
+    padding: 3px 15px;
 }
 
 .affieasy-table-cell-link-with-margin {
