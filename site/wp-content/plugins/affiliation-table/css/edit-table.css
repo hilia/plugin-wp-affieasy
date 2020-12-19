@@ -216,3 +216,36 @@ div[id^="cell-content-link-list-"] {
 .pointer {
     cursor: pointer;
 }
+
+@media screen and (max-width: 1396px) {
+    .form-table {
+        margin-top: 0;
+    }
+
+    .form-table th,
+    .form-table td {
+        display: block;
+        width: auto;
+        vertical-align: middle;
+    }
+
+    .form-table th {
+        padding: 20px 0 0;
+    }
+
+    .form-table td {
+        padding: 5px 0;
+        border: 0;
+        margin: 0;
+    }
+
+    .action-buttons {
+        margin-top: 2em;
+    }
+}
+
+@media screen and (max-width: 643px) {
+    .general-table-options {
+        flex-direction: column;
+    }
+}
