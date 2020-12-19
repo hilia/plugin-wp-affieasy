@@ -225,7 +225,8 @@ class DbManager
                                 array_push($affiliateLinks, $affiliateLink);
                             }
                         }
-                        $cell->value = json_encode(str_replace('"', '&quot;', $affiliateLinks));
+
+                        $cell->value = str_replace('\\', '', str_replace('"' , '&quot;', json_encode($affiliateLinks)));
                     }
 
                     $isFirst = false;
