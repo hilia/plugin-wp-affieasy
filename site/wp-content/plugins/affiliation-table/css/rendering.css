@@ -1,20 +1,48 @@
 .affieasy-table {
-    display: grid!important;
+    display: grid;
     border: 1px solid #c2c2c2!important;
     border-bottom: none!important;
     border-right: none!important;
     max-width: 100%!important;
 }
 
+.affieasy-table-responsive-column-none {
+    border-top: 1px solid #c2c2c2!important;
+    border-left: 1px solid #c2c2c2!important;
+    display: flex;
+    flex-direction: column;
+}
+
+.affieasy-table-responsive-row {
+    border-top: 1px solid #c2c2c2!important;
+    border-left: 1px solid #c2c2c2!important;
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+}
+
+.affieasy-table-responsive-both {
+    border-top: 1px solid #c2c2c2!important;
+    border-left: 1px solid #c2c2c2!important;
+    display: grid;
+    grid-template-columns: repeat(2, [col-start] auto);
+    grid-template-rows: 1fr;
+}
+
+.affieasy-table-responsive-both-title {
+    grid-column: col-start / span 2;
+}
+
 .affieasy-table-cell {
     border-right: 1px solid #c2c2c2!important;
     border-bottom: 1px solid #c2c2c2!important;
+
     min-width: 50px!important;
     min-height: 30px!important;
 
     display: flex!important;
     align-items: center!important;
     justify-content: center!important;
+    padding: 5px!important;
 }
 
 .affieasy-table-cell-links {
