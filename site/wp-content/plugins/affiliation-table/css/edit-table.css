@@ -217,6 +217,11 @@ div[id^="cell-content-link-list-"] {
     cursor: pointer;
 }
 
+.informations {
+    text-align: center;
+    margin-top: 10px;
+}
+
 @media screen and (max-width: 1396px) {
     .form-table {
         margin-top: 0;

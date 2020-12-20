@@ -2,7 +2,9 @@
 
 class Table
 {
+    private $defaultHeaderType = 'COLUMN_HEADER';
     private $defaultTableColumnNumber = 4;
+    private $defaultBackgroundColor = '#ffffff';
     private $defaultHeaderBackgroundColor = '#707070';
     private $defaultHeaderTextColor = '#ffffff';
     private $defaultHeaderFontWeight = 'bold';
@@ -15,6 +17,7 @@ class Table
     private $content;
     private $responsiveBreakpoint;
     private $maxWidth;
+    private $backgroundColor;
 
     function __construct(
         $id = null,
@@ -23,7 +26,8 @@ class Table
         $headerOptions = null,
         $content = null,
         $responsiveBreakpoint = null,
-        $maxWidth = null)
+        $maxWidth = null,
+        $backgroundColor = null)
     {
         $this->id = $id;
         $this->name = $name;
@@ -32,6 +36,7 @@ class Table
         $this->content = $content;
         $this->responsiveBreakpoint = $responsiveBreakpoint;
         $this->maxWidth = $maxWidth;
+        $this->backgroundColor = $backgroundColor;
     }
 
     public function getId()
@@ -77,6 +82,10 @@ class Table
         return $this->maxWidth;
     }
 
+    public function getBackgroundColor() {
+        return $this->backgroundColor;
+    }
+
     public function getTag()
     {
         return '[' . Constants::TABLE_TAG . ' id=' . $this->id . ']';
@@ -95,7 +104,8 @@ class Table
 
     public function initDefaultContent()
     {
-        $this->headerType = 'COLUMN_HEADER';
+        $this->headerType = $this->defaultHeaderType;
+        $this->backgroundColor = $this->defaultBackgroundColor;
 
         $this->headerOptions = (object)[
           'column-background' => $this->defaultHeaderBackgroundColor,

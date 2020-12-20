@@ -119,7 +119,8 @@ class DbManager
 				headerOptions JSON NOT NULL,
 				content JSON NOT NULL,
 				responsiveBreakpoint INTEGER,
-				maxWidth INTEGER
+				maxWidth INTEGER,
+				backgroundColor VARCHAR(10)
 			);");
     }
 
@@ -133,7 +134,8 @@ class DbManager
                 json_decode($table['headerOptions']),
                 $this->table_row_content_to_table_content($table['content']),
                 $table['responsiveBreakpoint'],
-                $table['maxWidth']
+                $table['maxWidth'],
+                $table['backgroundColor']
             );
         }, $this->db->get_results('SELECT * FROM ' . Constants::TABLE_TABLE, ARRAY_A));
     }
@@ -159,7 +161,8 @@ class DbManager
             json_decode($table->headerOptions),
             $this->table_row_content_to_table_content($table->content),
             $table->responsiveBreakpoint,
-            $table->maxWidth
+            $table->maxWidth,
+            $table->backgroundColor
         );
     }
 
@@ -171,6 +174,7 @@ class DbManager
 
         $responsiveBreakpoint = $table->getResponsiveBreakpoint();
         $maxWidth = $table->getMaxWidth();
+        $backgroundColor = $table->getBackgroundColor();
         $values = array(
             "name" => $table->getName(),
             "headerType" => $table->getHeaderType(),
@@ -186,7 +190,8 @@ class DbManager
                 }, $row);
             }, $table->getContent())),
             "responsiveBreakpoint" => is_numeric($responsiveBreakpoint) ? $responsiveBreakpoint : null,
-            "maxWidth" => is_numeric($maxWidth) ? $maxWidth : null);
+            "maxWidth" => is_numeric($maxWidth) ? $maxWidth : null,
+            "backgroundColor" => empty($backgroundColor) ? null : $backgroundColor);
 
         if (empty($tableId)) {
             $this->db->insert(Constants::TABLE_TABLE, $values);

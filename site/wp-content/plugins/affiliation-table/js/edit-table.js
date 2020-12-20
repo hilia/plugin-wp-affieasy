@@ -31,6 +31,7 @@ jQuery(($) => {
     addRecaluclationLinkEvents();
 
     //init color pickers
+    $('#background-color').minicolors({});
     $('#header-column-background').minicolors({});
     $('#header-column-color').minicolors({});
     $('#header-row-background').minicolors({});

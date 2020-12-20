@@ -33,13 +33,14 @@ wp_enqueue_script(
 wp_enqueue_media();
 
 $table = new Table(
-        $_POST['id'],
-        $_POST['name'],
-        $_POST['header-type'],
-        $_POST['header-options'],
-        $_POST['content'],
-        $_POST['responsive-breakpoint'],
-        $_POST['max-width']
+    $_POST['id'],
+    $_POST['name'],
+    $_POST['header-type'],
+    $_POST['header-options'],
+    $_POST['content'],
+    $_POST['responsive-breakpoint'],
+    $_POST['max-width'],
+    $_POST['background-color']
 );
 
 $errors = array();
@@ -498,7 +499,7 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                             <span
                                     class="dashicons dashicons-info"
                                     title="Resolution in pixels below wich the table take its responsive form">
-                                </span>
+                            </span>
                         </label>
                     </th>
                     <td>
@@ -509,6 +510,23 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                                 class="general-input"
                                 maxlength="5"
                                 value="<?php echo $table->getResponsiveBreakpoint(); ?>">
+                    </td>
+                </tr>
+
+                <tr>
+                    <th scope="row">
+                        <label for="name">
+                            Background color
+                        </label>
+                    </th>
+                    <td>
+                        <input
+                                type="text"
+                                name="background-color"
+                                id="background-color"
+                                class="general-input"
+                                maxlength="10"
+                                value="<?php echo $table->getBackgroundColor(); ?>">
                     </td>
                 </tr>
             </table>
@@ -729,10 +747,24 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
             </tbody>
         </table>
 
+        <div class="informations">
+            <i>
+                <span class="dashicons dashicons-info"></span>
+                <span class="informations-text">
+                    For better clarity, background color modifications are not visible into the editor.
+                    Rendering can be slightly different depending on the theme applied.
+                </span>
+            </i>
+        </div>
+
         <div id="table-content-values">
         </div>
-        <input type="text" id="header-options" name="header-options" value='<?php echo json_encode($headerOptions); ?>'
-               hidden>
+        <input
+                type="text"
+                id="header-options"
+                name="header-options"
+                value='<?php echo json_encode($headerOptions); ?>'
+                hidden>
     </form>
 
     <button

@@ -31,7 +31,7 @@ class GenerationUtils
         $rowHeaderStyle = GenerationUtils::get_header_style(Constants::ROW, $table->getHeaderOptions())
         ?>
 
-        <div class="affieasy-table" <?php echo GenerationUtils::get_table_style($table, $columnCount); ?>>
+        <div class="affieasy-table" <?php echo GenerationUtils::get_table_style($table->getMaxWidth(), $columnCount); ?>>
             <?php if ($isTableWithBothHeader) { ?>
                 <div class="affieasy-table-cell" <?php echo $columnHeaderStyle; ?>></div>
             <?php } ?>
@@ -47,7 +47,14 @@ class GenerationUtils
                         $affiliateLinks = json_decode($cellValue);
                         $isFirst = true;
                         ?>
-                        <div class="affieasy-table-cell affieasy-table-cell-links">
+                        <div class="affieasy-table-cell affieasy-table-cell-links"  <?php echo GenerationUtils::get_style_to_apply(
+                            $i,
+                            $j,
+                            $table->getBackgroundColor(),
+                            $isTableWithColumnHeader,
+                            $isTableWithRowHeader,
+                            $columnHeaderStyle,
+                            $rowHeaderStyle) ?>>
                             <?php foreach ($affiliateLinks as $affiliateLink) {?>
                                 <a
                                         href="<?php echo $affiliateLink->url; ?>"
@@ -65,6 +72,7 @@ class GenerationUtils
                         <div class="affieasy-table-cell" <?php echo GenerationUtils::get_style_to_apply(
                             $i,
                             $j,
+                            $table->getBackgroundColor(),
                             $isTableWithColumnHeader,
                             $isTableWithRowHeader,
                             $columnHeaderStyle,
@@ -79,10 +87,12 @@ class GenerationUtils
         <?php
     }
 
-    private static function get_table_style($table, $columnCount)
+    private static function get_table_style($maxWidth, $columnCount)
     {
-        $maxWidth = $table->getMaxWidth();
-        $style = is_numeric($maxWidth) && $maxWidth > 0 ? 'max-width: ' . $maxWidth . 'px!important;' : '';
+        $style = '';
+        if (is_numeric($maxWidth) && $maxWidth > 0) {
+            $style = 'max-width: ' . $maxWidth . 'px!important;';
+        }
 
         return 'style="' . $style . 'grid-template-columns: repeat(' . $columnCount . ', auto);"';
     }
@@ -103,6 +113,7 @@ class GenerationUtils
     private static function get_style_to_apply(
         $i,
         $j,
+        $backgroundColor,
         $isTableWithColumnHeader,
         $isTableWithRowHeader,
         $columnHeaderStyle,
@@ -116,6 +127,6 @@ class GenerationUtils
             return $rowHeaderStyle;
         }
 
-        return '';
+        return empty($backgroundColor) ? '' : 'style="background:' . $backgroundColor . '!important"';
     }
 }
