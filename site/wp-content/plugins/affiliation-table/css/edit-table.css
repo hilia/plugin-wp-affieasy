@@ -249,8 +249,27 @@ div[id^="cell-content-link-list-"] {
     }
 }
 
+@media screen and (max-width: 681px) {
+    .header {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
 @media screen and (max-width: 643px) {
     .general-table-options {
         flex-direction: column;
+    }
+}
+
+@media screen and (max-width: 445px) {
+    .action-buttons {
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .action-buttons > button {
+        margin-bottom: 4px;
     }
 }

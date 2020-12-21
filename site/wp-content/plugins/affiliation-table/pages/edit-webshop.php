@@ -63,11 +63,12 @@ $webshopName = $webshop->getName();
 ?>
 
 <div class="wrap">
-    <h1 class="wp-heading-inline"><?php echo empty($webshopId) ? 'Create webshop' : 'Update webshop ' . $webshopName; ?></h1>
-
-    <a href="admin.php?page=affiliation-table-webshop" class="page-title-action">
-        Back to webshop list
-    </a>
+    <div class="header">
+        <h1 class="wp-heading-inline"><?php echo empty($webshopId) ? 'Create webshop' : 'Update webshop ' . $webshopName; ?></h1>
+        <a href="admin.php?page=affiliation-table-webshop" class="page-title-action">
+            Back to webshop list
+        </a>
+    </div>
 
     <hr class="wp-header-end">
 

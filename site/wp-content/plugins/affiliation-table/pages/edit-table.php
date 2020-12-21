@@ -374,11 +374,14 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
 </div>
 
 <div class="wrap">
-    <h1 class="wp-heading-inline"><?php echo empty($tableId) ? 'Create table' : 'Update table ' . $tableName; ?></h1>
 
-    <a href="admin.php?page=affiliation-table-table" class="page-title-action">
-        Back to table list
-    </a>
+    <div class="header">
+        <h1 class="wp-heading-inline"><?php echo empty($tableId) ? 'Create table' : 'Update table ' . $tableName; ?></h1>
+
+        <a href="admin.php?page=affiliation-table-table" class="page-title-action">
+            Back to table list
+        </a>
+    </div>
 
     <hr class="wp-header-end">
 
