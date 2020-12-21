@@ -4,6 +4,7 @@ jQuery(($) => {
     const IMAGE = 'IMAGE';
 
     let lastCellId = $('#last-cell-id').val();
+    let hasNoWebshop = $('#has-no-webshop').val();
 
     let currentRowId = null;
     let currentCellId = null;
@@ -13,7 +14,13 @@ jQuery(($) => {
     let columnDragger = null;
     let rowDragger = null;
 
-    displayOrHideHeaderRow();
+    // Force initial col-id
+    $('#col-id').val($('.table-header-cell-content').size());
+
+    // init header type value
+    $('#header-type').val($('#initial-header-type').val());
+
+    displayOrHideHeaders();
     updateHeaderStyle();
     initDragAndDropColumn();
     initDragAndDropRow();
@@ -24,14 +31,17 @@ jQuery(($) => {
     addRecaluclationLinkEvents();
 
     //init color pickers
-    $('#header-background-color').minicolors({});
-    $('#header-text-color').minicolors({});
+    $('#background-color').minicolors({});
+    $('#header-column-background').minicolors({});
+    $('#header-column-color').minicolors({});
+    $('#header-row-background').minicolors({});
+    $('#header-row-color').minicolors({});
     $('#link-background-color').minicolors({});
     $('#link-text-color').minicolors({});
 
-    // Add hide or display header row event
-    $('#with-header').on('change', () => {
-        displayOrHideHeaderRow();
+    // Add hide or display headers event
+    $('#header-type').on('change', () => {
+        displayOrHideHeaders();
     });
 
     // Open the creation row popover to add a row after the last
@@ -51,7 +61,7 @@ jQuery(($) => {
 
     // Open the header edition options modal
     $('#edit-header-options').on('click', () => {
-       openEditHeaderOptionsModal();
+        openEditHeaderOptionsModal();
     });
 
     // Add delete col events
@@ -97,28 +107,26 @@ jQuery(($) => {
     $('#button-row-0').on('click', null, {rowId: 0}, openAddRowPopover);
 
     $('#form').on('submit', () => {
-        $('tr[id*="row-"]').slice($('#with-header').is(':checked') ? 1 : 2)
+        const headerType = $('#header-type').val();
+
+        $('tr[id*="row-"]').slice(['COLUMN_HEADER', 'BOTH'].includes(headerType) ? 1 : 2)
             .each((rowIndex, row) => {
-                $(row).children().slice(1).each((colIndex, cellContent) => {
-                    const jqueryElement = $(cellContent);
+                $(row).children().slice(['ROW_HEADER', 'BOTH'].includes(headerType) ? 1 : 2)
+                    .each((colIndex, cellContent) => {
+                        const jqueryElement = $(cellContent);
 
-                    $('#table-content-values').append($('<input>', {
-                        type: 'text',
-                        name: 'content[' + rowIndex + '][]',
-                        value: JSON.stringify({
-                            type: jqueryElement.data('cell-type'),
-                            value: jqueryElement.children().first().val()
-                        })
-                    }));
-                });
+                        if (!jqueryElement.hasClass('header-without-value')) {
+                            $('#table-content-values').append($('<input>', {
+                                type: 'text',
+                                name: 'content[' + rowIndex + '][]',
+                                value: JSON.stringify({
+                                    type: jqueryElement.data('cell-type'),
+                                    value: jqueryElement.children().first().val()
+                                })
+                            }));
+                        }
+                    });
             });
-
-        $('#header-options').val(JSON.stringify({
-            background: $('#header-background-color').val(),
-            color: $('#header-text-color').val(),
-            'font-weight': $('#header-font-weight').val(),
-            'font-size': $('#header-font-size').val()
-        }));
     });
 
     // Init variable parameters when webshop change (edition modal)
@@ -126,29 +134,57 @@ jQuery(($) => {
         initAffiliateLinkInputsModal();
     });
 
-    // display or hide header row
-    function displayOrHideHeaderRow() {
-        const editHeaderOptions = $('#edit-header-options');
-        const tableContentHeader = $('#row-0');
+    // display or hide headers depending on selection
+    function displayOrHideHeaders() {
+        const headerType = $('#header-type').val();
 
-        if ($('#with-header').is(':checked')) {
-            editHeaderOptions.css('display', 'table-row');
-            tableContentHeader.css('display', 'table-row');
+        const headerColumnRow = $('#row-0');
+        const editHeaderOptionsModalColumnOptions = $('#edit-header-options-modal-column-options');
+        if (['COLUMN_HEADER', 'BOTH'].includes(headerType)) {
+            headerColumnRow.show();
+            editHeaderOptionsModalColumnOptions.show();
         } else {
-            editHeaderOptions.css('display', 'none');
-            tableContentHeader.css('display', 'none');
+            headerColumnRow.hide();
+            editHeaderOptionsModalColumnOptions.hide();
+        }
+
+        const headerRowsCells = $('.table-content-header-row');
+        const editHeaderOptionsModalRowOptions = $('#edit-header-options-modal-row-options');
+        if (['ROW_HEADER', 'BOTH'].includes(headerType)) {
+            headerRowsCells.show();
+            editHeaderOptionsModalRowOptions.show();
+        } else {
+            headerRowsCells.hide();
+            editHeaderOptionsModalRowOptions.hide();
+        }
+
+        const headerOptionsButton = $('#edit-header-options');
+        if (headerType !== 'NONE') {
+            headerOptionsButton.show();
+        } else {
+            headerOptionsButton.hide();
         }
     }
 
-    // Update header style : background color and text color
+    // Update headers styles : background color, text color, font weight, and font size (for column and row headers)
     function updateHeaderStyle() {
-        const background = $('#header-background-color').val();
-        $('.table-header-cell').css('background', background);
-        $('.table-header-cell-content')
-            .css('background', background)
-            .css('color', $('#header-text-color').val())
-            .css('font-weight', $('#header-font-weight').val())
-            .css('font-size', $('#header-font-size').val());
+        // Column header options
+        const columnBackground = $('#header-column-background').val();
+        $('.table-header-cell:not(.without-value)').css('background', columnBackground);
+        $('.table-header-cell-content:not(.without-value)')
+            .css('background', columnBackground)
+            .css('color', $('#header-column-color').val())
+            .css('font-weight', $('#header-column-font-weight').val())
+            .css('font-size', $('#header-column-font-size').val());
+
+        // Row header options
+        const rowBackground = $('#header-row-background').val();
+        $('.table-content-header-row:not(.without-value)').css('background', rowBackground);
+        $('.table-header-row-cell-content:not(.without-value)')
+            .css('background', rowBackground)
+            .css('color', $('#header-row-color').val())
+            .css('font-weight', $('#header-row-font-weight').val())
+            .css('font-size', $('#header-row-font-size').val());
     }
 
     // Add a new column after the specified column id
@@ -156,7 +192,9 @@ jQuery(($) => {
         const colIdInput = $('#col-id');
         const colId = Number(colIdInput.val()) + 1;
 
-        const selectedColId = !!event && !!event.data && !!event.data.colId ? event.data.colId : null;
+        const selectedColId = !!event && !!event.data && (!!event.data.colId || event.data.colId === 0) ?
+            event.data.colId :
+            null;
 
         // Create the action cell on the top of the table
         const actionCell = $('<th>', {
@@ -193,7 +231,7 @@ jQuery(($) => {
             maxLength: 255
         }));
 
-        if (!!selectedColId) {
+        if (!!selectedColId || selectedColId === 0) {
             actionCell.insertAfter($('#column-row-buttons>th[data-col-id="' + selectedColId + '"]'));
             headerCell.insertAfter($('#row-0>th[data-col-id="' + selectedColId + '"]'));
 
@@ -251,13 +289,29 @@ jQuery(($) => {
             title: 'Add a row after this one'
         }).on('click', null, {rowId: rowIdString}, openAddRowPopover)));
 
+        // Add the header row cell (hidden if column header or none selected)
+        lastCellId++;
+        const headerType = $('#header-type').val();
+        tableRow.append($('<td>', {
+            id: 'cell-' + lastCellId,
+            class: 'table-content-cell-html table-content-header-row ',
+            style: ['ROW_HEADER', 'BOTH'].includes(headerType) ? '' : 'display: none',
+            'data-col-id': 0,
+            'data-cell-type': type,
+        }).append($('<input>', {
+            type: 'text',
+            maxLength: 255,
+            class: 'table-header-row-cell-content'
+        })));
+
         // Add cells to complete the row
-        $('.table-header-cell').each((index, element) => {
+        $('.table-header-cell').slice(1).each((index, element) => {
             tableRow.append(makeCell(type, $(element).data('col-id')));
         });
 
         rowIdInput.val(rowId);
         initDragAndDropRow();
+        updateHeaderStyle();
     }
 
     // Create cell depending on the type
@@ -408,14 +462,22 @@ jQuery(($) => {
                 $(this).dialog('close');
             }
 
-            const buttons = !!affilitateLinkValue ? {
-                'Edit': updateAffiliateLink,
-                'Remove': removeAffiliateLink,
-                'Cancel': cancel()
-            } : {
-                'Add': addAffiliateLink,
-                'Cancel': cancel()
-            };
+            let buttons;
+
+            if (hasNoWebshop) {
+             buttons = {
+                 'Close': cancel()
+             };
+            } else {
+                buttons = !!affilitateLinkValue ? {
+                    'Edit': updateAffiliateLink,
+                    'Remove': removeAffiliateLink,
+                    'Cancel': cancel()
+                } : {
+                    'Add': addAffiliateLink,
+                    'Cancel': cancel()
+                };
+            }
 
             $('#edit-affiliation-link-modal').dialog({
                 resizable: true,
@@ -429,22 +491,55 @@ jQuery(($) => {
 
     // Open modal wich edit headerOptions
     function openEditHeaderOptionsModal() {
+        initHeaderOptionsModalParameters();
+
         $('#edit-header-options-modal').dialog({
             resizable: true,
             minWidth: 450,
-            minHeight : 400,
+            minHeight: 400,
             title: 'Edit header options',
             modal: true,
             buttons: {
-                'Cancel': function() {
+                'Cancel': function () {
                     $(this).dialog('close');
                 },
-                'Edit': function() {
+                'Edit': function () {
+                    $('#header-options').val(JSON.stringify({
+                        'column-background': $('#header-column-background').val(),
+                        'column-color': $('#header-column-color').val(),
+                        'column-font-weight': $('#header-column-font-weight').val(),
+                        'column-font-size': $('#header-column-font-size').val(),
+                        'row-background': $('#header-row-background').val(),
+                        'row-color': $('#header-row-color').val(),
+                        'row-font-weight': $('#header-row-font-weight').val(),
+                        'row-font-size': $('#header-row-font-size').val(),
+                    }));
+
                     updateHeaderStyle();
                     $(this).dialog('close');
                 }
             },
         });
+    }
+
+    // Init header options modal parameter fields
+    function initHeaderOptionsModalParameters() {
+        Object.entries(JSON.parse($('#header-options').val()))
+            .filter(([key,]) => !!key)
+            .forEach(([key, value]) => {
+                    if (key.endsWith('font-size')) {
+                        $('#header-' + key + ' option[value="' + value + '"]').prop("selected", true);
+                    } else {
+                        const input = $('#header-' + key);
+                        const stringValue = !!value ? value.toString() : '';
+
+                        input.val(stringValue);
+                        if (!key.endsWith('font-weight')) {
+                            input.next().children().css('background-color', stringValue);
+                        }
+                    }
+                }
+            );
     }
 
     // Add new affiliate link in the selected cell
@@ -496,7 +591,7 @@ jQuery(($) => {
         $(this).dialog('close');
     }
 
-     // extract background color and color from affiliate link if parameters exists and return them as string
+    // extract background color and color from affiliate link if parameters exists and return them as string
     function getAffiliateLinkStyle(background, color) {
         if (!background && !color) {
             return null;
@@ -623,6 +718,10 @@ jQuery(($) => {
 
     // Clear and add preferences / selected values in the edit affiliation links modal depending on the selected webshop
     function initAffiliateLinkInputsModal(affilitateLinkValue) {
+        if (hasNoWebshop) {
+            return;
+        }
+
         let selectedWebshop = $("#webshop-select option:selected");
 
         if (!!affilitateLinkValue) {

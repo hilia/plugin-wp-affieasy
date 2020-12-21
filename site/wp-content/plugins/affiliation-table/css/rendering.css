@@ -1,25 +1,70 @@
-.affiliation-table-table {
-    text-align: center;
+.affieasy-table {
+    display: grid;
+    border: 1px solid #c2c2c2!important;
+    border-bottom: none!important;
+    border-right: none!important;
+    max-width: 100%!important;
 }
 
-.affiliation-table-affiliate-links {
-    display: inline-grid;
-    padding-bottom: 10px;
+.affieasy-table-responsive-column-none {
+    border-top: 1px solid #c2c2c2!important;
+    border-left: 1px solid #c2c2c2!important;
+    display: flex;
+    flex-direction: column;
 }
 
-.affiliation-table-affiliate-link {
-    white-space: nowrap;
-    text-decoration: none;
-    border-radius: 3px;
-    padding: 7px 15px;
-    margin-top: 10px;
+.affieasy-table-responsive-row {
+    border-top: 1px solid #c2c2c2!important;
+    border-left: 1px solid #c2c2c2!important;
+    display: grid;
+    grid-template-columns: repeat(2, auto);
 }
 
-.affiliation-table-affiliate-link:hover {
-    opacity: 0.9;
+.affieasy-table-responsive-both {
+    border-top: 1px solid #c2c2c2!important;
+    border-left: 1px solid #c2c2c2!important;
+    display: grid;
+    grid-template-columns: repeat(2, [col-start] auto);
+    grid-template-rows: 1fr;
 }
 
-.affiliation-table-img {
-    margin-left: auto;
-    margin-right: auto;
+.affieasy-table-responsive-both-title {
+    grid-column: col-start / span 2;
+}
+
+.affieasy-table-cell {
+    border-right: 1px solid #c2c2c2!important;
+    border-bottom: 1px solid #c2c2c2!important;
+
+    min-width: 50px!important;
+    min-height: 30px!important;
+
+    display: flex!important;
+    align-items: center!important;
+    justify-content: center!important;
+    padding: 5px!important;
+}
+
+.affieasy-table-cell-links {
+    flex-direction: column!important;
+    padding: 15px!important;
+}
+
+.affieasy-table-cell-link {
+    white-space: nowrap!important;
+    text-decoration: none!important;
+    border-radius: 3px!important;
+    padding: 3px 15px!important;
+}
+
+.affieasy-table-cell-link-with-margin {
+    margin-top: 15px!important;
+}
+
+.affieasy-table-cell-link-icon {
+    line-height: inherit!important;
+}
+
+.affieasy-table-cell-link:hover {
+    opacity: 0.8!important;
 }

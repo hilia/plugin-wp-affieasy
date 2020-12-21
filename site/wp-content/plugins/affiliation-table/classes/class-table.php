@@ -2,7 +2,9 @@
 
 class Table
 {
+    private $defaultHeaderType = 'COLUMN_HEADER';
     private $defaultTableColumnNumber = 4;
+    private $defaultBackgroundColor = '#ffffff';
     private $defaultHeaderBackgroundColor = '#707070';
     private $defaultHeaderTextColor = '#ffffff';
     private $defaultHeaderFontWeight = 'bold';
@@ -10,17 +12,31 @@ class Table
 
     private $id;
     private $name;
-    private $withHeader;
+    private $headerType;
     private $headerOptions;
     private $content;
+    private $responsiveBreakpoint;
+    private $maxWidth;
+    private $backgroundColor;
 
-    function __construct($id = null, $name = null, $withHeader = null, $headerOptions = null, $content = null)
+    function __construct(
+        $id = null,
+        $name = null,
+        $headerType = null,
+        $headerOptions = null,
+        $content = null,
+        $responsiveBreakpoint = null,
+        $maxWidth = null,
+        $backgroundColor = null)
     {
         $this->id = $id;
         $this->name = $name;
-        $this->withHeader = $withHeader == 'on' || $withHeader == 1 ? 1 : 0;
+        $this->headerType = $headerType;
         $this->headerOptions = $headerOptions;
         $this->content = $content;
+        $this->responsiveBreakpoint = $responsiveBreakpoint;
+        $this->maxWidth = $maxWidth;
+        $this->backgroundColor = $backgroundColor;
     }
 
     public function getId()
@@ -33,9 +49,9 @@ class Table
         return $this->name;
     }
 
-    public function isWithHeader()
+    public function getHeaderType()
     {
-        return $this->withHeader;
+        return $this->headerType;
     }
 
     public function getHeaderOptions() {
@@ -56,6 +72,20 @@ class Table
         $this->content = $content;
     }
 
+    public function getResponsiveBreakpoint()
+    {
+        return $this->responsiveBreakpoint;
+    }
+
+    public function getMaxWidth()
+    {
+        return $this->maxWidth;
+    }
+
+    public function getBackgroundColor() {
+        return $this->backgroundColor;
+    }
+
     public function getTag()
     {
         return '[' . Constants::TABLE_TAG . ' id=' . $this->id . ']';
@@ -67,16 +97,25 @@ class Table
             return 0;
         }
 
-        return ($this->withHeader == 1 ? count($this->content) - 1 : count($this->content)) * count($this->content[0]);
+        return (in_array($this->headerType, array('COLUMN_HEADER', 'BOTH')) ?
+                count($this->content) - 1 :
+                count($this->content)) * count($this->content[0]);
     }
 
     public function initDefaultContent()
     {
+        $this->headerType = $this->defaultHeaderType;
+        $this->backgroundColor = $this->defaultBackgroundColor;
+
         $this->headerOptions = (object)[
-          'background' => $this->defaultHeaderBackgroundColor,
-          'color' => $this->defaultHeaderTextColor,
-          'font-weight' => $this->defaultHeaderFontWeight,
-          'font-size' => $this->defaultHeaderFontSize
+          'column-background' => $this->defaultHeaderBackgroundColor,
+          'column-color' => $this->defaultHeaderTextColor,
+          'column-font-weight' => $this->defaultHeaderFontWeight,
+          'column-font-size' => $this->defaultHeaderFontSize,
+          'row-background' => $this->defaultHeaderBackgroundColor,
+          'row-color' => $this->defaultHeaderTextColor,
+          'row-font-weight' => $this->defaultHeaderFontWeight,
+          'row-font-size' => $this->defaultHeaderFontSize,
         ];
 
         $headerRow = array();

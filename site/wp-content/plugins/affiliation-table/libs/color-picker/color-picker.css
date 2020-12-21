@@ -430,3 +430,9 @@
 .minicolors-theme-semanticui input {
   text-indent: 30px;
 }
+
+@media screen and (max-width: 782px) {
+  .minicolors-theme-default .minicolors-swatch {
+    top: 10px;
+  }
+}

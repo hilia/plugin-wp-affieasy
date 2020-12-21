@@ -42,7 +42,7 @@
 }
 
 #url {
-    width: 75em!important;
+    width: calc(100% - 1em);
 }
 
 #link-text-preference {
@@ -51,4 +51,22 @@
 
 .edit-button-bottom {
     margin-top: 2em !important;
+}
+
+@media screen and (max-width: 680px) {
+    .header {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+@media screen and (max-width: 443px) {
+    #name {
+        width: calc(100% - 1em)!important;
+    }
+
+    #link-text-preference {
+        width: calc(100% - 1em)!important;
+    }
 }

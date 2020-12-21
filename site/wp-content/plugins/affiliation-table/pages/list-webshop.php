@@ -1,6 +1,12 @@
 <?php
 require_once dirname(__DIR__) . '/classes/class-webshop-list.php';
 
+wp_enqueue_style(
+    'list-webshop-style',
+    plugins_url('/affiliation-table/css/list-webshop.css'),
+    array(),
+    time());
+
 wp_enqueue_script(
 'list-webshop-script',
 plugins_url('/affiliation-table/js/list-webshop.js'),
@@ -23,16 +29,19 @@ $webshopList = new WebshopList();
 
 <div id="dialog-confirm-delete" title="Confirmation" hidden>
     <p>
-        Are you sure you want to delete the webshop?
+        Are you sure you want to delete the webshop (all related links will be removed)?
     </p>
 </div>
 
 <div class="wrap">
-    <h1 class="wp-heading-inline">Webshops</h1>
 
-    <a href="admin.php?page=affiliation-table-webshop&action=edit-webshop" class="page-title-action">
-        Add new webshop
-    </a>
+    <div class="header">
+        <h1 class="wp-heading-inline">Webshops</h1>
+
+        <a href="admin.php?page=affiliation-table-webshop&action=edit-webshop" class="page-title-action">
+            Add new webshop
+        </a>
+    </div>
 
     <hr class="wp-header-end">
 

@@ -1,6 +1,6 @@
 <?php
 /*
- * Plugin Name: Affiliation
+ * Plugin Name: AffiEasy
  * Description: Plugin allowing to generate tables and manage affiliate links
  * Version: 0.3
 */

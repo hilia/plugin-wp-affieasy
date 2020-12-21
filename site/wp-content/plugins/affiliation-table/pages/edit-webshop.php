@@ -63,11 +63,12 @@ $webshopName = $webshop->getName();
 ?>
 
 <div class="wrap">
-    <h1 class="wp-heading-inline"><?php echo empty($webshopId) ? 'Create webshop' : 'Update webshop ' . $webshopName; ?></h1>
-
-    <a href="admin.php?page=affiliation-table-webshop" class="page-title-action">
-        Back to webshop list
-    </a>
+    <div class="header">
+        <h1 class="wp-heading-inline"><?php echo empty($webshopId) ? 'Create webshop' : 'Update webshop ' . $webshopName; ?></h1>
+        <a href="admin.php?page=affiliation-table-webshop" class="page-title-action">
+            Back to webshop list
+        </a>
+    </div>
 
     <hr class="wp-header-end">
 
@@ -111,12 +112,12 @@ $webshopName = $webshop->getName();
             select decathlon). Parameters <strong>[[product_url]]</strong> and <strong>[[click_ref]]</strong> will be
             asked during creation process and the url will be automatically generated.<br><br>
 
-            If one day, the advertising agency changes for this webshop (it becomes Affilae), just update the url :
+            <!--If one day, the advertising agency changes for this webshop (it becomes Affilae), just update the url :
             <strong>[[product_url]]#ae1234&utm_source=affilae&clickref=[[click_ref]]</strong> and click on the
             "Update affiliate links for this shop" button.<br>
             A script will automatically update all table cells which contains decathlon links.<br><br>
             <span id="helper-warning" class="dashicons dashicons-warning"></span>If you add a new parameter in the
-            updated url, you will have to update manually your links for this shop.
+            updated url, you will have to update manually your links for this shop. -->
         </div>
     </div>
 

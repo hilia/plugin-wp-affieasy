@@ -1,5 +1,14 @@
-.name-input {
-    width: 25em !important;
+.general-table-options {
+    display: flex;
+    flex-direction: row;
+}
+
+.general-form-label {
+    width: 215px!important;
+}
+
+.general-input {
+    width: 19em !important;
 }
 
 #edition-panel {
@@ -79,11 +88,21 @@
     height: 60px;
     width: 100%;
     text-align: center;
-    font-size: 14px;
-    font-weight: 700;
-    line-height: 1.5;
     border: none !important;
     border-radius: 0 !important;
+}
+
+.table-header-row-cell-content {
+    height: 100px;
+    width: 99.5%;
+    text-align: center;
+    border: none !important;
+    border-radius: 0 !important;
+}
+
+.header-without-value {
+    background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' version='1.1' preserveAspectRatio='none' viewBox='0 0 100 100'><path d='M1 0 L0 1 L99 100 L100 99' fill='grey' /></svg>") no-repeat center center!important;
+    background-size: 100% 100%, auto!important;
 }
 
 .table-content-cell-html {
@@ -196,4 +215,61 @@ div[id^="cell-content-link-list-"] {
 
 .pointer {
     cursor: pointer;
+}
+
+.informations {
+    text-align: center;
+    margin-top: 10px;
+}
+
+@media screen and (max-width: 1396px) {
+    .form-table {
+        margin-top: 0;
+    }
+
+    .form-table th,
+    .form-table td {
+        display: block;
+        width: auto;
+        vertical-align: middle;
+    }
+
+    .form-table th {
+        padding: 20px 0 0;
+    }
+
+    .form-table td {
+        padding: 5px 0;
+        border: 0;
+        margin: 0;
+    }
+
+    .action-buttons {
+        margin-top: 2em;
+    }
+}
+
+@media screen and (max-width: 681px) {
+    .header {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+@media screen and (max-width: 643px) {
+    .general-table-options {
+        flex-direction: column;
+    }
+}
+
+@media screen and (max-width: 445px) {
+    .action-buttons {
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .action-buttons > button {
+        margin-bottom: 4px;
+    }
 }
