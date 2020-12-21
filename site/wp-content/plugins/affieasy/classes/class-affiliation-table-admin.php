@@ -20,7 +20,7 @@ class AffiliationTableAdmin
 
         wp_enqueue_style(
             'rendering-style',
-            plugins_url('/affiliation-table/css/rendering.css'),
+            plugins_url('/affieasy/css/rendering.css'),
             array(),
             time());
     }
@@ -42,27 +42,27 @@ class AffiliationTableAdmin
             'AffiEasy',
             'AffiEasy',
             'manage_options',
-            'affiliation-table-table',
+            'affieasy-table',
             array($this, 'display_table_pages'),
             'dashicons-editor-table',
             20
         );
 
         add_submenu_page(
-            'affiliation-table-table',
+            'affieasy-table',
             'Tables',
             'Tables',
             'manage_options',
-            'affiliation-table-table',
+            'affieasy-table',
             array($this, 'display_table_pages')
         );
 
         add_submenu_page(
-            'affiliation-table-table',
+            'affieasy-table',
             'Webshops',
             'Webshops',
             'manage_options',
-            'affiliation-table-webshop',
+            'affieasy-webshop',
             array($this, 'display_webshop_list')
         );
     }

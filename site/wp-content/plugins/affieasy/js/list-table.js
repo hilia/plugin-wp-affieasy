@@ -15,7 +15,7 @@ jQuery(($) => {
                 modal: true,
                 buttons: {
                     'Yes': function () {
-                        window.location.href = 'admin.php?page=affiliation-table-table&action=delete-table&id=' + event.data.id;
+                        window.location.href = 'admin.php?page=affieasy-table&action=delete-table&id=' + event.data.id;
                     },
                     'No': function () {
                         $(this).dialog('close');

@@ -4,7 +4,7 @@ require_once dirname(__DIR__) . '/classes/class-table-list.php';
 
 wp_enqueue_script(
     'list-table-script',
-    plugins_url('/affiliation-table/js/list-table.js'),
+    plugins_url('/affieasy/js/list-table.js'),
     array('jquery', 'jquery-ui-dialog'),
     time()
 );
@@ -30,7 +30,7 @@ $tableList = new TableList();
 <div class="wrap">
     <h1 class="wp-heading-inline">Tables</h1>
 
-    <a href="admin.php?page=affiliation-table-table&action=edit-table" class="page-title-action">
+    <a href="admin.php?page=affieasy-table&action=edit-table" class="page-title-action">
         Add new table
     </a>
 

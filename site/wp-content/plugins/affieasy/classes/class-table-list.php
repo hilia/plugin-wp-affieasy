@@ -2,15 +2,15 @@
 
 require_once ABSPATH . 'wp-admin/includes/class-wp-list-table.php';
 
-class WebshopList extends WP_List_Table
+class TableList extends WP_List_Table
 {
     private $dbManager;
 
     function __construct()
     {
         parent::__construct([
-            'singular' => 'Webshop',
-            'plural' => 'Webshops',
+            'singular' => 'Table',
+            'plural' => 'Tables',
             'ajax' => false,
         ]);
 
@@ -19,7 +19,7 @@ class WebshopList extends WP_List_Table
 
     public function no_items()
     {
-        _e('No webshops found.');
+        _e( 'No tables found.' );
     }
 
     function get_columns()
@@ -37,7 +37,7 @@ class WebshopList extends WP_List_Table
         return sprintf('%1$s %2$s',
             $item['id'],
             $this->row_actions(array(
-                'edit' => sprintf('<a href="admin.php?page=affiliation-table-webshop&action=edit-webshop&id=' . $id . '">Edit</a>'),
+                'edit' => sprintf('<a href="admin.php?page=affieasy-table&action=edit-table&id=' . $id . '">Edit</a>'),
                 'delete' => sprintf('<a href="#" class="delete-link" data-id="' . $id . '">Delete</a>')
             ))
         );
@@ -51,8 +51,8 @@ class WebshopList extends WP_List_Table
     public function prepare_items()
     {
         $per_page = Constants::ITEMS_PER_PAGE;
-        $total_items = $this->dbManager->get_table_count(Constants::TABLE_WEBSHOP);
-        $data = $this->dbManager->get_webshop_page($this->get_pagenum(), $per_page);
+        $total_items = $this->dbManager->get_table_count(Constants::TABLE_TABLE);
+        $data = $this->dbManager->get_table_page($this->get_pagenum(), $per_page);
 
         $this->items = $data;
         $this->_column_headers = array($this->get_columns(), array(), array());
