@@ -754,7 +754,7 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
             <i>
                 <span class="dashicons dashicons-info"></span>
                 <span class="informations-text">
-                    For better clarity, background color modifications are not visible into the editor.
+                    For better readability, background color modifications are not visible into the editor.
                     Rendering can be slightly different depending on the theme applied.
                 </span>
             </i>
