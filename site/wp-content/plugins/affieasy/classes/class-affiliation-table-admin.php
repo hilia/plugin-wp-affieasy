@@ -36,6 +36,13 @@ class AffiliationTableAdmin
         }
     }
 
+    public function rollback()
+    {
+        $staticDbManager = DbManager::get_instance();
+        $staticDbManager->drop_table(Constants::TABLE_WEBSHOP);
+        $staticDbManager->drop_table(Constants::TABLE_TABLE);
+    }
+
     public function add_menus_page_affiliation_table()
     {
         add_menu_page(
