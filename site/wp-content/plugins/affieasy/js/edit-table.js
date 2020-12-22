@@ -770,14 +770,8 @@ jQuery(($) => {
     // Update editAffiliationLinkModalInputs (preferences if new, else filled values)
     function updateAffiateInputsModal(linkText, background, color) {
         $('#link-text-input').val(linkText);
-
-        const backgroundColorInput = $('#link-background-color');
-        backgroundColorInput.val(background);
-        backgroundColorInput.next().children().css('background-color', background);
-
-        const textColorInput = $('#link-text-color');
-        textColorInput.val(color);
-        textColorInput.next().children().css('background-color', color);
+        $('#link-background-color').val(background).trigger('paste');
+        $('#link-text-color').val(color).trigger('paste');
     }
 
     // Make affiliation link value depending on the content modal
