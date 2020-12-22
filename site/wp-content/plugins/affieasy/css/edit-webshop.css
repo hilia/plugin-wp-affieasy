@@ -53,6 +53,10 @@
     margin-top: 2em !important;
 }
 
+.dashicons-info {
+    cursor: help;
+}
+
 @media screen and (max-width: 680px) {
     .header {
         display: flex;

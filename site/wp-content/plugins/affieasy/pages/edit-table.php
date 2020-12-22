@@ -421,7 +421,7 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                             <label for="name">
                                 Tag
                                 <span
-                                        class="dashicons dashicons-info"
+                                        class="dashicons dashicons-info info"
                                         title="Put this tag in your page to include the table">
                                 </span>
                             </label>
@@ -479,7 +479,7 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                         <label for="name">
                             Max width
                             <span
-                                    class="dashicons dashicons-info"
+                                    class="dashicons dashicons-info info"
                                     title="Max width in pixels allowed for the table (100% of available space if not filled)">
                                 </span>
                         </label>
@@ -500,7 +500,7 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                         <label for="name">
                             Responsive breakpoint
                             <span
-                                    class="dashicons dashicons-info"
+                                    class="dashicons dashicons-info info"
                                     title="Resolution in pixels below wich the table take its responsive form">
                             </span>
                         </label>
