@@ -2,21 +2,21 @@
 
 wp_enqueue_style(
     'edit-table-style',
-    plugins_url('/affiliation-table/css/edit-webshop.css'),
+    plugins_url('/affieasy/css/edit-webshop.css'),
     array(),
     time());
 
 wp_enqueue_style(
     'color-picker-style',
-    plugins_url('/affiliation-table/libs/color-picker/color-picker.css'),
+    plugins_url('/affieasy/libs/color-picker/color-picker.css'),
     array(),
     time());
 
-wp_register_script('color-picker', plugins_url('/affiliation-table/libs/color-picker/color-picker.min.js'));
+wp_register_script('color-picker', plugins_url('/affieasy/libs/color-picker/color-picker.min.js'));
 
 wp_enqueue_script(
     'edit-webshop-script',
-    plugins_url('/affiliation-table/js/edit-webshop.js'),
+    plugins_url('/affieasy/js/edit-webshop.js'),
     array('jquery', 'jquery-ui-accordion', 'color-picker'),
     time()
 );
@@ -65,7 +65,7 @@ $webshopName = $webshop->getName();
 <div class="wrap">
     <div class="header">
         <h1 class="wp-heading-inline"><?php echo empty($webshopId) ? 'Create webshop' : 'Update webshop ' . $webshopName; ?></h1>
-        <a href="admin.php?page=affiliation-table-webshop" class="page-title-action">
+        <a href="admin.php?page=affieasy-webshop" class="page-title-action">
             Back to webshop list
         </a>
     </div>

@@ -217,6 +217,10 @@ div[id^="cell-content-link-list-"] {
     cursor: pointer;
 }
 
+.info {
+    cursor: help;
+}
+
 .informations {
     text-align: center;
     margin-top: 10px;

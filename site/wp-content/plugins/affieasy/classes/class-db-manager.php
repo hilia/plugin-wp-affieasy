@@ -10,6 +10,10 @@ class DbManager
         $this->db = $wpdb;
     }
 
+    public static function get_instance() {
+        return new DbManager();
+    }
+
     /****************************** General functions ******************************/
 
     public function table_exists($tableName)
@@ -20,6 +24,11 @@ class DbManager
     public function get_table_count($tableName)
     {
         return $this->db->get_var("SELECT COUNT(*) FROM " . $tableName);
+    }
+
+    public function drop_table($tableName)
+    {
+        $this->db->query('DROP TABLE IF EXISTS ' . $tableName);
     }
 
     /****************************** Webshop functions ******************************/

@@ -1,31 +1,31 @@
 <?php
 wp_enqueue_style(
     'edit-table-style',
-    plugins_url('/affiliation-table/css/edit-table.css'),
+    plugins_url('/affieasy/css/edit-table.css'),
     array(),
     time());
 
 wp_enqueue_style(
     'color-picker-style',
-    plugins_url('/affiliation-table/libs/color-picker/color-picker.css'),
+    plugins_url('/affieasy/libs/color-picker/color-picker.css'),
     array(),
     time());
 
 wp_enqueue_style(
     'popover-modal-style',
-    plugins_url('/affiliation-table/libs/pop-modal/pop-modal.min.css'),
+    plugins_url('/affieasy/libs/pop-modal/pop-modal.min.css'),
     array(),
     time());
 
 wp_enqueue_style('wp-jquery-ui-dialog');
 
-wp_register_script('color-picker', plugins_url('/affiliation-table/libs/color-picker/color-picker.min.js'));
-wp_register_script('pop-modal', plugins_url('/affiliation-table/libs/pop-modal/pop-modal.min.js'), array('jquery'));
-wp_register_script('table-dragger', plugins_url('/affiliation-table/libs/table-dragger/table-dragger.min.js'));
+wp_register_script('color-picker', plugins_url('/affieasy/libs/color-picker/color-picker.min.js'));
+wp_register_script('pop-modal', plugins_url('/affieasy/libs/pop-modal/pop-modal.min.js'), array('jquery'));
+wp_register_script('table-dragger', plugins_url('/affieasy/libs/table-dragger/table-dragger.min.js'));
 
 wp_enqueue_script(
     'edit-table-script',
-    plugins_url('/affiliation-table/js/edit-table.js'),
+    plugins_url('/affieasy/js/edit-table.js'),
     array('jquery', 'color-picker', 'pop-modal', 'table-dragger', 'jquery-ui-dialog'),
     time()
 );
@@ -378,7 +378,7 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
     <div class="header">
         <h1 class="wp-heading-inline"><?php echo empty($tableId) ? 'Create table' : 'Update table ' . $tableName; ?></h1>
 
-        <a href="admin.php?page=affiliation-table-table" class="page-title-action">
+        <a href="admin.php?page=affieasy-table" class="page-title-action">
             Back to table list
         </a>
     </div>
@@ -421,7 +421,7 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                             <label for="name">
                                 Tag
                                 <span
-                                        class="dashicons dashicons-info"
+                                        class="dashicons dashicons-info info"
                                         title="Put this tag in your page to include the table">
                                 </span>
                             </label>
@@ -479,7 +479,7 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                         <label for="name">
                             Max width
                             <span
-                                    class="dashicons dashicons-info"
+                                    class="dashicons dashicons-info info"
                                     title="Max width in pixels allowed for the table (100% of available space if not filled)">
                                 </span>
                         </label>
@@ -500,7 +500,7 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                         <label for="name">
                             Responsive breakpoint
                             <span
-                                    class="dashicons dashicons-info"
+                                    class="dashicons dashicons-info info"
                                     title="Resolution in pixels below wich the table take its responsive form">
                             </span>
                         </label>
@@ -754,7 +754,7 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
             <i>
                 <span class="dashicons dashicons-info"></span>
                 <span class="informations-text">
-                    For better clarity, background color modifications are not visible into the editor.
+                    For better readability, background color modifications are not visible into the editor.
                     Rendering can be slightly different depending on the theme applied.
                 </span>
             </i>

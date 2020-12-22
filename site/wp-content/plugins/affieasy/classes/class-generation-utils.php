@@ -92,7 +92,7 @@ class GenerationUtils
                     $cellValue = str_replace('&quot;', '"', $cellContent->value);
 
                     if ($cellContent->type === Constants::AFFILIATION && ($j !== 0 || !$isTableWithRowHeader)) {
-                        GenerationUtils::generate_affiliate_links_cell_content($cellValue, GenerationUtils::get_background_color_style_or_empty($backgroundColor));
+                        GenerationUtils::generate_affiliate_links_cell_content($cellValue, GenerationUtils::get_background_color_style_or_empty($backgroundColor), false);
                         ?>
                     <?php } else { ?>
                         <div class="affieasy-table-cell" <?php echo GenerationUtils::get_style_to_apply(
@@ -133,7 +133,7 @@ class GenerationUtils
         <div id="affieasy-table-responsive-<?php echo $table->getId(); ?>" class="affieasy-table-responsive-row">
             <?php for ($i = 1; $i < count($tableContent[0]); $i++) {
                 for ($j = 0; $j < count($tableContent); $j++) { ?>
-                    <div class="affieasy-table-cell" <?php echo $rowHeaderStyle; ?>>
+                    <div class="affieasy-table-cell affieasy-table-responsive-both-row-header" <?php echo $rowHeaderStyle; ?>>
                         <?php echo str_replace('&quot;', '"', $tableContent[$j][0]->value); ?>
                     </div>
 
@@ -143,9 +143,9 @@ class GenerationUtils
                     $backgroundColor = GenerationUtils::get_background_color_style_or_empty($table->getBackgroundColor());
 
                     if ($cellContent->type === Constants::AFFILIATION) {
-                        GenerationUtils::generate_affiliate_links_cell_content($cellValue, $backgroundColor);
+                        GenerationUtils::generate_affiliate_links_cell_content($cellValue, $backgroundColor, true);
                     } else { ?>
-                        <div class="affieasy-table-cell" <?php echo $backgroundColor; ?>>
+                        <div class="affieasy-table-cell affieasy-table-responsive-both-row-content" <?php echo $backgroundColor; ?>>
                             <?php echo str_replace('&quot;', '"', $tableContent[$j][$i]->value); ?>
                         </div>
                     <?php }
@@ -176,10 +176,10 @@ class GenerationUtils
                     $backgroundColor = GenerationUtils::get_background_color_style_or_empty($table->getBackgroundColor());
 
                     if ($cellContent->type === Constants::AFFILIATION) {
-                        GenerationUtils::generate_affiliate_links_cell_content($cellValue, $backgroundColor);
+                        GenerationUtils::generate_affiliate_links_cell_content($cellValue, $backgroundColor, true);
                     } else { ?>
                         <div
-                                class="affieasy-table-cell"
+                                class="affieasy-table-cell affieasy-table-responsive-both-row-content"
                             <?php echo GenerationUtils::get_background_color_style_or_empty($table->getBackgroundColor()); ?>>
                             <?php echo str_replace('&quot;', '"', $tableContent[$j][$i]->value); ?>
                         </div>
@@ -210,7 +210,7 @@ class GenerationUtils
                     $backgroundColor = GenerationUtils::get_background_color_style_or_empty($table->getBackgroundColor());
 
                     if ($cellContent->type === Constants::AFFILIATION) {
-                        GenerationUtils::generate_affiliate_links_cell_content($cellValue, $backgroundColor);
+                        GenerationUtils::generate_affiliate_links_cell_content($cellValue, $backgroundColor, false);
                     } else {
                         ?>
                         <div class="affieasy-table-cell" <?php echo $backgroundColor; ?>>
@@ -223,12 +223,12 @@ class GenerationUtils
         <?php
     }
 
-    private static function generate_affiliate_links_cell_content($cellValue, $backgroundColor)
+    private static function generate_affiliate_links_cell_content($cellValue, $backgroundColor, $forBothOrRow)
     {
         $affiliateLinks = json_decode($cellValue);
         $isFirst = true;
         ?>
-        <div class="affieasy-table-cell affieasy-table-cell-links" <?php echo $backgroundColor; ?>>
+        <div class="affieasy-table-cell affieasy-table-cell-links <?php echo $forBothOrRow ? 'affieasy-table-responsive-both-row-content' : '' ?>" <?php echo $backgroundColor; ?>>
             <?php foreach ($affiliateLinks as $affiliateLink) { ?>
                 <a
                         href="<?php echo $affiliateLink->url; ?>"

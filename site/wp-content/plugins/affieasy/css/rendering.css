@@ -17,19 +17,28 @@
     border-top: 1px solid #c2c2c2!important;
     border-left: 1px solid #c2c2c2!important;
     display: grid;
-    grid-template-columns: repeat(2, auto);
+    grid-template-columns: repeat(3, [col-start] auto);
+    grid-template-rows: 1fr;
 }
 
 .affieasy-table-responsive-both {
     border-top: 1px solid #c2c2c2!important;
     border-left: 1px solid #c2c2c2!important;
     display: grid;
-    grid-template-columns: repeat(2, [col-start] auto);
+    grid-template-columns: repeat(3, [col-start] auto);
     grid-template-rows: 1fr;
 }
 
 .affieasy-table-responsive-both-title {
-    grid-column: col-start / span 2;
+    grid-column: col-start / span 3;
+}
+
+.affieasy-table-responsive-both-row-header {
+    grid-column: col-start / span 1;
+}
+
+.affieasy-table-responsive-both-row-content {
+    grid-column: col-start 2 / span 2;
 }
 
 .affieasy-table-cell {
