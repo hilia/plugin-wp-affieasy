@@ -119,6 +119,8 @@ $isTableWithRowHeader = in_array($headerType, array('ROW_HEADER', 'BOTH'));
 $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
 ?>
 
+<script src="/wp-content/plugins/affieasy/js/utils.js"></script>
+
 <div id="edit-affiliation-link-modal" hidden>
     <?php if ($hasNoWebShop) { ?>
         <p>
