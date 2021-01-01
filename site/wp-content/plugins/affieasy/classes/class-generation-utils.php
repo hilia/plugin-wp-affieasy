@@ -237,7 +237,7 @@ class GenerationUtils
                         target="_blank"
                         rel="nofollow">
                     <span class="dashicons dashicons-cart affieasy-table-cell-link-icon"></span>
-                    <span><?php echo $affiliateLink->linkText; ?></span>
+                    <span class="affieasy-table-cell-link-text"><?php echo $affiliateLink->linkText; ?></span>
                 </a>
                 <?php
                 $isFirst = false;
