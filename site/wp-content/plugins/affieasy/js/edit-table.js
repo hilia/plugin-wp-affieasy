@@ -711,9 +711,14 @@ jQuery(($) => {
 
     // Add recalulation link overview on each webshop parameter
     function addRecaluclationLinkEvents() {
-        $('.affiliation-parameter-input').on('change keyup paste', null, {}, () => {
-            recalculateAffiliationLinkOverview();
-        })
+        $('.affiliation-parameter-input').on('change keyup paste', event => {
+            if (!!event) {
+                const input = $(event.currentTarget);
+                input.val(removeSpecialCharsFromUrlParameter(input.val()));
+
+                recalculateAffiliationLinkOverview();
+            }
+        });
     }
 
     // Clear and add preferences / selected values in the edit affiliation links modal depending on the selected webshop

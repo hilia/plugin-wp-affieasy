@@ -234,9 +234,10 @@ class GenerationUtils
                         href="<?php echo $affiliateLink->url; ?>"
                     <?php echo GenerationUtils::get_affiliate_link_style($affiliateLink); ?>
                         class="affieasy-table-cell-link <?php echo $isFirst ? '' : 'affieasy-table-cell-link-with-margin'; ?>"
+                        target="_blank"
                         rel="nofollow">
                     <span class="dashicons dashicons-cart affieasy-table-cell-link-icon"></span>
-                    <span><?php echo $affiliateLink->linkText; ?></span>
+                    <span class="affieasy-table-cell-link-text"><?php echo $affiliateLink->linkText; ?></span>
                 </a>
                 <?php
                 $isFirst = false;

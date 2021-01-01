@@ -71,7 +71,12 @@
 }
 
 .affieasy-table-cell-link-icon {
-    line-height: inherit!important;
+    vertical-align: middle!important;
+    margin-bottom: 2px!important;
+}
+
+.affieasy-table-cell-link-text {
+    vertical-align: middle!important;
 }
 
 .affieasy-table-cell-link:hover {
