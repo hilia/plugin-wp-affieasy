@@ -160,8 +160,8 @@ div[id^="cell-content-link-list-"] {
 }
 
 .cell-content-link-list-icon {
-    vertical-align: sub;
-    margin-right: 5px;
+    vertical-align: middle;
+    margin-bottom: 3px;
 }
 
 .table-content-cell-unknown {
