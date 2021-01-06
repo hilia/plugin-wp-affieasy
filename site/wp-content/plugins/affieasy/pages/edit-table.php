@@ -386,13 +386,12 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
     </div>
 
     <hr class="wp-header-end">
-
     <?php if ($isFromSaveAction) {
         $hasErrors = count($errors) > 0;
         ?>
         <div
-                id="setting-error-settings_updated"
-                class="notice notice-<?php echo $hasErrors ? 'error' : 'success' ?> settings-error is-dismissible">
+                id="message"
+                class="notice notice-<?php echo $hasErrors ? 'error' : 'success' ?> is-dismissible">
             <?php if ($hasErrors) {
                 foreach ($errors as $error) { ?>
                     <p><strong><?php echo $error; ?></strong></p>
@@ -400,7 +399,6 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
             } else { ?>
                 <p><strong>Table <?php echo $tableName; ?> saved</strong></p>
             <?php } ?>
-            <button type="button" class="notice-dismiss"></button>
         </div>
     <?php } ?>
 

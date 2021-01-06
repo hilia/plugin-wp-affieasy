@@ -77,7 +77,7 @@ $webshopName = $webshop->getName();
         ?>
         <div
                 id="setting-error-settings_updated"
-                class="notice notice-<?php echo $hasErrors ? 'error' : 'success' ?> settings-error is-dismissible">
+                class="notice notice-<?php echo $hasErrors ? 'error' : 'success' ?> is-dismissible">
             <?php if ($hasErrors) {
                 foreach ($errors as $error) { ?>
                     <p><strong><?php echo $error; ?></strong></p>
@@ -85,7 +85,6 @@ $webshopName = $webshop->getName();
             } else { ?>
                 <p><strong>Webshop <?php echo $webshopName; ?> saved</strong></p>
             <?php } ?>
-            <button type="button" class="notice-dismiss"></button>
         </div>
     <?php } ?>
 
