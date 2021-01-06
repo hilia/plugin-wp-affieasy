@@ -76,7 +76,7 @@
 
 .affieasy-table-cell-link-text {
     vertical-align: middle!important;
-    word-break: break-all;
+    word-break: break-word;
 }
 
 .affieasy-table-cell-link:hover {

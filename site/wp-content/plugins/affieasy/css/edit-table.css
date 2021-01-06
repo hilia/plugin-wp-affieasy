@@ -3,12 +3,16 @@
     flex-direction: row;
 }
 
+.general-table-options-table {
+    width: 50%!important;
+}
+
 .general-form-label {
     width: 215px!important;
 }
 
 .general-input {
-    width: 19em !important;
+    width: 19em!important;
 }
 
 #edition-panel {
