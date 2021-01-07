@@ -11,10 +11,12 @@ const SPECIAL_CHARS = {
 
 function removeSpecialCharsFromUrlParameter(parameter) {
     if (!!parameter) {
-        return Object.keys(SPECIAL_CHARS)
+        parameter = Object.keys(SPECIAL_CHARS)
             .reduce((acc, cur) => acc.replace(new RegExp(SPECIAL_CHARS[cur], 'g'), cur), parameter)
             .replaceAll(/"/g, '')
             .replaceAll(/'/g, '');
+
+        return !!parameter ? parameter.toLowerCase() : '';
     }
 
     return '';

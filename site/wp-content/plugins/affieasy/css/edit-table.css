@@ -3,12 +3,16 @@
     flex-direction: row;
 }
 
+.general-table-options-table {
+    width: 50%!important;
+}
+
 .general-form-label {
     width: 215px!important;
 }
 
 .general-input {
-    width: 19em !important;
+    width: 19em!important;
 }
 
 #edition-panel {
@@ -160,8 +164,8 @@ div[id^="cell-content-link-list-"] {
 }
 
 .cell-content-link-list-icon {
-    vertical-align: sub;
-    margin-right: 5px;
+    vertical-align: middle;
+    margin-bottom: 3px;
 }
 
 .table-content-cell-unknown {

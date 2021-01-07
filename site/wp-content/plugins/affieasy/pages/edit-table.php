@@ -386,13 +386,12 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
     </div>
 
     <hr class="wp-header-end">
-
     <?php if ($isFromSaveAction) {
         $hasErrors = count($errors) > 0;
         ?>
         <div
-                id="setting-error-settings_updated"
-                class="notice notice-<?php echo $hasErrors ? 'error' : 'success' ?> settings-error is-dismissible">
+                id="message"
+                class="notice notice-<?php echo $hasErrors ? 'error' : 'success' ?> is-dismissible">
             <?php if ($hasErrors) {
                 foreach ($errors as $error) { ?>
                     <p><strong><?php echo $error; ?></strong></p>
@@ -400,7 +399,6 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
             } else { ?>
                 <p><strong>Table <?php echo $tableName; ?> saved</strong></p>
             <?php } ?>
-            <button type="button" class="notice-dismiss"></button>
         </div>
     <?php } ?>
 
@@ -416,7 +414,7 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
         <input type="hidden" id="has-no-webshop" value="<?php echo $hasNoWebShop; ?>">
 
         <div class="general-table-options">
-            <table class="form-table" role="presentation">
+            <table class="form-table general-table-options-table" role="presentation">
                 <?php if (!empty($tableId)) { ?>
                     <tr class="form-field">
                         <th scope="row" class="general-form-label">
@@ -475,7 +473,7 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                 </tr>
             </table>
 
-            <table class="form-table" role="presentation">
+            <table class="form-table general-table-options-table" role="presentation">
                 <tr>
                     <th scope="row" class="general-form-label">
                         <label for="name">
