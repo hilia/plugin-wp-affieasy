@@ -77,7 +77,7 @@ class AffiliationTableAdmin
 
     public function display_table_views()
     {
-        if (current_user_can('manage_options')) {
+        if (is_admin() && current_user_can('manage_options')) {
             switch ($_GET['action']) {
                 case 'edit-table':
                     include(dirname(__DIR__) . '/views/admin/edit-table.php');
@@ -91,7 +91,7 @@ class AffiliationTableAdmin
 
     public function display_webshop_list()
     {
-        if (current_user_can('manage_options')) {
+        if (is_admin() && current_user_can('manage_options')) {
             switch ($_GET['action']) {
                 case 'edit-webshop':
                     include(dirname(__DIR__) . '/views/admin/edit-webshop.php');
