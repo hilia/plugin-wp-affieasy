@@ -1,5 +1,6 @@
 <?php
-require_once dirname(__DIR__) . '/classes/class-webshop-list.php';
+
+require_once ABSPATH . '/wp-content/plugins/affieasy/classes/class-webshop-list.php';
 
 wp_enqueue_style(
     'list-webshop-style',

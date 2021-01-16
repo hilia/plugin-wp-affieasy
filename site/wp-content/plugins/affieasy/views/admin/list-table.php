@@ -1,6 +1,6 @@
 <?php
 
-require_once dirname(__DIR__) . '/classes/class-table-list.php';
+require_once ABSPATH . '/wp-content/plugins/affieasy/classes/class-table-list.php';
 
 wp_enqueue_script(
     'list-table-script',
