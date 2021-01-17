@@ -1,0 +1,140 @@
+#generate mo: msgfmt -o affieasy-fr_FR.mo affieasy-fr_FR.po
+
+msgid ""
+msgstr ""
+"Project-Id-Version: Affieasy plugin\n"
+"POT-Creation-Date: 2021-01-16 21:29+0100\n"
+"PO-Revision-Date: 2021-01-17 10:39+0100\n"
+"Language-Team: Affieasy team\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.2.1\n"
+"X-Poedit-Basepath: .\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Poedit-KeywordsList: __;_e;_x\n"
+"Last-Translator: \n"
+"Language: fr\n"
+
+# General
+msgid "Webshops"
+msgstr "Boutiques"
+
+msgid "Yes"
+msgstr "Oui"
+
+msgid "No"
+msgstr "Non"
+
+msgid "Id"
+msgstr "Id"
+
+msgid "Name"
+msgstr "Nom"
+
+msgid "Edit"
+msgstr "Modifier"
+
+msgid "Delete"
+msgstr "Supprimer"
+
+msgid "Name must not be empty"
+msgstr "Le nom ne doit pas être vide"
+
+msgid "(Required)"
+msgstr "(Requis)"
+
+# Webshop list
+msgid "Add new webshop"
+msgstr "Ajouter une boutique"
+
+msgid "Confirmation"
+msgstr "Confirmation"
+
+msgid "Are you sure you want to delete the webshop (all related links will be removed)?"
+msgstr "Êtes-vous sûr de vouloir supprimer cette boutique (tous les liens associés seront supprimés) ?"
+
+msgid "The webshop has been deleted"
+msgstr "La boutique a été supprimée"
+
+#Webshop edition
+msgid "Back to webshop list"
+msgstr "Retour liste boutiques"
+
+msgid "Create webshop"
+msgstr "Creation boutique"
+
+msgid "Update webshop"
+msgstr "Mise à jour boutique"
+
+msgid "Webshop %1$s saved"
+msgstr "Boutique %1$s sauvegardée"
+
+msgid "Url must not be empty"
+msgstr "L'url ne doit pas être vide"
+
+msgid "Url must contains at least [[%1$s]] parameter"
+msgstr "L'url doit contenir au minimum le paramètre [[%1$s]]"
+
+msgid "How to use this plugin?"
+msgstr "Comment utiliser ce plugin ?"
+
+msgid "If you want to manage affiate links in your tables, the best way with this plugin is to use webshops."
+msgstr "Si vous souhaitez gérer des liens d'affiliations dans vos tableaux, la méthode la plus efficace avec ce plugin est d'utiliser le concept de boutique."
+
+msgid "A webshop represents a website like amazon, alibaba,..."
+msgstr "Une boutique correspond à un site de vente en ligne comme amazon, alibaba,..."
+
+msgid "Let's take a simple example to understand how the plugin work:"
+msgstr "Prenons un exemple simple pour comprendre comment fonctionne ce plugin :"
+
+msgid "You want to have affiliate links in your tables for decathlon webshop which use awin as advertising agency."
+msgstr "Vous souhaitez avoir des liens d'affiliations dans vos tableaux pour la boutique decathlon dont la régie publicitaire est awin."
+
+msgid "You just have to create a new webshop decathlon with this url:"
+msgstr "Il vous suffit de créer une nouvelle boutique decathlon avec cette url :"
+
+msgid "and"
+msgstr "et"
+
+msgid "will be variable parameters"
+msgstr "seront des paramètres variables"
+
+msgid "(at least, product_url have to be specified)"
+msgstr "(au minimum, product_url doit être spécifié)"
+
+msgid "but you can add others as many as needed"
+msgstr "mais vous pouvez en ajouter autant que nécessaire"
+
+msgid "between"
+msgstr "entre"
+
+msgid "Now You can add affiliate links for decathlon in your tables (edit table -> add row -> Affiliate links -> select decathlon). Parameters"
+msgstr "Vous pouvez désormais ajouter des liens d'affiliations dans vos tableaux (Créer/Mettre à jour tableau -> Ajouter une ligne -> Liens d'affiliations -> sélectionner décathlon). Les paramètres"
+
+msgid "will be asked during creation process and the url will be automatically generated."
+msgstr "seront demandés durant le processus de création de liens et l'url sera générée automatiquement."
+
+msgid "Affiliation url"
+msgstr "Url d'affiliation"
+
+msgid "Ex: https://www.awin1.com/cread.php?p=[[product_url]]&clickref=[[click_ref]]"
+msgstr "Ex : https://www.awin1.com/cread.php?p=[[product_url]]&clickref=[[click_ref]]"
+
+msgid "Affiliate link preferences"
+msgstr "Préférences liens d'affiliations"
+
+msgid "If you fill preferences, affiliate links fields will be automatically entered during the creation process (it will be still possible to change values)"
+msgstr "Si vous remplissez les préférences, les champs des liens d'affiliations seront automatiquement remplis lors du processus de création (il sera toujours possible de modifier unitairement les valeurs)"
+
+msgid "Link text"
+msgstr "Texte du lien"
+
+msgid "Background color"
+msgstr "Couleur de fond"
+
+msgid "Text color"
+msgstr "Couleur de texte"
+
+msgid "Save webshop"
+msgstr "Sauvegarder boutique"

@@ -8,16 +8,15 @@ jQuery(($) => {
 
     function openDeleteModal(event) {
         if (!!event && !!event.data && !isNaN(event.data.id)) {
-
             $('#dialog-confirm-delete').dialog({
                 resizable: false,
                 width: 350,
                 modal: true,
                 buttons: {
-                    'Yes': function () {
+                    [translations.yes]: function () {
                         window.location.href = 'admin.php?page=affieasy-webshop&action=delete-webshop&id=' + event.data.id;
                     },
-                    'No': function () {
+                    [translations.no]: function () {
                         $(this).dialog('close');
                     }
                 }

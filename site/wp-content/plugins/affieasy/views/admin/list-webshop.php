@@ -9,11 +9,16 @@ wp_enqueue_style(
     time());
 
 wp_enqueue_script(
-'list-webshop-script',
-plugins_url('/affieasy/js/list-webshop.js'),
-array('jquery', 'jquery-ui-dialog'),
-time()
+    'list-webshop-script',
+    plugins_url('/affieasy/js/list-webshop.js'),
+    array('jquery', 'jquery-ui-dialog'),
+    time()
 );
+
+wp_localize_script( 'list-webshop-script', 'translations', array(
+    'yes' => esc_html__('Yes', 'affieasy'),
+    'no' => esc_html__('No', 'affieasy'),
+) );
 
 wp_enqueue_style('wp-jquery-ui-dialog');
 
@@ -25,22 +30,21 @@ if ($isValidDeleteAction) {
 }
 
 $webshopList = new WebshopList();
-
 ?>
 
-<div id="dialog-confirm-delete" title="Confirmation" hidden>
+<div id="dialog-confirm-delete" title="<?php esc_html_e('Confirmation', 'affieasy'); ?>" hidden>
     <p>
-        Are you sure you want to delete the webshop (all related links will be removed)?
+        <?php esc_html_e('Are you sure you want to delete the webshop (all related links will be removed)?', 'affieasy'); ?>
     </p>
 </div>
 
 <div class="wrap">
 
     <div class="header">
-        <h1 class="wp-heading-inline">Webshops</h1>
+        <h1 class="wp-heading-inline"><?php esc_html_e('Webshops', 'affieasy'); ?></h1>
 
         <a href="admin.php?page=affieasy-webshop&action=edit-webshop" class="page-title-action">
-            Add new webshop
+            <?php esc_html_e('Add new webshop', 'affieasy'); ?>
         </a>
     </div>
 
@@ -48,7 +52,7 @@ $webshopList = new WebshopList();
 
     <?php if ($isValidDeleteAction) { ?>
         <div class="notice notice-success settings-error is-dismissible">
-            <p><strong>The webshop has been deleted</strong></p>
+            <p><strong><?php esc_html_e('The webshop has been deleted', 'affieasy'); ?></strong></p>
         </div>
     <?php } ?>
 

@@ -18,7 +18,7 @@ class AffiliationTableAdmin
 
         add_shortcode(Constants::TABLE_TAG, array($this, 'affieasy_table_content_callback'));
 
-        wp_enqueue_style( 'dashicons' );
+        wp_enqueue_style('dashicons');
         wp_enqueue_style(
             'rendering-style',
             plugins_url('/affieasy/css/rendering.css'),

@@ -38,15 +38,17 @@ $id = $_GET['id'];
 $isFromSaveAction = $_POST['submit'] == 'save-action';
 if ($isFromSaveAction) {
     if (empty($webshop->getName())) {
-        array_push($errors, 'Name must not be empty');
+        array_push($errors, __('Name must not be empty', 'affieasy'));
     }
 
     $webshopUrl = $webshop->geturl();
     if (empty($webshopUrl)) {
-        array_push($errors, 'Url must not be empty');
+        array_push($errors, __('Url must not be empty', 'affieasy'));
     } else {
         if (!in_array(Constants::MANDATORY_URL_PARAM, $webshop->getParameters())) {
-            array_push($errors, 'Url must contains at least [[' . Constants::MANDATORY_URL_PARAM . ']] parameter');
+            array_push($errors, sprintf(
+                    __('Url must contains at least [[%1$s]] parameter', 'affieasy'),
+                    Constants::MANDATORY_URL_PARAM));
         }
     }
 
@@ -64,9 +66,11 @@ $webshopName = $webshop->getName();
 
 <div class="wrap">
     <div class="header">
-        <h1 class="wp-heading-inline"><?php echo empty($webshopId) ? 'Create webshop' : 'Update webshop ' . $webshopName; ?></h1>
+        <h1 class="wp-heading-inline"><?php echo empty($webshopId) ?
+                __('Create webshop', 'affieasy') :
+                __('Update webshop', 'affieasy') . ' ' . $webshopName; ?></h1>
         <a href="admin.php?page=affieasy-webshop" class="page-title-action">
-            Back to webshop list
+            <?php esc_html_e('Back to webshop list', 'affieasy') ?>
         </a>
     </div>
 
@@ -83,33 +87,43 @@ $webshopName = $webshop->getName();
                     <p><strong><?php echo $error; ?></strong></p>
                 <?php }
             } else { ?>
-                <p><strong>Webshop <?php echo $webshopName; ?> saved</strong></p>
+                <p><strong><?php printf(esc_html__('Webshop %1$s saved', 'affieasy'), $webshopName); ?></strong></p>
             <?php } ?>
         </div>
     <?php } ?>
 
     <div id="helper">
         <div type="button" id="helper-title">
-            What and how to use this tool?
+            <?php esc_html_e('How to use this plugin?', 'affieasy'); ?>
             <span id="helper-icon" class="dashicons dashicons-arrow-down"></span>
         </div>
         <div id="helper-content">
-            If you want to manage affiate links in your tables, the best way with this plugin is to use webshops.<br>
-            A webshop represents a website like amazon, alibaba,...<br><br>
+            <?php esc_html_e(
+                    'If you want to manage affiate links in your tables, the best way with this plugin is to use webshops.',
+                    'affieasy'); ?>
+            <br>
 
-            Let's take a simple example to understand how the plugin work.<br>
-            You want to have affiliate links in your tables for decathlon webshop which use awin as advertising agency.
+            <?php esc_html_e('A webshop represents a website like amazon, alibaba,...', 'affieasy'); ?>
             <br><br>
 
-            You just have to create a new webshop decathlon with this url :<br>
-            <strong>https://www.awin1.com/cread.php?p=[[product_url]]&clickref=[[click_ref]]</strong><br>
-            <strong>[[product_url]]</strong> and <strong>[[click_ref]]</strong> will be variable parameters
-            <strong>(at least, product_url have to be specified)</strong> but you can add others as many as needed
-            between <strong>[[</strong> and <strong>]]</strong>.<br><br>
+            <?php esc_html_e('Let\'s take a simple example to understand how the plugin work:', 'affieasy'); ?><br>
+            <?php esc_html_e(
+                    'You want to have affiliate links in your tables for decathlon webshop which use awin as advertising agency.',
+                    'affieasy'); ?>
+            <br><br>
 
-            Now You can add affiliate links for decathlon in your tables (edit table -> add row -> Affiliate links ->
-            select decathlon). Parameters <strong>[[product_url]]</strong> and <strong>[[click_ref]]</strong> will be
-            asked during creation process and the url will be automatically generated.<br><br>
+            <?php esc_html_e('You just have to create a new webshop decathlon with this url:', 'affieasy'); ?><br>
+            <strong>https://www.awin1.com/cread.php?p=[[product_url]]&clickref=[[click_ref]]</strong><br>
+            <strong>[[product_url]]</strong> <?php esc_html_e('and', 'affieasy'); ?> <strong>[[click_ref]]</strong> <?php esc_html_e('will be variable parameters', 'affieasy'); ?>
+            <strong><?php esc_html_e('(at least, product_url have to be specified)','affieasy'); ?></strong> <?php esc_html_e('but you can add others as many as needed','affieasy'); ?>
+            <?php esc_html_e('between', 'affieasy'); ?> <strong>[[</strong> <?php esc_html_e('and', 'affieasy'); ?> <strong>]]</strong>.<br><br>
+
+            <?php esc_html_e(
+                    'Now You can add affiliate links for decathlon in your tables (edit table -> add row -> Affiliate links -> select decathlon). Parameters',
+                    'affieasy'); ?>
+            <strong>[[product_url]]</strong> <?php esc_html_e('and', 'affieasy'); ?> <strong>[[click_ref]]</strong>
+            <?php esc_html_e('will be asked during creation process and the url will be automatically generated.', 'affieasy'); ?>
+            <br><br>
 
             <!--If one day, the advertising agency changes for this webshop (it becomes Affilae), just update the url :
             <strong>[[product_url]]#ae1234&utm_source=affilae&clickref=[[click_ref]]</strong> and click on the
@@ -126,8 +140,8 @@ $webshopName = $webshop->getName();
             <tr class="form-field">
                 <th scope="row">
                     <label for="name">
-                        Name
-                        <span class="description">(required)</span>
+                        <?php esc_html_e('Name', 'affieasy'); ?>
+                        <span class="description"><?php esc_html_e('(Required)', 'affieasy'); ?></span>
                     </label>
                 </th>
                 <td>
@@ -142,8 +156,8 @@ $webshopName = $webshop->getName();
             <tr class="form-field">
                 <th scope="row">
                     <label for="url">
-                        Affiliation url
-                        <span class="description">(required)</span>
+                        <?php esc_html_e('Affiliation url', 'affieasy'); ?>
+                        <span class="description"><?php esc_html_e('(Required)', 'affieasy'); ?></span>
                     </label>
                 </th>
                 <td>
@@ -153,16 +167,16 @@ $webshopName = $webshop->getName();
                             id="url"
                             maxlength="2048"
                             value="<?php echo $webshop->getUrl(); ?>"
-                            placeholder="Ex: https://www.awin1.com/cread.php?p=[[product_url]]&clickref=[[click_ref]]">
+                            placeholder="<?php esc_html_e('Ex: https://www.awin1.com/cread.php?p=[[product_url]]&clickref=[[click_ref]]', 'affieasy'); ?>">
                 </td>
             </tr>
         </table>
 
         <h2 class="title">
-            Affiliate link preferences
+            <?php esc_html_e('Affiliate link preferences', 'affieasy'); ?>
             <span
                     class="dashicons dashicons-info"
-                    title="If you fill preferences, affiliate links fields will be automatically entered during the creation process (it will be still possible to change values)">
+                    title="<?php esc_html_e('If you fill preferences, affiliate links fields will be automatically entered during the creation process (it will be still possible to change values)', 'affieasy'); ?>">
             </span>
         </h2>
 
@@ -170,7 +184,7 @@ $webshopName = $webshop->getName();
             <tr class="form-field">
                 <th scope="row">
                     <label for="link-text-preference">
-                        Link text
+                        <?php esc_html_e('Link text', 'affieasy'); ?>
                     </label>
                 </th>
                 <td>
@@ -186,7 +200,7 @@ $webshopName = $webshop->getName();
             <tr class="form-field">
                 <th scope="row">
                     <label for="background-color-preference">
-                        Background color
+                        <?php esc_html_e('Background color', 'affieasy'); ?>
                     </label>
                 </th>
                 <td>
@@ -201,7 +215,7 @@ $webshopName = $webshop->getName();
             <tr class="form-field">
                 <th scope="row">
                     <label for="text-color-preference">
-                        Text color
+                        <?php esc_html_e('Text color', 'affieasy'); ?>
                     </label>
                 </th>
                 <td>
@@ -222,6 +236,6 @@ $webshopName = $webshop->getName();
             id="submit"
             class="button button-primary edit-button-bottom"
             value="save-action">
-        Save webshop
+        <?php esc_html_e('Save webshop', 'affieasy'); ?>
     </button>
 </div>
