@@ -206,19 +206,19 @@ jQuery(($) => {
             class: 'table-col-actions-cell-content-drag'
         }).append($('<span>', {
             class: 'dashicons dashicons-editor-expand',
-            title: 'Keep the mouse pressed to drag and drop the column'
+            title: translations.dragAndDropColumn
         }))).append($('<div>', {
             class: 'table-col-actions-cell-content-actions'
         }).append($('<span>', {
             id: 'button-col-delete-' + colId,
             'data-col-id': colId,
             class: 'dashicons dashicons-minus action-button-delete pointer',
-            title: 'Delete column'
+            title: translations.deleteColumn
         }).on('click', null, {colId}, deleteColumn)).append($('<span>', {
             id: 'button-col-add-' + colId,
             'data-col-id': colId,
             class: 'dashicons dashicons-plus action-button-add pointer',
-            title: 'Add a column after this one',
+            title: translations.addColumnAfterThisOne,
         }).on('click', null, {colId}, addColumnAfter))));
 
         // Create the header cell
@@ -278,15 +278,15 @@ jQuery(($) => {
             class: 'table-row-actions-cell sortable-row',
         }).append($('<span>', {
             class: 'dashicons dashicons-editor-expand drag-row',
-            title: 'Keep the mouse pressed to drag and drop the row'
+            title: translations.dragAndDropRow
         })).append($('<span>', {
             id: 'button-row-delete-' + rowIdString,
             class: 'dashicons dashicons-minus action-button-delete pointer',
-            title: 'Delete row'
+            title: translations.deleteRow
         }).on('click', null, {rowId: rowIdString}, deleteRow)).append($('<span>', {
             id: 'button-row-add-' + rowIdString,
             class: 'dashicons dashicons-plus action-button-add pointer',
-            title: 'Add a row after this one'
+            title: translations.addRowAfterThisOne
         }).on('click', null, {rowId: rowIdString}, openAddRowPopover)));
 
         // Add the header row cell (hidden if column header or none selected)
@@ -345,7 +345,7 @@ jQuery(($) => {
                     .append($('<span>', {
                         id: 'select-image-button-' + lastCellId,
                         class: 'dashicons dashicons-edit action-button-add pointer',
-                        title: 'Select image'
+                        title: translations.selectImage
                     }).on('click', null, {cellId: lastCellId}, openSelectImageModal))
                     .append($('<div>', {
                         id: 'table-content-cell-image-overview-' + lastCellId,
@@ -366,7 +366,7 @@ jQuery(($) => {
                     }))
                     .append($('<span>', {
                         class: 'dashicons dashicons-plus add-affiliation-link-button action-button-add pointer',
-                        title: 'Add affiliate link'
+                        title: translations.addAffliateLink
                     }).on('click', null, {cellId: lastCellId}, openEditAffiliationLinkModal))
                     .append($('<div>', {
                         id: 'cell-content-link-list-' + lastCellId
@@ -375,7 +375,7 @@ jQuery(($) => {
                 return $('<td>', {
                     class: 'table-content-cell-unknown',
                     'data-col-id': colId
-                }).append('Unknown type');
+                }).append(translations.unknownType);
         }
     }
 
@@ -396,9 +396,9 @@ jQuery(($) => {
     function openSelectImageModal(event) {
         if (!!event && !!event.data && !!event.data.cellId) {
             let frame = wp.media({
-                title: 'Select or Upload new image',
+                title: translations.selectOrUploadImage,
                 button: {
-                    text: 'Validate'
+                    text: translations.validate
                 },
                 multiple: false
             });
@@ -419,7 +419,7 @@ jQuery(($) => {
                     $($('<span>', {
                         id: 'remove-image-button-' + cellId,
                         class: 'dashicons dashicons-minus remove-image-button action-button-delete pointer',
-                        title: 'Remove image',
+                        title: translations.removeImage,
                         'data-cell-id': cellId
                     })
                         .on('click', null, {cellId}, removeImage))
@@ -466,23 +466,23 @@ jQuery(($) => {
 
             if (hasNoWebshop) {
              buttons = {
-                 'Close': cancel()
+                 [translations.close]: cancel()
              };
             } else {
                 buttons = !!affilitateLinkValue ? {
-                    'Edit': updateAffiliateLink,
-                    'Remove': removeAffiliateLink,
-                    'Cancel': cancel()
+                    [translations.edit]: updateAffiliateLink,
+                    [translations.delete]: removeAffiliateLink,
+                    [translations.cancel]: cancel()
                 } : {
-                    'Add': addAffiliateLink,
-                    'Cancel': cancel()
+                    [translations.add]: addAffiliateLink,
+                    [translations.cancel]: cancel()
                 };
             }
 
             $('#edit-affiliation-link-modal').dialog({
                 resizable: true,
-                minWidth: 400,
-                title: !!affilitateLinkValue ? 'Edit affiliation link' : 'Create affiliation link',
+                minWidth: 410,
+                title: !!affilitateLinkValue ? translations.editAffiliationLink : translations.createAffiliationLink,
                 modal: true,
                 buttons,
             });
@@ -497,13 +497,13 @@ jQuery(($) => {
             resizable: true,
             minWidth: 450,
             minHeight: 400,
-            title: 'Edit header options',
+            title: translations.editHeaderOptions,
             modal: true,
             buttons: {
-                'Cancel': function () {
+                [translations.cancel]: function () {
                     $(this).dialog('close');
                 },
-                'Edit': function () {
+                [translations.edit]: function () {
                     $('#header-options').val(JSON.stringify({
                         'column-background': $('#header-column-background').val(),
                         'column-color': $('#header-column-color').val(),
@@ -556,7 +556,7 @@ jQuery(($) => {
             type: 'button',
             class: 'cell-content-link-list-button',
             style: getAffiliateLinkStyle(value.background, value.color),
-            title: 'Edit affiliate link',
+            title: translations.editAffiliateLink,
             'data-id': id
         }).on('click', null, {cellId: currentCellId, id}, openEditAffiliationLinkModal)
             .append($('<span>', {

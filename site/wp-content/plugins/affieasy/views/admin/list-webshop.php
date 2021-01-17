@@ -18,7 +18,7 @@ wp_enqueue_script(
 wp_localize_script( 'list-webshop-script', 'translations', array(
     'yes' => esc_html__('Yes', 'affieasy'),
     'no' => esc_html__('No', 'affieasy'),
-) );
+));
 
 wp_enqueue_style('wp-jquery-ui-dialog');
 

@@ -70,7 +70,7 @@ $webshopName = $webshop->getName();
                 __('Create webshop', 'affieasy') :
                 __('Update webshop', 'affieasy') . ' ' . $webshopName; ?></h1>
         <a href="admin.php?page=affieasy-webshop" class="page-title-action">
-            <?php esc_html_e('Back to webshop list', 'affieasy') ?>
+            <?php esc_html_e('Back to webshop list', 'affieasy'); ?>
         </a>
     </div>
 

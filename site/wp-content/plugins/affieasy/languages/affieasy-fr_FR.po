@@ -20,17 +20,47 @@ msgstr ""
 msgid "Webshops"
 msgstr "Boutiques"
 
+msgid "Tables"
+msgstr "Tableaux"
+
+msgid "Confirmation"
+msgstr "Confirmation"
+
 msgid "Yes"
 msgstr "Oui"
 
 msgid "No"
 msgstr "Non"
 
+msgid "Background color"
+msgstr "Couleur de fond"
+
+msgid "Font size"
+msgstr "Taille police"
+
+msgid "Font weight"
+msgstr "Poids police"
+
 msgid "Id"
 msgstr "Id"
 
 msgid "Name"
 msgstr "Nom"
+
+msgid "Link text"
+msgstr "Texte du lien"
+
+msgid "Text color"
+msgstr "Couleur de texte"
+
+msgid "Add"
+msgstr "Ajouter"
+
+msgid "Cancel"
+msgstr "Annuler"
+
+msgid "Close"
+msgstr "Fermer"
 
 msgid "Edit"
 msgstr "Modifier"
@@ -48,14 +78,14 @@ msgstr "(Requis)"
 msgid "Add new webshop"
 msgstr "Ajouter une boutique"
 
-msgid "Confirmation"
-msgstr "Confirmation"
-
 msgid "Are you sure you want to delete the webshop (all related links will be removed)?"
 msgstr "Êtes-vous sûr de vouloir supprimer cette boutique (tous les liens associés seront supprimés) ?"
 
 msgid "The webshop has been deleted"
 msgstr "La boutique a été supprimée"
+
+msgid "No webshop found."
+msgstr "Aucune boutique trouvée."
 
 #Webshop edition
 msgid "Back to webshop list"
@@ -127,14 +157,178 @@ msgstr "Préférences liens d'affiliations"
 msgid "If you fill preferences, affiliate links fields will be automatically entered during the creation process (it will be still possible to change values)"
 msgstr "Si vous remplissez les préférences, les champs des liens d'affiliations seront automatiquement remplis lors du processus de création (il sera toujours possible de modifier unitairement les valeurs)"
 
-msgid "Link text"
-msgstr "Texte du lien"
-
-msgid "Background color"
-msgstr "Couleur de fond"
-
-msgid "Text color"
-msgstr "Couleur de texte"
-
 msgid "Save webshop"
 msgstr "Sauvegarder boutique"
+
+#Table list
+msgid "Are you sure you want to delete the table?"
+msgstr "Êtes-vous sûr de vouloir supprimer ce tableau ?"
+
+msgid "Add new table"
+msgstr "Ajouter un tableau"
+
+msgid "The table has been deleted"
+msgstr "Le tableau a été supprimé"
+
+msgid "No table found."
+msgstr "Aucun tableau trouvé."
+
+#Table edition
+msgid "Table must contains at least one row"
+msgstr "Le tableau doit contenir au moins une ligne"
+
+msgid "Responsive breakpoint must be a positive number"
+msgstr "Le point de rupture doit être un entier positif"
+
+msgid "Max width must be a positive number"
+msgstr "La largeur maximale doit être un entier positif"
+
+msgid "Add webshop to use this functionnality."
+msgstr "Ajoutez une boutique pour utiliser cette fonctionnalité."
+
+msgid "Edit affiliation link"
+msgstr "Mise à jour lien d'affiliation"
+
+msgid "Create affiliation link"
+msgstr "Créer lien d'affiliation"
+
+msgid "Select webshop"
+msgstr "Sélectionner boutique"
+
+msgid "Link overview"
+msgstr "Aperçu lien"
+
+msgid "Edit header options"
+msgstr "Editer options d'en-têtes"
+
+msgid "Column header options"
+msgstr "Options d'en-tête de colonne"
+
+msgid "Row header options"
+msgstr "Options d'en-tête de ligne"
+
+msgid "Bold"
+msgstr "Gras"
+
+msgid "Bolder"
+msgstr "Très gras"
+
+msgid "Normal"
+msgstr "Normal"
+
+msgid "Back to table list"
+msgstr "Retour liste tableaux"
+
+msgid "Create table"
+msgstr "Création tableau"
+
+msgid "Update table"
+msgstr "Mise à jour tableau"
+
+msgid "Table %1$s saved"
+msgstr "Tableau %1$s sauvegardé"
+
+msgid "Tag"
+msgstr "Tag"
+
+msgid "Put this tag in your page to include the table"
+msgstr "Ajouter ce tag dans une de vos pages pour afficher le tableau"
+
+msgid "Header(s)"
+msgstr "En-tête(s)"
+
+msgid "Column header"
+msgstr "En-tête de colonne"
+
+msgid "Row header"
+msgstr "En-tête de ligne"
+
+msgid "Both"
+msgstr "Les deux"
+
+msgid "None"
+msgstr "Aucune"
+
+msgid "Max width"
+msgstr "Largeur max"
+
+msgid "Max width in pixels allowed for the table (100% of available space if not filled)"
+msgstr "Largeur maximale autorisée pour le tableau (100% de l'espace disponible si non renseigné)"
+
+msgid "Responsive breakpoint"
+msgstr "Point de rupture responsive"
+
+msgid "Resolution in pixels below which the table take its responsive form"
+msgstr "Résolution en dessous de laquelle le tableau prend sa forme responsive"
+
+msgid "Add row"
+msgstr "Ajouter ligne"
+
+msgid "Add column"
+msgstr "Ajouter colonne"
+
+msgid "Row type"
+msgstr "Type de ligne"
+
+msgid "Text / Html"
+msgstr "Texte / Html"
+
+msgid "Images"
+msgstr "Images"
+
+msgid "Affiliate links"
+msgstr "Liens d'affiliations"
+
+msgid "Add a column after header"
+msgstr "Ajouter une colonne après l'en-tête"
+
+msgid "Keep the mouse pressed to drag and drop the column"
+msgstr "Maintenez la souris enfoncée pour glisser et déposer la colonne"
+
+msgid "Delete column"
+msgstr "Supprimer colonne"
+
+msgid "Add a column after this one"
+msgstr "Ajouter une colonne après celle-ci"
+
+msgid "Add a row after header"
+msgstr "Ajouter une ligne après l'en-tête"
+
+msgid "Keep the mouse pressed to drag and drop the row"
+msgstr "Maintenez la souris enfoncée pour glisser et déposer la ligne"
+
+msgid "Delete row"
+msgstr "Supprimer ligne"
+
+msgid "Add a row after this one"
+msgstr "Ajouter une ligne après celle-ci"
+
+msgid "Select image"
+msgstr "Sélectionner image"
+
+msgid "Remove image"
+msgstr "Supprimer image"
+
+msgid "Add affiliate link"
+msgstr "Ajouter lien d'affiliation"
+
+msgid "Unknown type"
+msgstr "Type inconnu"
+
+msgid "Select or Upload new image"
+msgstr "Sélectionner ou téléverser une nouvelle image"
+
+msgid "Validate"
+msgstr "Valider"
+
+msgid "Edit affiliate link"
+msgstr "Modifier le lien d'affiliation"
+
+msgid "For better readability, background color modifications are not visible into the editor."
+msgstr "Par soucis de lisibilité, la couleur de fond du tableau n'est pas visible dans l'éditeur."
+
+msgid "Rendering can be slightly different depending on the theme applied."
+msgstr "Le rendu pourra être légèrement différent on fonction du thème appliqué."
+
+msgid "Save table"
+msgstr "Sauvegarder tableau"

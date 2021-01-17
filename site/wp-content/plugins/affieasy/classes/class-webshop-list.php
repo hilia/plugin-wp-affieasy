@@ -19,7 +19,7 @@ class WebshopList extends WP_List_Table
 
     public function no_items()
     {
-        _e('No webshops found.');
+        _e('No webshop found.', 'affieasy');
     }
 
     function get_columns()

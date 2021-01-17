@@ -18,22 +18,52 @@ msgstr ""
 msgid "Webshops"
 msgstr ""
 
+msgid "Tables"
+msgstr ""
+
+msgid "Confirmation"
+msgstr ""
+
 msgid "Yes"
 msgstr ""
 
 msgid "No"
 msgstr ""
 
+msgid "Background color"
+msgstr ""
+
 msgid "Id"
+msgstr ""
+
+msgid "Font size"
+msgstr ""
+
+msgid "Font weight"
 msgstr ""
 
 msgid "Name"
 msgstr ""
 
-msgid "Edit"
+msgid "Link text"
+msgstr ""
+
+msgid "Text color"
+msgstr ""
+
+msgid "Add"
+msgstr ""
+
+msgid "Cancel"
+msgstr ""
+
+msgid "Close"
 msgstr ""
 
 msgid "Delete"
+msgstr ""
+
+msgid "Edit"
 msgstr ""
 
 msgid "(Required)"
@@ -46,13 +76,13 @@ msgstr ""
 msgid "Add new webshop"
 msgstr ""
 
-msgid "Confirmation"
-msgstr ""
-
 msgid "Are you sure you want to delete the webshop (all related links will be removed)?"
 msgstr ""
 
 msgid "The webshop has been deleted"
+msgstr ""
+
+msgid "No webshop found."
 msgstr ""
 
 #Webshop edition
@@ -125,15 +155,178 @@ msgstr ""
 msgid "If you fill preferences, affiliate links fields will be automatically entered during the creation process (it will be still possible to change values)"
 msgstr ""
 
-msgid "Link text"
-msgstr ""
-
-msgid "Background color"
-msgstr ""
-
-msgid "Text color"
-msgstr ""
-
 msgid "Save webshop"
 msgstr ""
 
+#Table list
+msgid "Are you sure you want to delete the table?"
+msgstr ""
+
+msgid "Add new table"
+msgstr ""
+
+msgid "The table has been deleted"
+msgstr ""
+
+msgid "No table found."
+msgstr ""
+
+#Table edition
+msgid "Table must contains at least one row"
+msgstr ""
+
+msgid "Responsive breakpoint must be a positive number"
+msgstr ""
+
+msgid "Max width must be a positive number"
+msgstr ""
+
+msgid "Add webshop to use this functionnality."
+msgstr ""
+
+msgid "Edit affiliation link"
+msgstr ""
+
+msgid "Create affiliation link"
+msgstr ""
+
+msgid "Select webshop"
+msgstr ""
+
+msgid "Link overview"
+msgstr ""
+
+msgid "Edit header options"
+msgstr ""
+
+msgid "Column header options"
+msgstr ""
+
+msgid "Row header options"
+msgstr ""
+
+msgid "Bold"
+msgstr ""
+
+msgid "Bolder"
+msgstr ""
+
+msgid "Normal"
+msgstr ""
+
+msgid "Back to table list"
+msgstr ""
+
+msgid "Create table"
+msgstr ""
+
+msgid "Update table"
+msgstr ""
+
+msgid "Table %1$s saved"
+msgstr ""
+
+msgid "Tag"
+msgstr ""
+
+msgid "Put this tag in your page to include the table"
+msgstr ""
+
+msgid "Header(s)"
+msgstr ""
+
+msgid "Column header"
+msgstr ""
+
+msgid "Row header"
+msgstr ""
+
+msgid "Both"
+msgstr ""
+
+msgid "None"
+msgstr ""
+
+msgid "Max width"
+msgstr ""
+
+msgid "Max width in pixels allowed for the table (100% of available space if not filled)"
+msgstr ""
+
+msgid "Responsive breakpoint"
+msgstr ""
+
+msgid "Resolution in pixels below which the table take its responsive form"
+msgstr ""
+
+msgid "Add row"
+msgstr ""
+
+msgid "Add column"
+msgstr ""
+
+msgid "Row type"
+msgstr ""
+
+msgid "Text / Html"
+msgstr ""
+
+msgid "Images"
+msgstr ""
+
+msgid "Affiliate links"
+msgstr ""
+
+msgid "Add a column after header"
+msgstr ""
+
+msgid "Keep the mouse pressed to drag and drop the column"
+msgstr ""
+
+msgid "Delete column"
+msgstr ""
+
+msgid "Add a column after this one"
+msgstr ""
+
+msgid "Add a row after header"
+msgstr ""
+
+msgid "Keep the mouse pressed to drag and drop the row"
+msgstr ""
+
+msgid "Delete row"
+msgstr ""
+
+msgid "Add a row after this one"
+msgstr ""
+
+msgid "Select image"
+msgstr ""
+
+msgid "Remove image"
+msgstr ""
+
+msgid "Add affiliate link"
+msgstr ""
+
+msgid "Unknown type"
+msgstr ""
+
+msgid "Select or Upload new image"
+msgstr ""
+
+msgid "Validate"
+msgstr ""
+
+msgid "Edit affiliate link"
+msgstr ""
+
+msgid "For better readability, background color modifications are not visible into the editor."
+msgstr ""
+
+msgid "Rendering can be slightly different depending on the theme applied."
+msgstr ""
+
+msgid "Save table"
+msgstr ""

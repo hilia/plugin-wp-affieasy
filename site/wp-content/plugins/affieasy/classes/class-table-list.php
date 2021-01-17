@@ -19,14 +19,14 @@ class TableList extends WP_List_Table
 
     public function no_items()
     {
-        _e( 'No tables found.' );
+        _e('No table found.', 'affieasy');
     }
 
     function get_columns()
     {
         return [
-            'id' => 'Id',
-            'name' => 'Name'
+            'id' => __('Id', 'affieasy'),
+            'name' => __('Name', 'affieasy')
         ];
     }
 
@@ -37,8 +37,8 @@ class TableList extends WP_List_Table
         return sprintf('%1$s %2$s',
             $item['id'],
             $this->row_actions(array(
-                'edit' => sprintf('<a href="admin.php?page=affieasy-table&action=edit-table&id=' . $id . '">Edit</a>'),
-                'delete' => sprintf('<a href="#" class="delete-link" data-id="' . $id . '">Delete</a>')
+                'edit' => sprintf('<a href="admin.php?page=affieasy-table&action=edit-table&id=' . $id . '">' . __('Edit', 'affieasy') . '</a>'),
+                'delete' => sprintf('<a href="#" class="delete-link" data-id="' . $id . '">' . __('Delete', 'affieasy') . '</a>')
             ))
         );
     }
