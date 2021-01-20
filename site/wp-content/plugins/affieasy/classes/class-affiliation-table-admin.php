@@ -109,7 +109,7 @@ class AffiliationTableAdmin
 
         $table = $this->dbManager->get_table_by_id(intval($atts['id']));
         if ($table->getId() == null) { ?>
-            <h6>Table not found.</h6>
+            <h6><?php esc_html_e('Table not found.', 'affieasy'); ?></h6>
         <?php } else {
             GenerationUtils::generate_table($table);
         }

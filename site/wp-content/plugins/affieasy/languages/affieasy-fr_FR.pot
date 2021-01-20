@@ -72,6 +72,9 @@ msgstr ""
 msgid "Name must not be empty"
 msgstr ""
 
+msgid "Table not found."
+msgstr ""
+
 #Webshop list
 msgid "Add new webshop"
 msgstr ""

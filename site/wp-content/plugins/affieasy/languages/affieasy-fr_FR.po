@@ -158,6 +158,9 @@ msgstr "Si vous remplissez les préférences, les champs des liens d'affiliation
 msgid "Save webshop"
 msgstr "Sauvegarder boutique"
 
+msgid "Table not found."
+msgstr "Tableau non trouvé."
+
 #Table list
 msgid "Are you sure you want to delete the table?"
 msgstr "Êtes-vous sûr de vouloir supprimer ce tableau ?"
