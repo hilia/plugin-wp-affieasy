@@ -58,8 +58,8 @@ class AffiliationTableAdmin
 
         add_submenu_page(
             'affieasy-table',
-            'Tables',
-            'Tables',
+            __('Tables', 'affieasy'),
+            __('Tables', 'affieasy'),
             'manage_options',
             'affieasy-table',
             array($this, 'display_table_views')
@@ -67,8 +67,8 @@ class AffiliationTableAdmin
 
         add_submenu_page(
             'affieasy-table',
-            'Webshops',
-            'Webshops',
+            __('Webshops', 'affieasy'),
+            __('Webshops', 'affieasy'),
             'manage_options',
             'affieasy-webshop',
             array($this, 'display_webshop_list')

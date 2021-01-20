@@ -1,5 +1,3 @@
-#generate mo: msgfmt -o affieasy-fr_FR.mo affieasy-fr_FR.po
-
 msgid ""
 msgstr ""
 "Project-Id-Version: Affieasy plugin\n"
