@@ -14,10 +14,10 @@ jQuery(($) => {
                 width: 350,
                 modal: true,
                 buttons: {
-                    'Yes': function () {
+                    [translations.yes]: function () {
                         window.location.href = 'admin.php?page=affieasy-table&action=delete-table&id=' + event.data.id;
                     },
-                    'No': function () {
+                    [translations.no]: function () {
                         $(this).dialog('close');
                     }
                 }

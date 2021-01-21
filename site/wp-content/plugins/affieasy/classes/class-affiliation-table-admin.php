@@ -18,7 +18,7 @@ class AffiliationTableAdmin
 
         add_shortcode(Constants::TABLE_TAG, array($this, 'affieasy_table_content_callback'));
 
-        wp_enqueue_style( 'dashicons' );
+        wp_enqueue_style('dashicons');
         wp_enqueue_style(
             'rendering-style',
             plugins_url('/affieasy/css/rendering.css'),
@@ -51,39 +51,39 @@ class AffiliationTableAdmin
             'AffiEasy',
             'manage_options',
             'affieasy-table',
-            array($this, 'display_table_pages'),
+            array($this, 'display_table_views'),
             'dashicons-editor-table',
             20
         );
 
         add_submenu_page(
             'affieasy-table',
-            'Tables',
-            'Tables',
+            __('Tables', 'affieasy'),
+            __('Tables', 'affieasy'),
             'manage_options',
             'affieasy-table',
-            array($this, 'display_table_pages')
+            array($this, 'display_table_views')
         );
 
         add_submenu_page(
             'affieasy-table',
-            'Webshops',
-            'Webshops',
+            __('Webshops', 'affieasy'),
+            __('Webshops', 'affieasy'),
             'manage_options',
             'affieasy-webshop',
             array($this, 'display_webshop_list')
         );
     }
 
-    public function display_table_pages()
+    public function display_table_views()
     {
-        if (current_user_can('manage_options')) {
+        if (is_admin() && current_user_can('manage_options')) {
             switch ($_GET['action']) {
                 case 'edit-table':
-                    include(dirname(__DIR__) . '/pages/edit-table.php');
+                    include(dirname(__DIR__) . '/views/admin/edit-table.php');
                     break;
                 default:
-                    include(dirname(__DIR__) . '/pages/list-table.php');
+                    include(dirname(__DIR__) . '/views/admin/list-table.php');
                     break;
             }
         }
@@ -91,13 +91,13 @@ class AffiliationTableAdmin
 
     public function display_webshop_list()
     {
-        if (current_user_can('manage_options')) {
+        if (is_admin() && current_user_can('manage_options')) {
             switch ($_GET['action']) {
                 case 'edit-webshop':
-                    include(dirname(__DIR__) . '/pages/edit-webshop.php');
+                    include(dirname(__DIR__) . '/views/admin/edit-webshop.php');
                     break;
                 default:
-                    include(dirname(__DIR__) . '/pages/list-webshop.php');
+                    include(dirname(__DIR__) . '/views/admin/list-webshop.php');
                     break;
             }
         }
@@ -109,7 +109,7 @@ class AffiliationTableAdmin
 
         $table = $this->dbManager->get_table_by_id(intval($atts['id']));
         if ($table->getId() == null) { ?>
-            <h6>Table not found.</h6>
+            <h6><?php esc_html_e('Table not found.', 'affieasy'); ?></h6>
         <?php } else {
             GenerationUtils::generate_table($table);
         }

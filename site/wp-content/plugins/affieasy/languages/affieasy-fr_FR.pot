@@ -1,0 +1,338 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Affieasy plugin\n"
+"POT-Creation-Date: 2021-01-16 21:29+0100\n"
+"PO-Revision-Date: 2021-01-16 21:33+0100\n"
+"Last-Translator: \n"
+"Language-Team: Affieasy team\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.2.1\n"
+"X-Poedit-Basepath: .\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"Language: fr\n"
+"X-Poedit-KeywordsList: __;_e;_x\n"
+
+#General
+msgid "Plugin to easily and quickly generate responsive tables and manage affiliate links."
+msgstr ""
+
+msgid "Webshops"
+msgstr ""
+
+msgid "Tables"
+msgstr ""
+
+msgid "Confirmation"
+msgstr ""
+
+msgid "Yes"
+msgstr ""
+
+msgid "No"
+msgstr ""
+
+msgid "Background color"
+msgstr ""
+
+msgid "Id"
+msgstr ""
+
+msgid "Font size"
+msgstr ""
+
+msgid "Font weight"
+msgstr ""
+
+msgid "Name"
+msgstr ""
+
+msgid "Link text"
+msgstr ""
+
+msgid "Text color"
+msgstr ""
+
+msgid "Add"
+msgstr ""
+
+msgid "Cancel"
+msgstr ""
+
+msgid "Close"
+msgstr ""
+
+msgid "Delete"
+msgstr ""
+
+msgid "Edit"
+msgstr ""
+
+msgid "(Required)"
+msgstr ""
+
+msgid "Name must not be empty"
+msgstr ""
+
+msgid "Table not found."
+msgstr ""
+
+#Webshop list
+msgid "Add new webshop"
+msgstr ""
+
+msgid "Are you sure you want to delete the webshop (all related links will be removed)?"
+msgstr ""
+
+msgid "The webshop has been deleted"
+msgstr ""
+
+msgid "No webshop found."
+msgstr ""
+
+#Webshop edition
+msgid "Back to webshop list"
+msgstr ""
+
+msgid "Create webshop"
+msgstr ""
+
+msgid "Update webshop"
+msgstr ""
+
+msgid "Webshop %1$s saved"
+msgstr ""
+
+msgid "Url must not be empty"
+msgstr ""
+
+msgid "Url must contains at least [[%1$s]] parameter"
+msgstr ""
+
+msgid "How to use this plugin?"
+msgstr ""
+
+msgid "If you want to manage affiate links in your tables, the best way with this plugin is to use webshops."
+msgstr ""
+
+msgid "A webshop represents a website like amazon, alibaba,..."
+msgstr ""
+
+msgid "Let's take a simple example to understand how the plugin work:"
+msgstr ""
+
+msgid "You want to have affiliate links in your tables for decathlon webshop which use awin as advertising agency."
+msgstr ""
+
+msgid "You just have to create a new webshop decathlon with this url:"
+msgstr ""
+
+msgid "and"
+msgstr ""
+
+msgid "will be variable parameters"
+msgstr ""
+
+msgid "(at least, product_url have to be specified)"
+msgstr ""
+
+msgid "but you can add others as many as needed"
+msgstr ""
+
+msgid "between"
+msgstr ""
+
+msgid "Now You can add affiliate links for decathlon in your tables (edit table -> add row -> Affiliate links -> select decathlon). Parameters"
+msgstr ""
+
+msgid "will be asked during creation process and the url will be automatically generated."
+msgstr ""
+
+msgid "Affiliation url"
+msgstr ""
+
+msgid "Ex: https://www.awin1.com/cread.php?p=[[product_url]]&clickref=[[click_ref]]"
+msgstr ""
+
+msgid "Affiliate link preferences"
+msgstr ""
+
+msgid "If you fill preferences, affiliate links fields will be automatically entered during the creation process (it will be still possible to change values)"
+msgstr ""
+
+msgid "Save webshop"
+msgstr ""
+
+#Table list
+msgid "Are you sure you want to delete the table?"
+msgstr ""
+
+msgid "Add new table"
+msgstr ""
+
+msgid "The table has been deleted"
+msgstr ""
+
+msgid "No table found."
+msgstr ""
+
+#Table edition
+msgid "Table must contains at least one row"
+msgstr ""
+
+msgid "Responsive breakpoint must be a positive number"
+msgstr ""
+
+msgid "Max width must be a positive number"
+msgstr ""
+
+msgid "Add webshop to use this functionnality."
+msgstr ""
+
+msgid "Edit affiliation link"
+msgstr ""
+
+msgid "Create affiliation link"
+msgstr ""
+
+msgid "Select webshop"
+msgstr ""
+
+msgid "Link overview"
+msgstr ""
+
+msgid "Edit header options"
+msgstr ""
+
+msgid "Column header options"
+msgstr ""
+
+msgid "Row header options"
+msgstr ""
+
+msgid "Bold"
+msgstr ""
+
+msgid "Bolder"
+msgstr ""
+
+msgid "Normal"
+msgstr ""
+
+msgid "Back to table list"
+msgstr ""
+
+msgid "Create table"
+msgstr ""
+
+msgid "Update table"
+msgstr ""
+
+msgid "Table %1$s saved"
+msgstr ""
+
+msgid "Tag"
+msgstr ""
+
+msgid "Put this tag in your page to include the table"
+msgstr ""
+
+msgid "Header(s)"
+msgstr ""
+
+msgid "Column header"
+msgstr ""
+
+msgid "Row header"
+msgstr ""
+
+msgid "Both"
+msgstr ""
+
+msgid "None"
+msgstr ""
+
+msgid "Max width"
+msgstr ""
+
+msgid "Max width in pixels allowed for the table (100% of available space if not filled)"
+msgstr ""
+
+msgid "Responsive breakpoint"
+msgstr ""
+
+msgid "Resolution in pixels below which the table take its responsive form"
+msgstr ""
+
+msgid "Add row"
+msgstr ""
+
+msgid "Add column"
+msgstr ""
+
+msgid "Row type"
+msgstr ""
+
+msgid "Text / Html"
+msgstr ""
+
+msgid "Images"
+msgstr ""
+
+msgid "Affiliate links"
+msgstr ""
+
+msgid "Add a column after header"
+msgstr ""
+
+msgid "Keep the mouse pressed to drag and drop the column"
+msgstr ""
+
+msgid "Delete column"
+msgstr ""
+
+msgid "Add a column after this one"
+msgstr ""
+
+msgid "Add a row after header"
+msgstr ""
+
+msgid "Keep the mouse pressed to drag and drop the row"
+msgstr ""
+
+msgid "Delete row"
+msgstr ""
+
+msgid "Add a row after this one"
+msgstr ""
+
+msgid "Select image"
+msgstr ""
+
+msgid "Remove image"
+msgstr ""
+
+msgid "Add affiliate link"
+msgstr ""
+
+msgid "Unknown type"
+msgstr ""
+
+msgid "Select or Upload new image"
+msgstr ""
+
+msgid "Validate"
+msgstr ""
+
+msgid "Edit affiliate link"
+msgstr ""
+
+msgid "For better readability, background color modifications are not visible into the editor."
+msgstr ""
+
+msgid "Rendering can be slightly different depending on the theme applied."
+msgstr ""
+
+msgid "Save table"
+msgstr ""

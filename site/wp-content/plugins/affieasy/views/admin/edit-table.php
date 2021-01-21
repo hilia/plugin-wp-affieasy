@@ -30,6 +30,30 @@ wp_enqueue_script(
     time()
 );
 
+wp_localize_script( 'edit-table-script', 'translations', array(
+    'add' => esc_html__('Add', 'affieasy'),
+    'addAffliateLink' => esc_html__('Add affiliate link', 'affieasy'),
+    'addColumnAfterThisOne' => esc_html__('Add a column after this one', 'affieasy'),
+    'addRowAfterThisOne' => esc_html__('Add a row after this one', 'affieasy'),
+    'cancel' => esc_html__('Cancel', 'affieasy'),
+    'close' => esc_html__('Close', 'affieasy'),
+    'createAffiliationLink' => esc_html__('Create affiliation link', 'affieasy'),
+    'delete'  => esc_html__('Delete', 'affieasy'),
+    'deleteColumn'  => esc_html__('Delete column', 'affieasy'),
+    'deleteRow'  => esc_html__('Delete row', 'affieasy'),
+    'dragAndDropColumn' => esc_html__('Keep the mouse pressed to drag and drop the column', 'affieasy'),
+    'dragAndDropRow' => esc_html__('Keep the mouse pressed to drag and drop the row', 'affieasy'),
+    'edit' => esc_html__('Edit', 'affieasy'),
+    'editAffiliateLink' => esc_html__('Edit affiliate link', 'affieasy'),
+    'editAffiliationLink' => esc_html__('Edit affiliation link', 'affieasy'),
+    'editHeaderOptions' => esc_html__('Edit header options', 'affieasy'),
+    'removeImage' => esc_html__('Remove image', 'affieasy'),
+    'selectImage' => esc_html__('Select image', 'affieasy'),
+    'selectOrUploadImage' => esc_html__('Select or Upload new image', 'affieasy'),
+    'unknownType' => esc_html__('Unknown type', 'affieasy'),
+    'validate' => esc_html__('Validate', 'affieasy'),
+));
+
 wp_enqueue_media();
 
 $table = new Table(
@@ -51,24 +75,24 @@ $hasNoWebShop = empty($webshops);
 $isFromSaveAction = $_POST['submit'] == 'save-action';
 if ($isFromSaveAction) {
     if (empty($table->getName())) {
-        array_push($errors, 'Name must not be empty');
+        array_push($errors, __('Name must not be empty', 'affieasy'));
     }
 
     $isNullTableContent = $table->getContent() == null;
     $isTableWithColumnHeader = in_array($table->getHeaderType(), array('COLUMN_HEADER', 'BOTH'));
     $tableContentSize = $isNullTableContent ? 0 : count($table->getContent());
     if ($isTableWithColumnHeader && $tableContentSize < 2 || !$isTableWithColumnHeader && $tableContentSize < 1) {
-        array_push($errors, 'Table must contains at least one row');
+        array_push($errors, __('Table must contains at least one row', 'affieasy'));
     }
 
     $responsiveBreakpoint = $table->getResponsiveBreakpoint();
     if ($responsiveBreakpoint !== '' && (!is_numeric($responsiveBreakpoint) || $responsiveBreakpoint < 0)) {
-        array_push($errors, 'Responsive breakpoint must be a positive number');
+        array_push($errors, __('Responsive breakpoint must be a positive number', 'affieasy'));
     }
 
     $maxWidth = $table->getMaxWidth();
     if ($maxWidth !== '' && (!is_numeric($maxWidth) || $maxWidth < 0)) {
-        array_push($errors, 'Max width must be a positive number');
+        array_push($errors, __('Max width must be a positive number', 'affieasy'));
     }
 
     if (count($errors) == 0) {
@@ -125,7 +149,7 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
     <?php if ($hasNoWebShop) { ?>
         <p>
             <span class="dashicons dashicons-info"></span>
-            Add webshops to use this functionnality.
+            <?php esc_html_e('Add webshop to use this functionnality.', 'affieasy'); ?>
         </p>
     <?php } else { ?>
         <table class="form-table">
@@ -133,7 +157,7 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
             <tr id="webshop-row">
                 <th scope="row">
                     <label for="webshop-select">
-                        Select webshop
+                        <?php esc_html_e('Select webshop', 'affieasy'); ?>
                     </label>
                 </th>
                 <td>
@@ -155,7 +179,7 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
             <tr>
                 <th scope="row">
                     <label>
-                        Link text
+                        <?php esc_html_e('Link text', 'affieasy'); ?>
                     </label>
                 </th>
                 <td>
@@ -168,7 +192,7 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
             <tr>
                 <th scope="row">
                     <label for="link-background-color">
-                        Background color
+                        <?php esc_html_e('Background color', 'affieasy'); ?>
                     </label>
                 </th>
                 <td>
@@ -180,7 +204,7 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
             <tr id="link-text-color-row">
                 <th scope="row">
                     <label for="link-text-color">
-                        Text color
+                        <?php esc_html_e('Text color', 'affieasy'); ?>
                     </label>
                 </th>
                 <td>
@@ -211,7 +235,7 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                 <tr>
                     <th scope="row">
                         <label for="affiliation-link-overview">
-                            Link overview
+                            <?php esc_html_e('Link overview', 'affieasy'); ?>
                         </label>
                     </th>
 
@@ -229,13 +253,13 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
 <div id="edit-header-options-modal" hidden>
     <input type="hidden" autofocus>
     <div id="edit-header-options-modal-column-options">
-        <h3 class="wp-heading-inline">Column header options</h3>
+        <h3 class="wp-heading-inline"><?php esc_html_e('Column header options', 'affieasy'); ?></h3>
         <table class="form-table">
             <tbody>
             <tr>
                 <th scope="row">
                     <label for="header-column-background">
-                        Background color
+                        <?php esc_html_e('Background color', 'affieasy'); ?>
                     </label>
                 </th>
                 <td>
@@ -249,7 +273,7 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
             <tr>
                 <th scope="row">
                     <label for="header-column-color">
-                        Text color
+                        <?php esc_html_e('Text color', 'affieasy'); ?>
                     </label>
                 </th>
                 <td>
@@ -263,7 +287,7 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
             <tr>
                 <th scope="row">
                     <label for="header-column-font-weight">
-                        Font weight
+                        <?php esc_html_e('Font weight', 'affieasy'); ?>
                     </label>
                 </th>
                 <td>
@@ -272,7 +296,7 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                             <option
                                     value="<?php echo $fontWeight; ?>"
                                 <?php echo $headerOptions->{'column-font-weight'} == $fontWeight ? 'selected' : ''; ?>>
-                                <?php echo ucfirst($fontWeight); ?>
+                                <?php esc_html_e(ucfirst($fontWeight), 'affieasy'); ?>
                             </option>
                         <?php } ?>
                     </select>
@@ -282,7 +306,7 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
             <tr>
                 <th scope="row">
                     <label for="header-column-font-size">
-                        Font size
+                        <?php esc_html_e('Font size', 'affieasy'); ?>
                     </label>
                 </th>
                 <td>
@@ -302,13 +326,13 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
     </div>
 
     <div id="edit-header-options-modal-row-options">
-        <h3 class="wp-heading-inline">Row header options</h3>
+        <h3 class="wp-heading-inline"><?php esc_html_e('Row header options', 'affieasy'); ?></h3>
         <table class="form-table">
             <tbody>
             <tr>
                 <th scope="row">
                     <label for="header-row-background">
-                        Background color
+                        <?php esc_html_e('Background color', 'affieasy'); ?>
                     </label>
                 </th>
                 <td>
@@ -322,7 +346,7 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
             <tr>
                 <th scope="row">
                     <label for="header-row-color">
-                        Text color
+                        <?php esc_html_e('Text color', 'affieasy'); ?>
                     </label>
                 </th>
                 <td>
@@ -336,7 +360,7 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
             <tr>
                 <th scope="row">
                     <label for="header-row-font-weight">
-                        Font weight
+                        <?php esc_html_e('Font weight', 'affieasy'); ?>
                     </label>
                 </th>
                 <td>
@@ -345,7 +369,7 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                             <option
                                     value="<?php echo $fontWeight; ?>"
                                 <?php echo $headerOptions->{'row-font-weight'} == $fontWeight ? 'selected' : ''; ?>>
-                                <?php echo ucfirst($fontWeight); ?>
+                                <?php esc_html_e(ucfirst($fontWeight), 'affieasy'); ?>
                             </option>
                         <?php } ?>
                     </select>
@@ -355,7 +379,7 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
             <tr>
                 <th scope="row">
                     <label for="header-row-font-size">
-                        Font size
+                        <?php esc_html_e('Font size', 'affieasy'); ?>
                     </label>
                 </th>
                 <td>
@@ -378,10 +402,12 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
 <div class="wrap">
 
     <div class="header">
-        <h1 class="wp-heading-inline"><?php echo empty($tableId) ? 'Create table' : 'Update table ' . $tableName; ?></h1>
+        <h1 class="wp-heading-inline"><?php echo empty($tableId) ?
+                __('Create table', 'affieasy') :
+                __('Update table', 'affieasy') . ' ' . $tableName; ?></h1>
 
         <a href="admin.php?page=affieasy-table" class="page-title-action">
-            Back to table list
+            <?php esc_html_e('Back to table list', 'affieasy'); ?>
         </a>
     </div>
 
@@ -397,7 +423,7 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                     <p><strong><?php echo $error; ?></strong></p>
                 <?php }
             } else { ?>
-                <p><strong>Table <?php echo $tableName; ?> saved</strong></p>
+                <p><strong><?php printf(esc_html__('Table %1$s saved', 'affieasy'), $tableName); ?></strong></p>
             <?php } ?>
         </div>
     <?php } ?>
@@ -419,10 +445,10 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                     <tr class="form-field">
                         <th scope="row" class="general-form-label">
                             <label for="name">
-                                Tag
+                                <?php printf(esc_html__('Tag', 'affieasy'), $tableName); ?>
                                 <span
                                         class="dashicons dashicons-info info"
-                                        title="Put this tag in your page to include the table">
+                                        title="<?php esc_html_e('Put this tag in your page to include the table', 'affieasy'); ?>">
                                 </span>
                             </label>
                         </th>
@@ -440,8 +466,8 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                 <tr class="form-field">
                     <th scope="row" class="general-form-label">
                         <label for="name">
-                            Name
-                            <span class="description">(required)</span>
+                            <?php esc_html_e('Name', 'affieasy'); ?>
+                            <span class="description"><?php esc_html_e('(Required)', 'affieasy'); ?></span>
                         </label>
                     </th>
                     <td>
@@ -458,14 +484,14 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                 <tr class="form-field">
                     <th scope="row" class="general-form-label">
                         <label for="header-type">
-                            Header(s)
+                            <?php esc_html_e('Header(s)', 'affieasy'); ?>
                         </label>
                     </th>
                     <td>
                         <select id="header-type" name="header-type" class="general-input">
                             <?php foreach (Constants::HEADERS_TYPES as $key => $value) { ?>
                                 <option value="<?php echo $key ?>">
-                                    <?php echo $value ?>
+                                    <?php esc_html_e($value, 'affieasy'); ?>
                                 </option>
                             <?php } ?>
                         </select>
@@ -477,10 +503,12 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                 <tr>
                     <th scope="row" class="general-form-label">
                         <label for="name">
-                            Max width
+                            <?php esc_html_e('Max width', 'affieasy'); ?>
                             <span
                                     class="dashicons dashicons-info info"
-                                    title="Max width in pixels allowed for the table (100% of available space if not filled)">
+                                    title="<?php esc_html_e(
+                                            'Max width in pixels allowed for the table (100% of available space if not filled)',
+                                            'affieasy'); ?>">
                                 </span>
                         </label>
                     </th>
@@ -498,10 +526,12 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                 <tr>
                     <th scope="row" class="general-form-label">
                         <label for="name">
-                            Responsive breakpoint
+                            <?php esc_html_e('Responsive breakpoint', 'affieasy'); ?>
                             <span
                                     class="dashicons dashicons-info info"
-                                    title="Resolution in pixels below wich the table take its responsive form">
+                                    title="<?php esc_html_e(
+                                            'Resolution in pixels below which the table take its responsive form',
+                                            'affieasy'); ?>">
                             </span>
                         </label>
                     </th>
@@ -519,7 +549,7 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                 <tr>
                     <th scope="row">
                         <label for="name">
-                            Background color
+                            <?php esc_html_e('Background color', 'affieasy'); ?>
                         </label>
                     </th>
                     <td>
@@ -537,15 +567,15 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
 
         <div class="action-buttons">
             <button id="add-row-after-last" type="button" class="page-title-action">
-                Add row
+                <?php esc_html_e('Add row', 'affieasy'); ?>
             </button>
 
             <button id="add-column-after-last" type="button" class="page-title-action">
-                Add column
+                <?php esc_html_e('Add column', 'affieasy'); ?>
             </button>
 
             <button id="edit-header-options" type="button" class="page-title-action">
-                Edit header options
+                <?php esc_html_e('Edit header options', 'affieasy'); ?>
             </button>
         </div>
 
@@ -562,7 +592,7 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                                     id="button-col-add-0"
                                     data-col-id="0"
                                     class="dashicons dashicons-plus action-button-add pointer"
-                                    title="Add a column after header">
+                                    title="<?php esc_html_e('Add a column after header', 'affieasy'); ?>">
                                     </span>
                         </div>
                     </div>
@@ -578,7 +608,9 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                             <div class="table-col-actions-cell-content-drag">
                                     <span
                                             class="dashicons dashicons-editor-expand"
-                                            title="Keep the mouse pressed to drag and drop the column">
+                                            title="<?php esc_html_e(
+                                                    'Keep the mouse pressed to drag and drop the column',
+                                                    'affieasy'); ?>">
                                     </span>
                             </div>
                             <div class="table-col-actions-cell-content-actions">
@@ -586,13 +618,13 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                                             id="button-col-delete-<?php echo $colId; ?>"
                                             data-col-id="<?php echo $colId; ?>"
                                             class="dashicons dashicons-minus action-button-delete pointer"
-                                            title="Delete column">
+                                            title="<?php esc_html_e('Delete column', 'affieasy'); ?>">
                                     </span>
                                 <span
                                         id="button-col-add-<?php echo $colId; ?>"
                                         data-col-id="<?php echo $colId; ?>"
                                         class="dashicons dashicons-plus action-button-add pointer"
-                                        title="Add a column after this one">
+                                        title="<?php esc_html_e('Add a column after this one', 'affieasy'); ?>">
                                     </span>
                             </div>
                         </div>
@@ -605,7 +637,7 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                                         id="button-row-add-0"
                                         data-row-id="0"
                                         class="dashicons dashicons-plus action-button-add pointer"
-                                        title="Add a row after header">
+                                        title="<?php esc_html_e('Add a row after header', 'affieasy'); ?>">
                                 </span>
                 </th>
                 <th class="table-header-cell table-content-header-row header-without-value" data-col-id="0"></th>
@@ -631,19 +663,19 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                         <th class="table-row-actions-cell sortable-row">
                             <span
                                     class="dashicons dashicons-editor-expand drag-row"
-                                    title="Keep the mouse pressed to drag and drop the row">
+                                    title="<?php esc_html_e('Keep the mouse pressed to drag and drop the row', 'affieasy'); ?>">
                             </span>
                             <span
                                     id="button-row-delete-<?php echo $rowId; ?>"
                                     data-row-id="<?php echo $rowId; ?>"
                                     class="dashicons dashicons-minus action-button-delete pointer"
-                                    title="Delete row">
+                                    title="<?php esc_html_e('Delete row', 'affieasy'); ?>">
                                 </span>
                             <span
                                     id="button-row-add-<?php echo $rowId; ?>"
                                     data-row-id="<?php echo $rowId; ?>"
                                     class="dashicons dashicons-plus action-button-add pointer"
-                                    title="Add a row after this one">
+                                    title="<?php esc_html_e('Add a row after this one', 'affieasy'); ?>">
                             </span>
                         </th>
                         <td
@@ -687,14 +719,14 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                                     <span
                                             id="select-image-button-<?php echo $cellId; ?>"
                                             class="dashicons dashicons-edit select-image-button action-button-add pointer"
-                                            title="Select image"
+                                            title="<?php esc_html_e('Select image', 'affieasy'); ?>"
                                             data-cell-id="<?php echo $cellId; ?>">
                                         </span>
                                     <?php if (!empty($cellValue)) { ?>
                                         <span
                                                 id="remove-image-button-<?php echo $cellId; ?>"
                                                 class="dashicons dashicons-minus remove-image-button action-button-delete pointer"
-                                                title="Remove image"
+                                                title="<?php esc_html_e('Remove image', 'affieasy'); ?>"
                                                 data-cell-id="<?php echo $cellId; ?>">
                                         </span>
                                     <?php } ?>
@@ -722,7 +754,7 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                                             value="<?php echo $cellValue; ?>">
                                     <span
                                             class="dashicons dashicons-plus add-affiliation-link-button action-button-add pointer"
-                                            title="Add affiliate link"
+                                            title="<?php esc_html_e('Add affiliate link', 'affieasy'); ?>"
                                             data-cell-id="<?php echo $cellId; ?>">
                                         </span>
                                     <div id="cell-content-link-list-<?php echo $cellId; ?>">
@@ -731,7 +763,7 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                                                     type="button"
                                                     class="affiliation-table-affiliate-link cell-content-link-list-button"
                                                 <?php echo GenerationUtils::get_affiliate_link_style($affiliateLink); ?>
-                                                    title="Edit affiliate link"
+                                                    title="<?php esc_html_e('Edit affiliate link', 'affieasy'); ?>"
                                                     data-cell-id="<?php echo $cellId; ?>"
                                                     data-id="<?php echo $affiliateLink->id; ?>">
                                                 <span class="dashicons dashicons-cart cell-content-link-list-icon"></span>
@@ -754,8 +786,13 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
             <i>
                 <span class="dashicons dashicons-info"></span>
                 <span class="informations-text">
-                    For better readability, background color modifications are not visible into the editor.
-                    Rendering can be slightly different depending on the theme applied.
+                    <?php esc_html_e(
+                            'For better readability, background color modifications are not visible into the editor.',
+                            'affieasy'); ?>
+
+                    <?php esc_html_e(
+                        'Rendering can be slightly different depending on the theme applied.',
+                        'affieasy'); ?>
                 </span>
             </i>
         </div>
@@ -777,29 +814,28 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
             id="submit"
             class="button button-primary edit-button-bottom"
             value="save-action">
-        Save table
+        <?php esc_html_e('Save table', 'affieasy'); ?>
     </button>
 
     <div id="popovers">
         <div id="add-row-popover">
-            <h3 class="add-row-popover-header">Row type</h3>
+            <h3 class="add-row-popover-header"><?php esc_html_e('Row type', 'affieasy'); ?></h3>
             <div class="add-row-popover-content">
                 <button type="button" id="add-html-row" class="button-primary add-row-popover-button">
-                    Text / Html
+                    <?php esc_html_e('Text / Html', 'affieasy'); ?>
                 </button>
                 <button
                         type="button"
                         id="add-image-row"
-                        class="button-primary add-row-popover-button"
-                        title="Not yet implemented">
-                    Images
+                        class="button-primary add-row-popover-button">
+                    <?php esc_html_e('Images', 'affieasy'); ?>
                 </button>
                 <button
                         type="button"
                         id="add-affiliation-row"
                         class="button-primary add-row-popover-button <?php echo $hasNoWebShop ? 'disabled' : '' ?>"
-                    <?php echo $hasNoWebShop ? 'title="Add webshops to use this functionnality" disabled' : '' ?>>
-                    Affiliate links
+                    <?php echo $hasNoWebShop ? 'title="' . __("Add webshop to use this functionnality.", "affieasy") . '" disabled' : ''; ?>>
+                    <?php esc_html_e('Affiliate links', 'affieasy'); ?>
                     <?php if ($hasNoWebShop) { ?>
                         <span class="dashicons dashicons-info dashicons-button-disabled"></span>
                     <?php } ?>
