@@ -15,6 +15,9 @@ msgstr ""
 "Language: fr\n"
 
 # General
+msgid "Plugin to easily and quickly generate responsive tables and manage affiliate links."
+msgstr "Plugin permettant de générer facilement et rapidement des tableaux responsives et de gérer des liens d'affiliations."
+
 msgid "Webshops"
 msgstr "Boutiques"
 

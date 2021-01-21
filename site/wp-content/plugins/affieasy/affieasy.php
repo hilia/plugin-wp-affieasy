@@ -1,8 +1,9 @@
 <?php
 /*
  * Plugin Name: AffiEasy
- * Description: Plugin allowing to generate responsive tables and manage affiliate links
- * Version: 0.9.11
+ * Description: Plugin to easily and quickly generate responsive tables and manage affiliate links.
+ * Version: 0.9.12
+ * Text Domain: affieasy
 */
 
 require_once 'classes/class-affiliation-table-admin.php';
