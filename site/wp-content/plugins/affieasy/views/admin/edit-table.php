@@ -57,14 +57,14 @@ wp_localize_script( 'edit-table-script', 'translations', array(
 wp_enqueue_media();
 
 $table = new Table(
-    $_POST['id'],
-    $_POST['name'],
-    $_POST['header-type'],
-    $_POST['header-options'],
-    $_POST['content'],
-    $_POST['responsive-breakpoint'],
-    $_POST['max-width'],
-    $_POST['background-color']
+    isset($_POST['id']) ? $_POST['id'] : null,
+    isset($_POST['name']) ? $_POST['name'] : null,
+    isset($_POST['header-type']) ? $_POST['header-type'] : null,
+    isset($_POST['header-options']) ? $_POST['header-options'] : null,
+    isset($_POST['content']) ? $_POST['content'] : null,
+    isset($_POST['responsive-breakpoint']) ? $_POST['responsive-breakpoint'] : null,
+    isset($_POST['max-width']) ? $_POST['max-width'] : null,
+    isset($_POST['background-color']) ? $_POST['background-color'] : null
 );
 
 $errors = array();
@@ -72,7 +72,8 @@ $dbManager = new DbManager();
 $webshops = $dbManager->get_webshop_list();
 $hasNoWebShop = empty($webshops);
 
-$isFromSaveAction = $_POST['submit'] == 'save-action';
+$submit = isset($_POST['submit']) ? $_POST['submit'] : null;
+$isFromSaveAction = $submit === 'save-action';
 if ($isFromSaveAction) {
     if (empty($table->getName())) {
         array_push($errors, __('Name must not be empty', 'affieasy'));
@@ -119,7 +120,7 @@ if ($isFromSaveAction) {
         }
     }
 } else {
-    $id = $_GET['id'];
+    $id = isset($_GET['id']) ? $_GET['id'] : null;
     if (!empty($id)) {
         $table = $dbManager->get_table_by_id($id);
     }
