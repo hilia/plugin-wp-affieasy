@@ -3,7 +3,7 @@ version: '3.7'
 services:
   wordpress:
     read_only: false
-    image: wordpress:5.4.2-php7.2-apache
+    image: wordpress:5.6.0-php7.4-apache
     restart: always
     ports:
       - 8080:80
