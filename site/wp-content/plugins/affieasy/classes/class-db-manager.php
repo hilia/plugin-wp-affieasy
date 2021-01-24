@@ -163,7 +163,7 @@ class DbManager
         $sql = $this->db->prepare("SELECT * FROM " . Constants::TABLE_TABLE . " WHERE id=%d", array($id));
         $table = $this->db->get_row($sql);
 
-        return new Table(
+        return isset($table->id) ? new Table(
             $table->id,
             $table->name,
             $table->headerType,
@@ -172,7 +172,7 @@ class DbManager
             $table->responsiveBreakpoint,
             $table->maxWidth,
             $table->backgroundColor
-        );
+        ) : new Table();
     }
 
     public function edit_table($table, $isUpdateFromWebshopEdition)
