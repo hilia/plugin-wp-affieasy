@@ -110,8 +110,8 @@ if ($isFromSaveAction) {
                                 str_replace('\\n', '&NewLine;', $cell))));
 
                     return (object)[
-                        'type' => $cellContent->type,
-                        'value' => $cellContent->value,
+                        'type' => isset($cellContent->type) ? $cellContent->type : null,
+                        'value' => isset($cellContent->value) ? $cellContent->value : null,
                     ];
                 }, $row);
             }, $table->getContent()));
