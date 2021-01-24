@@ -22,8 +22,10 @@ wp_localize_script( 'list-webshop-script', 'translations', array(
 
 wp_enqueue_style('wp-jquery-ui-dialog');
 
-$id = $_GET['id'];
-$isValidDeleteAction = $_GET['action'] == 'delete-webshop' && is_numeric($id);
+$id = isset($_GET['id']) ? $_GET['id'] : null;
+$action = isset($_GET['action']) ? $_GET['action'] : null;
+
+$isValidDeleteAction = $action === 'delete-webshop' && is_numeric($id);
 if ($isValidDeleteAction) {
     $dbManager = new DbManager();
     $dbManager->delete_webshop($id);

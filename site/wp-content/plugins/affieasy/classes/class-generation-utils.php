@@ -89,9 +89,10 @@ class GenerationUtils
 
                 for ($j = 0; $j < count($rowContent); $j++) {
                     $cellContent = $rowContent[$j];
-                    $cellValue = str_replace('&quot;', '"', $cellContent->value);
+                    $cellType = isset($cellContent->type) ? $cellContent->type : null;
+                    $cellValue = isset($cellContent->value) ? str_replace('&quot;', '"', $cellContent->value) : null;
 
-                    if ($cellContent->type === Constants::AFFILIATION && ($j !== 0 || !$isTableWithRowHeader)) {
+                    if ($cellType === Constants::AFFILIATION && ($j !== 0 || !$isTableWithRowHeader)) {
                         GenerationUtils::generate_affiliate_links_cell_content($cellValue, GenerationUtils::get_background_color_style_or_empty($backgroundColor), false);
                         ?>
                     <?php } else { ?>
@@ -139,10 +140,11 @@ class GenerationUtils
 
                     <?php
                     $cellContent = $tableContent[$j][$i];
-                    $cellValue = str_replace('&quot;', '"', $cellContent->value);
+                    $cellType = isset($cellContent->type) ? $cellContent->type : null;
+                    $cellValue = isset($cellContent->value) ? str_replace('&quot;', '"', $cellContent->value) : null;
                     $backgroundColor = GenerationUtils::get_background_color_style_or_empty($table->getBackgroundColor());
 
-                    if ($cellContent->type === Constants::AFFILIATION) {
+                    if ($cellType === Constants::AFFILIATION) {
                         GenerationUtils::generate_affiliate_links_cell_content($cellValue, $backgroundColor, true);
                     } else { ?>
                         <div class="affieasy-table-cell affieasy-table-responsive-both-row-content" <?php echo $backgroundColor; ?>>
@@ -172,10 +174,11 @@ class GenerationUtils
 
                     <?php
                     $cellContent = $tableContent[$j][$i];
-                    $cellValue = str_replace('&quot;', '"', $cellContent->value);
+                    $cellType = isset($cellContent->type) ? $cellContent->type : null;
+                    $cellValue = isset($cellContent->value) ? str_replace('&quot;', '"', $cellContent->value) : null;
                     $backgroundColor = GenerationUtils::get_background_color_style_or_empty($table->getBackgroundColor());
 
-                    if ($cellContent->type === Constants::AFFILIATION) {
+                    if ($cellType === Constants::AFFILIATION) {
                         GenerationUtils::generate_affiliate_links_cell_content($cellValue, $backgroundColor, true);
                     } else { ?>
                         <div
@@ -206,10 +209,11 @@ class GenerationUtils
 
                 for ($j = ($isColumnTable ? 1 : 0); $j < count($tableContent); $j++) {
                     $cellContent = $tableContent[$j][$i];
-                    $cellValue = str_replace('&quot;', '"', $cellContent->value);
+                    $cellType = isset($cellContent->type) ? $cellContent->type : null;
+                    $cellValue = isset($cellContent->value) ? str_replace('&quot;', '"', $cellContent->value) : null;
                     $backgroundColor = GenerationUtils::get_background_color_style_or_empty($table->getBackgroundColor());
 
-                    if ($cellContent->type === Constants::AFFILIATION) {
+                    if ($cellType === Constants::AFFILIATION) {
                         GenerationUtils::generate_affiliate_links_cell_content($cellValue, $backgroundColor, false);
                     } else {
                         ?>

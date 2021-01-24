@@ -24,18 +24,20 @@ wp_enqueue_script(
 $dbManager = new DbManager();
 
 $webshop = new Webshop(
-    $_POST['id'],
-    $_POST['name'],
-    $_POST['url'],
-    $_POST['link-text-preference'],
-    $_POST['background-color-preference'],
-    $_POST['text-color-preference']
+    isset($_POST['id']) ? $_POST['id'] : null,
+    isset($_POST['name']) ? $_POST['name'] : null,
+    isset($_POST['url']) ? $_POST['url'] : null,
+    isset($_POST['link-text-preference']) ? $_POST['link-text-preference'] : null,
+    isset($_POST['background-color-preference']) ? $_POST['background-color-preference'] : null,
+    isset($_POST['text-color-preference']) ? $_POST['text-color-preference'] : null
 );
 
 $errors = array();
 
-$id = $_GET['id'];
-$isFromSaveAction = $_POST['submit'] == 'save-action';
+$id = isset($_GET['id']) ? $_GET['id'] : null;
+
+$submit = isset($_POST['submit']) ? $_POST['submit'] : null;
+$isFromSaveAction = $submit === 'save-action';
 if ($isFromSaveAction) {
     if (empty($webshop->getName())) {
         array_push($errors, __('Name must not be empty', 'affieasy'));

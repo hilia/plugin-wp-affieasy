@@ -18,12 +18,14 @@ class AffiliationTableAdmin
 
         add_shortcode(Constants::TABLE_TAG, array($this, 'affieasy_table_content_callback'));
 
-        wp_enqueue_style('dashicons');
-        wp_enqueue_style(
-            'rendering-style',
-            plugins_url('/affieasy/css/rendering.css'),
-            array(),
-            time());
+        add_action('wp_enqueue_scripts', function () {
+            wp_enqueue_style('dashicons');
+            wp_enqueue_style(
+                'rendering-style',
+                plugins_url('/affieasy/css/rendering.css'),
+                array(),
+                time());
+        });
     }
 
     public function initialize()
@@ -78,7 +80,9 @@ class AffiliationTableAdmin
     public function display_table_views()
     {
         if (is_admin() && current_user_can('manage_options')) {
-            switch ($_GET['action']) {
+            $action = isset($_GET['action']) ? $_GET['action'] : null;
+
+            switch ($action) {
                 case 'edit-table':
                     include(dirname(__DIR__) . '/views/admin/edit-table.php');
                     break;
@@ -92,7 +96,9 @@ class AffiliationTableAdmin
     public function display_webshop_list()
     {
         if (is_admin() && current_user_can('manage_options')) {
-            switch ($_GET['action']) {
+            $action = isset($_GET['action']) ? $_GET['action'] : null;
+
+            switch ($action) {
                 case 'edit-webshop':
                     include(dirname(__DIR__) . '/views/admin/edit-webshop.php');
                     break;
