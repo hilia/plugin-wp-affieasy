@@ -18,6 +18,18 @@ msgstr ""
 msgid "Plugin to easily and quickly generate responsive tables and manage affiliate links."
 msgstr ""
 
+msgid "You are using the free affieasy version. Get premium licence on"
+msgstr ""
+
+msgid "or on the"
+msgstr ""
+
+msgid "payment page"
+msgstr ""
+
+msgid "to take full advantage of the features available!"
+msgstr ""
+
 msgid "Webshops"
 msgstr ""
 

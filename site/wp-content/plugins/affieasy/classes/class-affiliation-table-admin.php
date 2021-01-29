@@ -26,6 +26,8 @@ class AffiliationTableAdmin
                 array(),
                 time());
         });
+
+        aff_fs()->add_action('after_uninstall', 'aff_fs_uninstall_cleanup');
     }
 
     public function initialize()
