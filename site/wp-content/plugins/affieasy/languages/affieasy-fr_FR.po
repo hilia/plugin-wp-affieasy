@@ -265,17 +265,20 @@ msgstr "Les deux"
 msgid "None"
 msgstr "Aucune"
 
+msgid "Get the premium version to edit this field."
+msgstr "Obtenez la version premium pour éditer ce champ."
+
 msgid "Max width"
 msgstr "Largeur max"
 
-msgid "Max width in pixels allowed for the table (100% of available space if not filled)"
-msgstr "Largeur maximale autorisée pour le tableau (100% de l'espace disponible si non renseigné)"
+msgid "Max width in pixels allowed for the table (100% of available space if not filled). "
+msgstr "Largeur maximale autorisée pour le tableau (100% de l'espace disponible si non renseigné). "
 
 msgid "Responsive breakpoint"
 msgstr "Point de rupture responsive"
 
-msgid "Resolution in pixels below which the table take its responsive form"
-msgstr "Résolution en dessous de laquelle le tableau prend sa forme responsive"
+msgid "Resolution in pixels below which the table take its responsive form. "
+msgstr "Résolution en dessous de laquelle le tableau prend sa forme responsive. "
 
 msgid "Add row"
 msgstr "Ajouter ligne"
@@ -301,6 +304,9 @@ msgstr "Ajouter une colonne après l'en-tête"
 msgid "Keep the mouse pressed to drag and drop the column"
 msgstr "Maintenez la souris enfoncée pour glisser et déposer la colonne"
 
+msgid "Get the premium version to drag and drop the column"
+msgstr "Obtenez la version premium pour glisser et déposer la colonne"
+
 msgid "Delete column"
 msgstr "Supprimer colonne"
 
@@ -312,6 +318,9 @@ msgstr "Ajouter une ligne après l'en-tête"
 
 msgid "Keep the mouse pressed to drag and drop the row"
 msgstr "Maintenez la souris enfoncée pour glisser et déposer la ligne"
+
+msgid "Get the premium version to drag and drop the row"
+msgstr "Obtenez la version premium pour glisser et déposer la ligne"
 
 msgid "Delete row"
 msgstr "Supprimer ligne"

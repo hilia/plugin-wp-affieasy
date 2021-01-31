@@ -43,9 +43,7 @@ $webshopList = new WebshopList();
 <div class="wrap">
 
     <div class="header">
-        <?php if ( aff_fs()->is_not_paying() ) { ?>
-            <h4><?php esc_html_e('You are using the free affieasy version. Get premium licence on', 'affieasy'); ?> <a href="https://www.affieasy.com">affieasy.com</a> <?php esc_html_e('or on the', 'affieasy'); ?> <a href="admin.php?page=affieasy-table-pricing"><?php esc_html_e('payment page', 'affieasy'); ?></a> <?php esc_html_e('to take full advantage of the features available!', 'affieasy'); ?></h4>
-        <?php } ?>
+        <?php require_once ABSPATH . '/wp-content/plugins/affieasy/inc/free-version-message.php'; ?>
         <h1 class="wp-heading-inline"><?php esc_html_e('Webshops', 'affieasy'); ?></h1>
 
         <a href="admin.php?page=affieasy-webshop&action=edit-webshop" class="page-title-action">

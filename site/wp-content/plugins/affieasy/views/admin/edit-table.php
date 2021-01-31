@@ -30,6 +30,13 @@ wp_enqueue_script(
     time()
 );
 
+$canUsePremiumCode = false;
+if (aff_fs()->is__premium_only()) {
+    if (aff_fs()->can_use_premium_code()) {
+        $canUsePremiumCode = true;
+    }
+}
+
 wp_localize_script( 'edit-table-script', 'translations', array(
     'add' => esc_html__('Add', 'affieasy'),
     'addAffliateLink' => esc_html__('Add affiliate link', 'affieasy'),
@@ -41,8 +48,12 @@ wp_localize_script( 'edit-table-script', 'translations', array(
     'delete'  => esc_html__('Delete', 'affieasy'),
     'deleteColumn'  => esc_html__('Delete column', 'affieasy'),
     'deleteRow'  => esc_html__('Delete row', 'affieasy'),
-    'dragAndDropColumn' => esc_html__('Keep the mouse pressed to drag and drop the column', 'affieasy'),
-    'dragAndDropRow' => esc_html__('Keep the mouse pressed to drag and drop the row', 'affieasy'),
+    'dragAndDropColumn' => esc_html__($canUsePremiumCode ?
+        'Keep the mouse pressed to drag and drop the column' :
+        'Get the premium version to drag and drop the column', 'affieasy'),
+    'dragAndDropRow' => esc_html__($canUsePremiumCode ?
+        'Keep the mouse pressed to drag and drop the row' :
+        'Get the premium version to drag and drop the row', 'affieasy'),
     'edit' => esc_html__('Edit', 'affieasy'),
     'editAffiliateLink' => esc_html__('Edit affiliate link', 'affieasy'),
     'editAffiliationLink' => esc_html__('Edit affiliation link', 'affieasy'),
@@ -146,9 +157,7 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
 
 <script src="/wp-content/plugins/affieasy/js/utils.js"></script>
 
-<?php if ( aff_fs()->is_not_paying() ) { ?>
-    <h4><?php esc_html_e('You are using the free affieasy version. Get premium licence on', 'affieasy'); ?> <a href="https://www.affieasy.com">affieasy.com</a> <?php esc_html_e('or on the', 'affieasy'); ?> <a href="admin.php?page=affieasy-table-pricing"><?php esc_html_e('payment page', 'affieasy'); ?></a> <?php esc_html_e('to take full advantage of the features available!', 'affieasy'); ?></h4>
-<?php } ?>
+<?php require_once ABSPATH . '/wp-content/plugins/affieasy/inc/free-version-message.php'; ?>
 <div id="edit-affiliation-link-modal" hidden>
     <?php if ($hasNoWebShop) { ?>
         <p>
@@ -442,6 +451,7 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
         <input type="hidden" id="last-cell-id" value="<?php echo $table->getCellCount(); ?>">
         <input type="hidden" id="initial-header-type" value="<?php echo $table->getHeaderType(); ?>">
         <input type="hidden" id="has-no-webshop" value="<?php echo $hasNoWebShop; ?>">
+        <input type="hidden" id="can-use-premium-code" value="<?php echo (int) $canUsePremiumCode; ?>">
 
         <div class="general-table-options">
             <table class="form-table general-table-options-table" role="presentation">
@@ -506,13 +516,12 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
             <table class="form-table general-table-options-table" role="presentation">
                 <tr>
                     <th scope="row" class="general-form-label">
-                        <label for="name">
+                        <label for="max-width">
                             <?php esc_html_e('Max width', 'affieasy'); ?>
                             <span
                                     class="dashicons dashicons-info info"
-                                    title="<?php esc_html_e(
-                                            'Max width in pixels allowed for the table (100% of available space if not filled)',
-                                            'affieasy'); ?>">
+                                    title="<?php echo __('Max width in pixels allowed for the table (100% of available space if not filled). ', 'affieasy')
+                                        . ($canUsePremiumCode ? '' : __('Get the premium version to edit this field.', 'affieasy')); ?>">
                                 </span>
                         </label>
                     </th>
@@ -529,13 +538,12 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
 
                 <tr>
                     <th scope="row" class="general-form-label">
-                        <label for="name">
+                        <label for="responsive-breakpoint">
                             <?php esc_html_e('Responsive breakpoint', 'affieasy'); ?>
                             <span
                                     class="dashicons dashicons-info info"
-                                    title="<?php esc_html_e(
-                                            'Resolution in pixels below which the table take its responsive form',
-                                            'affieasy'); ?>">
+                                    title="<?php echo __('Resolution in pixels below which the table take its responsive form. ', 'affieasy')
+                                    . ($canUsePremiumCode ? '' : __('Get the premium version to edit this field.', 'affieasy')); ?>">
                             </span>
                         </label>
                     </th>
@@ -552,9 +560,15 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
 
                 <tr>
                     <th scope="row">
-                        <label for="name">
+                        <label for="background-color">
                             <?php esc_html_e('Background color', 'affieasy'); ?>
                         </label>
+                        <?php if (!$canUsePremiumCode) { ?>
+                            <span
+                                    class="dashicons dashicons-info info"
+                                    title="<?php echo __('Get the premium version to edit this field.', 'affieasy'); ?>">
+                            </span>
+                        <?php } ?>
                     </th>
                     <td>
                         <input
@@ -613,7 +627,9 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                                     <span
                                             class="dashicons dashicons-editor-expand"
                                             title="<?php esc_html_e(
-                                                    'Keep the mouse pressed to drag and drop the column',
+                                                    $canUsePremiumCode ?
+                                                        'Keep the mouse pressed to drag and drop the column' :
+                                                        'Get the premium version to drag and drop the column',
                                                     'affieasy'); ?>">
                                     </span>
                             </div>
@@ -667,7 +683,9 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                         <th class="table-row-actions-cell sortable-row">
                             <span
                                     class="dashicons dashicons-editor-expand drag-row"
-                                    title="<?php esc_html_e('Keep the mouse pressed to drag and drop the row', 'affieasy'); ?>">
+                                    title="<?php esc_html_e($canUsePremiumCode ?
+                                        'Keep the mouse pressed to drag and drop the row' :
+                                        'Get the premium version to drag and drop the row', 'affieasy'); ?>">
                             </span>
                             <span
                                     id="button-row-delete-<?php echo $rowId; ?>"

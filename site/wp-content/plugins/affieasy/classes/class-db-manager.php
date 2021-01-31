@@ -198,9 +198,17 @@ class DbManager
                                 str_replace('\\n', '&NewLine;', $cell))));
                 }, $row);
             }, $table->getContent())),
-            "responsiveBreakpoint" => is_numeric($responsiveBreakpoint) ? $responsiveBreakpoint : null,
-            "maxWidth" => is_numeric($maxWidth) ? $maxWidth : null,
-            "backgroundColor" => empty($backgroundColor) ? null : $backgroundColor);
+            "maxWidth" => null,
+            "responsiveBreakpoint" => Table::$defaultResponsiveBreakpoint,
+            "backgroundColor" => Table::$defaultBackgroundColor);
+
+        if (aff_fs()->is__premium_only()) {
+            if (aff_fs()->can_use_premium_code()) {
+                $values['maxWidth'] = is_numeric($maxWidth) ? $maxWidth : null;
+                $values['responsiveBreakpoint'] = is_numeric($responsiveBreakpoint) ? $responsiveBreakpoint : null;
+                $values['backgroundColor'] = $backgroundColor ? $backgroundColor : null;
+            }
+        }
 
         if (empty($tableId)) {
             $this->db->insert(Constants::TABLE_TABLE, $values);
