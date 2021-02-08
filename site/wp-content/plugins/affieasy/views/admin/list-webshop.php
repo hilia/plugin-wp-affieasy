@@ -1,16 +1,18 @@
 <?php
 
-require_once ABSPATH . '/wp-content/plugins/affieasy/classes/class-webshop-list.php';
+$pluginName = Utils::get_plugin_name();
+
+require_once ABSPATH . '/wp-content/plugins/' . $pluginName . '/classes/class-webshop-list.php';
 
 wp_enqueue_style(
     'list-webshop-style',
-    plugins_url('/affieasy/css/list-webshop.css'),
+    plugins_url('/' . $pluginName . '/css/list-webshop.css'),
     array(),
     time());
 
 wp_enqueue_script(
     'list-webshop-script',
-    plugins_url('/affieasy/js/list-webshop.js'),
+    plugins_url('/' . $pluginName . '/js/list-webshop.js'),
     array('jquery', 'jquery-ui-dialog'),
     time()
 );
@@ -43,7 +45,7 @@ $webshopList = new WebshopList();
 <div class="wrap">
 
     <div class="header">
-        <?php require_once ABSPATH . '/wp-content/plugins/affieasy/inc/free-version-message.php'; ?>
+        <?php require_once ABSPATH . '/wp-content/plugins/' . $pluginName . '/inc/free-version-message.php'; ?>
         <h1 class="wp-heading-inline"><?php esc_html_e('Webshops', 'affieasy'); ?></h1>
 
         <a href="admin.php?page=affieasy-webshop&action=edit-webshop" class="page-title-action">

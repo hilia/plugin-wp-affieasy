@@ -1,31 +1,34 @@
 <?php
+
+$pluginName = Utils::get_plugin_name();
+
 wp_enqueue_style(
     'edit-table-style',
-    plugins_url('/affieasy/css/edit-table.css'),
+    plugins_url('/' . $pluginName . '/css/edit-table.css'),
     array(),
     time());
 
 wp_enqueue_style(
     'color-picker-style',
-    plugins_url('/affieasy/libs/color-picker/color-picker.css'),
+    plugins_url('/' . $pluginName . '/libs/color-picker/color-picker.css'),
     array(),
     time());
 
 wp_enqueue_style(
     'popover-modal-style',
-    plugins_url('/affieasy/libs/pop-modal/pop-modal.min.css'),
+    plugins_url('/' . $pluginName . '/libs/pop-modal/pop-modal.min.css'),
     array(),
     time());
 
 wp_enqueue_style('wp-jquery-ui-dialog');
 
-wp_register_script('color-picker', plugins_url('/affieasy/libs/color-picker/color-picker.min.js'));
-wp_register_script('pop-modal', plugins_url('/affieasy/libs/pop-modal/pop-modal.min.js'), array('jquery'));
-wp_register_script('table-dragger', plugins_url('/affieasy/libs/table-dragger/table-dragger.min.js'));
+wp_register_script('color-picker', plugins_url('/' . $pluginName . '/libs/color-picker/color-picker.min.js'));
+wp_register_script('pop-modal', plugins_url('/' . $pluginName . '/libs/pop-modal/pop-modal.min.js'), array('jquery'));
+wp_register_script('table-dragger', plugins_url('/' . $pluginName . '/libs/table-dragger/table-dragger.min.js'));
 
 wp_enqueue_script(
     'edit-table-script',
-    plugins_url('/affieasy/js/edit-table.js'),
+    plugins_url('/' . $pluginName . '/js/edit-table.js'),
     array('jquery', 'color-picker', 'pop-modal', 'table-dragger', 'jquery-ui-dialog'),
     time()
 );
@@ -155,9 +158,9 @@ $isTableWithRowHeader = in_array($headerType, array('ROW_HEADER', 'BOTH'));
 $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
 ?>
 
-<script src="/wp-content/plugins/affieasy/js/utils.js"></script>
+<script src="/wp-content/plugins/<?php echo $pluginName; ?>/js/utils.js"></script>
 
-<?php require_once ABSPATH . '/wp-content/plugins/affieasy/inc/free-version-message.php'; ?>
+<?php require_once ABSPATH . '/wp-content/plugins/' . $pluginName . '/inc/free-version-message.php'; ?>
 <div id="edit-affiliation-link-modal" hidden>
     <?php if ($hasNoWebShop) { ?>
         <p>

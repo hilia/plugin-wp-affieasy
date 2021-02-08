@@ -1,22 +1,24 @@
 <?php
 
+$pluginName = Utils::get_plugin_name();
+
 wp_enqueue_style(
     'edit-table-style',
-    plugins_url('/affieasy/css/edit-webshop.css'),
+    plugins_url('/' . $pluginName . '/css/edit-webshop.css'),
     array(),
     time());
 
 wp_enqueue_style(
     'color-picker-style',
-    plugins_url('/affieasy/libs/color-picker/color-picker.css'),
+    plugins_url('/' . $pluginName . '/libs/color-picker/color-picker.css'),
     array(),
     time());
 
-wp_register_script('color-picker', plugins_url('/affieasy/libs/color-picker/color-picker.min.js'));
+wp_register_script('color-picker', plugins_url('/' . $pluginName . '/libs/color-picker/color-picker.min.js'));
 
 wp_enqueue_script(
     'edit-webshop-script',
-    plugins_url('/affieasy/js/edit-webshop.js'),
+    plugins_url('/' . $pluginName . '/js/edit-webshop.js'),
     array('jquery', 'jquery-ui-accordion', 'color-picker'),
     time()
 );
@@ -66,7 +68,7 @@ $webshopName = $webshop->getName();
 
 ?>
 
-<?php require_once ABSPATH . '/wp-content/plugins/affieasy/inc/free-version-message.php'; ?>
+<?php require_once ABSPATH . '/wp-content/plugins/' . $pluginName . '/inc/free-version-message.php'; ?>
 <div class="wrap">
     <div class="header">
         <h1 class="wp-heading-inline"><?php echo empty($webshopId) ?

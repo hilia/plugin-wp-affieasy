@@ -3,6 +3,7 @@
 require_once 'class-webshop.php';
 require_once 'class-table.php';
 require_once 'class-db-manager.php';
+require_once 'class-utils.php';
 require_once 'class-generation-utils.php';
 require_once dirname(__DIR__) . '/constants.php';
 
@@ -22,7 +23,7 @@ class AffiliationTableAdmin
             wp_enqueue_style('dashicons');
             wp_enqueue_style(
                 'rendering-style',
-                plugins_url('/affieasy/css/rendering.css'),
+                plugins_url('/' . Utils::get_plugin_name() . '/css/rendering.css'),
                 array(),
                 time());
         });
