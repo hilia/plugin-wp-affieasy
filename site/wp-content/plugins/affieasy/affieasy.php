@@ -6,8 +6,6 @@
  * Text Domain: affieasy
 */
 
-require_once 'classes/class-affiliation-table-admin.php';
-
 if ( ! function_exists( 'aff_fs' ) ) {
     // Create a helper function for easy SDK access.
     function aff_fs() {
@@ -49,15 +47,45 @@ if ( ! function_exists( 'aff_fs' ) ) {
     do_action( 'aff_fs_loaded' );
 }
 
+require_once 'classes/class-affiliation-table-admin.php';
 $plugin_instance = new AffiliationTableAdmin();
-register_activation_hook(__FILE__, array($plugin_instance, 'initialize'));
+
+register_activation_hook(__FILE__, 'AffiliationTableAdmin::initialize');
 register_uninstall_hook(__FILE__, array('AffiliationTableAdmin', 'rollback'));
 
-function affieasy_plugin_load_text_domain()
+if (!function_exists('after_plugins_loaded'))
 {
-    load_plugin_textdomain('affieasy', FALSE, basename(dirname(__FILE__)) . '/languages/');
+    function after_plugins_loaded()
+    {
+        load_plugin_textdomain('affieasy', FALSE, basename(dirname(__FILE__)) . '/languages/');
+    }
 }
 
-add_action('plugins_loaded', 'affieasy_plugin_load_text_domain');
+if (!function_exists('after_plugin_activated'))
+{
+    function after_plugin_activated()
+    {
+        $currentPluginName = strpos(dirname(__FILE__), '-premium') === false ? 'affieasy' : 'affieasy-premium';
+        $directoryToRemove = dirname(__DIR__) . '/' . ($currentPluginName === 'affieasy' ? 'affieasy-premium' : 'affieasy');
 
+        require_once 'classes/class-utils.php';
+        if (is_dir($directoryToRemove)) {
+            Utils::remove_directory($directoryToRemove);
+        }
+    }
+}
 
+if (!function_exists('after_upgrader_process_complete'))
+{
+    function after_upgrader_process_complete()
+    {
+        if (is_dir(dirname(__DIR__) . '/affieasy') && is_dir(dirname(__DIR__) . '/affieasy-premium')) {
+            require_once ABSPATH . 'wp-admin/includes/plugin.php';
+            deactivate_plugins(array('affieasy/affieasy.php', 'affieasy-premium/affieasy.php'));
+        }
+    }
+}
+
+add_action('plugins_loaded', 'after_plugins_loaded');
+add_action('activate_plugin', 'after_plugin_activated');
+add_action('upgrader_process_complete', 'after_upgrader_process_complete');
