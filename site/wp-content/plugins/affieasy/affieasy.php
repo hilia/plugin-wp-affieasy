@@ -50,8 +50,8 @@ if ( ! function_exists( 'aff_fs' ) ) {
 require_once 'classes/class-affiliation-table-admin.php';
 $plugin_instance = new AffiliationTableAdmin();
 
-register_activation_hook(__FILE__, 'AffiliationTableAdmin::initialize');
-register_uninstall_hook(__FILE__, array('AffiliationTableAdmin', 'rollback'));
+register_activation_hook(__FILE__, 'AffiliationTableAdmin::initialize_plugin');
+register_uninstall_hook(__FILE__, 'AffiliationTableAdmin::uninstall_plugin');
 
 if (!function_exists('after_plugins_loaded'))
 {

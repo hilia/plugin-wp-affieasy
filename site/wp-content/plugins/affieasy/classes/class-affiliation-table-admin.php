@@ -29,7 +29,7 @@ class AffiliationTableAdmin
         });
     }
 
-    public static function initialize()
+    public static function initialize_plugin()
     {
         $staticDbManager = DbManager::get_instance();
         if (!$staticDbManager->table_exists(Constants::TABLE_WEBSHOP)) {
@@ -41,7 +41,7 @@ class AffiliationTableAdmin
         }
     }
 
-    public static function rollback() {
+    public static function uninstall_plugin() {
         if (!is_dir(ABSPATH . 'wp-content/plugins/affieasy') || !is_dir(ABSPATH . 'wp-content/plugins/affieasy-premium')) {
             $staticDbManager = DbManager::get_instance();
             $staticDbManager->drop_table(Constants::TABLE_WEBSHOP);
