@@ -24,13 +24,27 @@ wp_localize_script( 'list-webshop-script', 'translations', array(
 
 wp_enqueue_style('wp-jquery-ui-dialog');
 
+$dbManager = new DbManager();
+
 $id = isset($_GET['id']) ? $_GET['id'] : null;
 $action = isset($_GET['action']) ? $_GET['action'] : null;
 
 $isValidDeleteAction = $action === 'delete-webshop' && is_numeric($id);
 if ($isValidDeleteAction) {
-    $dbManager = new DbManager();
     $dbManager->delete_webshop($id);
+}
+
+$canUsePremiumCode = false;
+if (aff_fs()->is__premium_only()) {
+    if (aff_fs()->can_use_premium_code()) {
+        $canUsePremiumCode = true;
+    }
+}
+
+$dbManager = new DbManager();
+$currentWebshopCount = 0;
+if (!$canUsePremiumCode) {
+    $currentWebshopCount = $dbManager->get_table_count(Constants::TABLE_WEBSHOP);
 }
 
 $webshopList = new WebshopList();
@@ -48,9 +62,18 @@ $webshopList = new WebshopList();
         <?php require_once ABSPATH . '/wp-content/plugins/' . $pluginName . '/inc/free-version-message.php'; ?>
         <h1 class="wp-heading-inline"><?php esc_html_e('Webshops', 'affieasy'); ?></h1>
 
-        <a href="admin.php?page=affieasy-webshop&action=edit-webshop" class="page-title-action">
-            <?php esc_html_e('Add new webshop', 'affieasy'); ?>
-        </a>
+        <?php if ($canUsePremiumCode || $currentWebshopCount < 2) { ?>
+            <a href="admin.php?page=affieasy-webshop&action=edit-webshop" class="page-title-action">
+                <?php esc_html_e('Add new webshop', 'affieasy'); ?>
+            </a>
+        <?php } else { ?>
+            <h4>
+                <span class="dashicons dashicons-info"></span>
+                <span>
+                    <?php esc_html_e('Buy a premium licence to create more than 2 webshops', 'affieasy'); ?>
+                </span>
+            </h4>
+        <?php } ?>
     </div>
 
     <hr class="wp-header-end">

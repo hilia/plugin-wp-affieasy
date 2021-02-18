@@ -91,6 +91,17 @@ class DbManager
 
         $webshopId = $webshop->getId();
 
+        $canUsePremiumCode = false;
+        if (aff_fs()->is__premium_only()) {
+            if (aff_fs()->can_use_premium_code()) {
+                $canUsePremiumCode = true;
+            }
+        }
+
+        if (!$canUsePremiumCode && $webshopId === null && $this->get_table_count(Constants::TABLE_WEBSHOP) >= 2) {
+            return new Webshop();
+        }
+
         $values = array(
             "name" => $webshop->getName(),
             "url" => $webshop->getUrl(),

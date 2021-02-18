@@ -91,6 +91,9 @@ msgstr "(Requis)"
 msgid "Add new webshop"
 msgstr "Ajouter une boutique"
 
+msgid "Buy a premium licence to create more than 2 webshops"
+msgstr "Obtenez une licence premium pour créer plus de 2 boutiques"
+
 msgid "Are you sure you want to delete the webshop (all related links will be removed)?"
 msgstr "Êtes-vous sûr de vouloir supprimer cette boutique (tous les liens associés seront supprimés) ?"
 

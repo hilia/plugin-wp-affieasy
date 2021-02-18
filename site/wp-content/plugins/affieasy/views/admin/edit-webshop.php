@@ -25,8 +25,19 @@ wp_enqueue_script(
 
 $dbManager = new DbManager();
 
-$webshop = new Webshop(
-    isset($_POST['id']) ? $_POST['id'] : null,
+$id = isset($_GET['id']) ? $_GET['id'] : null;
+
+$canUsePremiumCode = false;
+if (aff_fs()->is__premium_only()) {
+    if (aff_fs()->can_use_premium_code()) {
+        $canUsePremiumCode = true;
+    }
+}
+
+$isActionForbidden = !$canUsePremiumCode && $id === null && $dbManager->get_table_count(Constants::TABLE_WEBSHOP) >= 2;
+
+$webshop = $isActionForbidden ? new Webshop() : new Webshop(
+    $id,
     isset($_POST['name']) ? $_POST['name'] : null,
     isset($_POST['url']) ? $_POST['url'] : null,
     isset($_POST['link-text-preference']) ? $_POST['link-text-preference'] : null,
@@ -36,31 +47,32 @@ $webshop = new Webshop(
 
 $errors = array();
 
-$id = isset($_GET['id']) ? $_GET['id'] : null;
-
 $submit = isset($_POST['submit']) ? $_POST['submit'] : null;
 $isFromSaveAction = $submit === 'save-action';
-if ($isFromSaveAction) {
-    if (empty($webshop->getName())) {
-        array_push($errors, __('Name must not be empty', 'affieasy'));
-    }
 
-    $webshopUrl = $webshop->geturl();
-    if (empty($webshopUrl)) {
-        array_push($errors, __('Url must not be empty', 'affieasy'));
-    } else {
-        if (!in_array(Constants::MANDATORY_URL_PARAM, $webshop->getParameters())) {
-            array_push($errors, sprintf(
+if(!$isActionForbidden) {
+    if ($isFromSaveAction) {
+        if (empty($webshop->getName())) {
+            array_push($errors, __('Name must not be empty', 'affieasy'));
+        }
+
+        $webshopUrl = $webshop->geturl();
+        if (empty($webshopUrl)) {
+            array_push($errors, __('Url must not be empty', 'affieasy'));
+        } else {
+            if (!in_array(Constants::MANDATORY_URL_PARAM, $webshop->getParameters())) {
+                array_push($errors, sprintf(
                     __('Url must contains at least [[%1$s]] parameter', 'affieasy'),
                     Constants::MANDATORY_URL_PARAM));
+            }
         }
-    }
 
-    if (empty($errors)) {
-        $webshop = $dbManager->edit_webshop($webshop);
+        if (empty($errors)) {
+            $webshop = $dbManager->edit_webshop($webshop);
+        }
+    } else if (!empty($id)) {
+        $webshop = $dbManager->get_webshop_by_id($id);
     }
-} else if (!empty($id)) {
-    $webshop = $dbManager->get_webshop_by_id($id);
 }
 
 $webshopId = $webshop->getId();
@@ -155,7 +167,8 @@ $webshopName = $webshop->getName();
                             name="name"
                             id="name"
                             maxlength="255"
-                            value="<?php echo $webshopName; ?>">
+                            value="<?php echo $webshopName; ?>"
+                            <?php echo $isActionForbidden ? 'disabled' : ''; ?>>
                 </td>
             </tr>
             <tr class="form-field">
@@ -172,7 +185,8 @@ $webshopName = $webshop->getName();
                             id="url"
                             maxlength="2048"
                             value="<?php echo $webshop->getUrl(); ?>"
-                            placeholder="<?php esc_html_e('Ex: https://www.awin1.com/cread.php?p=[[product_url]]&clickref=[[click_ref]]', 'affieasy'); ?>">
+                            placeholder="<?php esc_html_e('Ex: https://www.awin1.com/cread.php?p=[[product_url]]&clickref=[[click_ref]]', 'affieasy'); ?>"
+                            <?php echo $isActionForbidden ? 'disabled' : ''; ?>>
                 </td>
             </tr>
         </table>
@@ -198,7 +212,8 @@ $webshopName = $webshop->getName();
                             name="link-text-preference"
                             id="link-text-preference"
                             maxlength="255"
-                            value="<?php echo $webshop->getLinkTextPreference(); ?>">
+                            value="<?php echo $webshop->getLinkTextPreference(); ?>"
+                            <?php echo $isActionForbidden ? 'disabled' : ''; ?>>
                 </td>
             </tr>
 
@@ -213,7 +228,8 @@ $webshopName = $webshop->getName();
                             type="text"
                             id="background-color-preference"
                             name="background-color-preference"
-                            value="<?php echo $webshop->getBackgroundColorPreference(); ?>">
+                            value="<?php echo $webshop->getBackgroundColorPreference(); ?>"
+                            <?php echo $isActionForbidden ? 'disabled' : ''; ?>>
                 </td>
             </tr>
 
@@ -228,19 +244,22 @@ $webshopName = $webshop->getName();
                             type="text"
                             id="text-color-preference"
                             name="text-color-preference"
-                            value="<?php echo $webshop->getTextColorPreference(); ?>">
+                            value="<?php echo $webshop->getTextColorPreference(); ?>"
+                            <?php echo $isActionForbidden ? 'disabled' : ''; ?>>
                 </td>
             </tr>
         </table>
     </form>
 
-    <button
-            type="submit"
-            form="form"
-            name="submit"
-            id="submit"
-            class="button button-primary edit-button-bottom"
-            value="save-action">
-        <?php esc_html_e('Save webshop', 'affieasy'); ?>
-    </button>
+    <?php if (!$isActionForbidden) { ?>
+        <button
+                type="submit"
+                form="form"
+                name="submit"
+                id="submit"
+                class="button button-primary edit-button-bottom"
+                value="save-action">
+            <?php esc_html_e('Save webshop', 'affieasy'); ?>
+        </button>
+    <?php } ?>
 </div>

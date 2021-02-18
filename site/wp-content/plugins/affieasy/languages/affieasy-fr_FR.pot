@@ -94,6 +94,9 @@ msgstr ""
 msgid "Add new webshop"
 msgstr ""
 
+msgid "Buy a premium licence to create more than 2 webshops"
+msgstr ""
+
 msgid "Are you sure you want to delete the webshop (all related links will be removed)?"
 msgstr ""
 
