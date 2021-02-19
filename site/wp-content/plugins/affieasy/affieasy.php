@@ -4,6 +4,9 @@
  * Description: Plugin to easily and quickly generate responsive tables and manage affiliate links.
  * Version: 0.9.14
  * Text Domain: affieasy
+ * Author: Affieasy Team
+ * Author URI: https://www.affieasy.com/
+ * Plugin URI: https://wordpress.org/plugins/affieasy/
 */
 
 if ( ! function_exists( 'aff_fs' ) ) {
