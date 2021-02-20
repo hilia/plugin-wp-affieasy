@@ -3,6 +3,7 @@
 require_once 'class-webshop.php';
 require_once 'class-table.php';
 require_once 'class-db-manager.php';
+require_once 'class-utils.php';
 require_once 'class-generation-utils.php';
 require_once dirname(__DIR__) . '/constants.php';
 
@@ -22,28 +23,22 @@ class AffiliationTableAdmin
             wp_enqueue_style('dashicons');
             wp_enqueue_style(
                 'rendering-style',
-                plugins_url('/affieasy/css/rendering.css'),
+                plugins_url('/' . Utils::get_plugin_name() . '/css/rendering.css'),
                 array(),
                 time());
         });
     }
 
-    public function initialize()
-    {
-        if (!$this->dbManager->table_exists(Constants::TABLE_WEBSHOP)) {
-            $this->dbManager->create_table_webshop();
-        }
-
-        if (!$this->dbManager->table_exists(Constants::TABLE_TABLE)) {
-            $this->dbManager->create_table_table();
-        }
-    }
-
-    public function rollback()
+    public static function initialize_affieasy_plugin()
     {
         $staticDbManager = DbManager::get_instance();
-        $staticDbManager->drop_table(Constants::TABLE_WEBSHOP);
-        $staticDbManager->drop_table(Constants::TABLE_TABLE);
+        if (!$staticDbManager->table_exists(Constants::TABLE_WEBSHOP)) {
+            $staticDbManager->create_table_webshop();
+        }
+
+        if (!$staticDbManager->table_exists(Constants::TABLE_TABLE)) {
+            $staticDbManager->create_table_table();
+        }
     }
 
     public function add_menus_page_affiliation_table()
@@ -73,7 +68,7 @@ class AffiliationTableAdmin
             __('Webshops', 'affieasy'),
             'manage_options',
             'affieasy-webshop',
-            array($this, 'display_webshop_list')
+            array($this, 'display_webshop_views')
         );
     }
 
@@ -93,7 +88,7 @@ class AffiliationTableAdmin
         }
     }
 
-    public function display_webshop_list()
+    public function display_webshop_views()
     {
         if (is_admin() && current_user_can('manage_options')) {
             $action = isset($_GET['action']) ? $_GET['action'] : null;

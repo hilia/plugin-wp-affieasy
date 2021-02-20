@@ -1,10 +1,12 @@
 <?php
 
-require_once ABSPATH . '/wp-content/plugins/affieasy/classes/class-table-list.php';
+$pluginName = Utils::get_plugin_name();
+
+require_once ABSPATH . '/wp-content/plugins/' . $pluginName . '/classes/class-table-list.php';
 
 wp_enqueue_script(
     'list-table-script',
-    plugins_url('/affieasy/js/list-table.js'),
+    plugins_url('/' . $pluginName . '/js/list-table.js'),
     array('jquery', 'jquery-ui-dialog'),
     time()
 );
@@ -35,12 +37,12 @@ $tableList = new TableList();
 </div>
 
 <div class="wrap">
+    <?php require_once ABSPATH . '/wp-content/plugins/' . $pluginName . '/inc/free-version-message.php'; ?>
     <h1 class="wp-heading-inline"><?php esc_html_e('Tables', 'affieasy'); ?></h1>
 
     <a href="admin.php?page=affieasy-table&action=edit-table" class="page-title-action">
         <?php esc_html_e('Add new table', 'affieasy'); ?>
     </a>
-
     <hr class="wp-header-end">
 
     <?php if ($isValidDeleteAction) { ?>

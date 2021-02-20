@@ -18,6 +18,18 @@ msgstr ""
 msgid "Plugin to easily and quickly generate responsive tables and manage affiliate links."
 msgstr "Plugin permettant de générer facilement et rapidement des tableaux responsives et de gérer des liens d'affiliations."
 
+msgid "You are using the free affieasy version. Get premium licence on"
+msgstr "Vous utilisez la version gratuite de affieasy. Obtenez une licence premium sur"
+
+msgid "or on the"
+msgstr "ou sur la"
+
+msgid "payment page"
+msgstr "page de paiement"
+
+msgid "to take full advantage of the features available!"
+msgstr "pour bénéficier de toutes les fonctionnalités !"
+
 msgid "Webshops"
 msgstr "Boutiques"
 
@@ -78,6 +90,9 @@ msgstr "(Requis)"
 # Webshop list
 msgid "Add new webshop"
 msgstr "Ajouter une boutique"
+
+msgid "Buy a premium licence to create more than 2 webshops"
+msgstr "Obtenez une licence premium pour créer plus de 2 boutiques"
 
 msgid "Are you sure you want to delete the webshop (all related links will be removed)?"
 msgstr "Êtes-vous sûr de vouloir supprimer cette boutique (tous les liens associés seront supprimés) ?"
@@ -253,17 +268,20 @@ msgstr "Les deux"
 msgid "None"
 msgstr "Aucune"
 
+msgid "Get the premium version to edit this field."
+msgstr "Obtenez la version premium pour éditer ce champ."
+
 msgid "Max width"
 msgstr "Largeur max"
 
-msgid "Max width in pixels allowed for the table (100% of available space if not filled)"
-msgstr "Largeur maximale autorisée pour le tableau (100% de l'espace disponible si non renseigné)"
+msgid "Max width in pixels allowed for the table (100% of available space if not filled). "
+msgstr "Largeur maximale autorisée pour le tableau (100% de l'espace disponible si non renseigné). "
 
 msgid "Responsive breakpoint"
 msgstr "Point de rupture responsive"
 
-msgid "Resolution in pixels below which the table take its responsive form"
-msgstr "Résolution en dessous de laquelle le tableau prend sa forme responsive"
+msgid "Resolution in pixels below which the table take its responsive form. "
+msgstr "Résolution en dessous de laquelle le tableau prend sa forme responsive. "
 
 msgid "Add row"
 msgstr "Ajouter ligne"
@@ -289,6 +307,9 @@ msgstr "Ajouter une colonne après l'en-tête"
 msgid "Keep the mouse pressed to drag and drop the column"
 msgstr "Maintenez la souris enfoncée pour glisser et déposer la colonne"
 
+msgid "Get the premium version to drag and drop the column"
+msgstr "Obtenez la version premium pour glisser et déposer la colonne"
+
 msgid "Delete column"
 msgstr "Supprimer colonne"
 
@@ -300,6 +321,9 @@ msgstr "Ajouter une ligne après l'en-tête"
 
 msgid "Keep the mouse pressed to drag and drop the row"
 msgstr "Maintenez la souris enfoncée pour glisser et déposer la ligne"
+
+msgid "Get the premium version to drag and drop the row"
+msgstr "Obtenez la version premium pour glisser et déposer la ligne"
 
 msgid "Delete row"
 msgstr "Supprimer ligne"

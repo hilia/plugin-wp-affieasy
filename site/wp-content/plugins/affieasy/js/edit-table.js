@@ -14,6 +14,8 @@ jQuery(($) => {
     let columnDragger = null;
     let rowDragger = null;
 
+    let canUsePremiumCode = $('#can-use-premium-code').val() === '1';
+
     // Force initial col-id
     $('#col-id').val($('.table-header-cell-content').size());
 
@@ -38,6 +40,12 @@ jQuery(($) => {
     $('#header-row-color').minicolors({});
     $('#link-background-color').minicolors({});
     $('#link-text-color').minicolors({});
+
+    if (!canUsePremiumCode) {
+        $('#max-width').prop( "disabled", true);
+        $('#responsive-breakpoint').prop( "disabled", true);
+        $('#background-color').prop( "disabled", true);
+    }
 
     // Add hide or display headers event
     $('#header-type').on('change', () => {
@@ -108,6 +116,10 @@ jQuery(($) => {
 
     $('#form').on('submit', () => {
         const headerType = $('#header-type').val();
+
+        $('#max-width').prop( "disabled", false);
+        $('#responsive-breakpoint').prop( "disabled", false);
+        $('#background-color').prop( "disabled", false);
 
         $('tr[id*="row-"]').slice(['COLUMN_HEADER', 'BOTH'].includes(headerType) ? 1 : 2)
             .each((rowIndex, row) => {
@@ -634,6 +646,10 @@ jQuery(($) => {
 
     // Init drag and drop column options
     function initDragAndDropColumn() {
+        if (!canUsePremiumCode) {
+            return;
+        }
+
         if (!!columnDragger) {
             columnDragger.destroy();
         }
@@ -646,6 +662,10 @@ jQuery(($) => {
 
     // Init drag and drop row options
     function initDragAndDropRow() {
+        if (!canUsePremiumCode) {
+            return;
+        }
+
         if (!!rowDragger) {
             rowDragger.destroy();
         }

@@ -4,7 +4,8 @@ class Table
 {
     private $defaultHeaderType = 'COLUMN_HEADER';
     private $defaultTableColumnNumber = 4;
-    private $defaultBackgroundColor = '#ffffff';
+    public static $defaultResponsiveBreakpoint = 800;
+    public static $defaultBackgroundColor = '#ffffff';
     private $defaultHeaderBackgroundColor = '#707070';
     private $defaultHeaderTextColor = '#ffffff';
     private $defaultHeaderFontWeight = 'bold';
@@ -105,7 +106,8 @@ class Table
     public function initDefaultContent()
     {
         $this->headerType = $this->defaultHeaderType;
-        $this->backgroundColor = $this->defaultBackgroundColor;
+        $this->responsiveBreakpoint = Table::$defaultResponsiveBreakpoint;
+        $this->backgroundColor = Table::$defaultBackgroundColor;
 
         $this->headerOptions = (object)[
           'column-background' => $this->defaultHeaderBackgroundColor,

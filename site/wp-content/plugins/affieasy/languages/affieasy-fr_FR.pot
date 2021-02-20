@@ -18,6 +18,18 @@ msgstr ""
 msgid "Plugin to easily and quickly generate responsive tables and manage affiliate links."
 msgstr ""
 
+msgid "You are using the free affieasy version. Get premium licence on"
+msgstr ""
+
+msgid "or on the"
+msgstr ""
+
+msgid "payment page"
+msgstr ""
+
+msgid "to take full advantage of the features available!"
+msgstr ""
+
 msgid "Webshops"
 msgstr ""
 
@@ -80,6 +92,9 @@ msgstr ""
 
 #Webshop list
 msgid "Add new webshop"
+msgstr ""
+
+msgid "Buy a premium licence to create more than 2 webshops"
 msgstr ""
 
 msgid "Are you sure you want to delete the webshop (all related links will be removed)?"
@@ -253,16 +268,19 @@ msgstr ""
 msgid "None"
 msgstr ""
 
+msgid "Get the premium version to edit this field."
+msgstr ""
+
 msgid "Max width"
 msgstr ""
 
-msgid "Max width in pixels allowed for the table (100% of available space if not filled)"
+msgid "Max width in pixels allowed for the table (100% of available space if not filled). "
 msgstr ""
 
 msgid "Responsive breakpoint"
 msgstr ""
 
-msgid "Resolution in pixels below which the table take its responsive form"
+msgid "Resolution in pixels below which the table take its responsive form. "
 msgstr ""
 
 msgid "Add row"
@@ -289,6 +307,9 @@ msgstr ""
 msgid "Keep the mouse pressed to drag and drop the column"
 msgstr ""
 
+msgid "Get the premium version to drag and drop the column"
+msgstr ""
+
 msgid "Delete column"
 msgstr ""
 
@@ -299,6 +320,9 @@ msgid "Add a row after header"
 msgstr ""
 
 msgid "Keep the mouse pressed to drag and drop the row"
+msgstr ""
+
+msgid "Get the premium version to drag and drop the row"
 msgstr ""
 
 msgid "Delete row"
