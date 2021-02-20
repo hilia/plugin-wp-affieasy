@@ -60,8 +60,7 @@ if (function_exists('aff_fs')) {
     require_once 'classes/class-affiliation-table-admin.php';
     $plugin_instance = new AffiliationTableAdmin();
 
-    register_activation_hook(__FILE__, 'AffiliationTableAdmin::initialize_plugin');
-    register_uninstall_hook(__FILE__, 'AffiliationTableAdmin::uninstall_plugin');
+    register_activation_hook(__FILE__, 'AffiliationTableAdmin::initialize_affieasy_plugin');
 
     if (!function_exists('after_plugins_loaded')) {
         function after_plugins_loaded()
@@ -71,7 +70,16 @@ if (function_exists('aff_fs')) {
     }
 
     add_action('plugins_loaded', 'after_plugins_loaded');
+
+    if (!function_exists('aff_fs_uninstall_cleanup')) {
+        function aff_fs_uninstall_cleanup() {
+            if (!is_dir(ABSPATH . 'wp-content/plugins/affieasy') || !is_dir(ABSPATH . 'wp-content/plugins/affieasy-premium')) {
+                $staticDbManager = DbManager::get_instance();
+                $staticDbManager->drop_table(Constants::TABLE_WEBSHOP);
+                $staticDbManager->drop_table(Constants::TABLE_TABLE);
+            }
+        }
+    }
+
+    aff_fs()->add_action('after_uninstall', 'aff_fs_uninstall_cleanup');
 }
-
-
-

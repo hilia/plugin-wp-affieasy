@@ -29,7 +29,7 @@ class AffiliationTableAdmin
         });
     }
 
-    public static function initialize_plugin()
+    public static function initialize_affieasy_plugin()
     {
         $staticDbManager = DbManager::get_instance();
         if (!$staticDbManager->table_exists(Constants::TABLE_WEBSHOP)) {
@@ -39,16 +39,6 @@ class AffiliationTableAdmin
         if (!$staticDbManager->table_exists(Constants::TABLE_TABLE)) {
             $staticDbManager->create_table_table();
         }
-    }
-
-    public static function uninstall_plugin() {
-        if (!is_dir(ABSPATH . 'wp-content/plugins/affieasy') || !is_dir(ABSPATH . 'wp-content/plugins/affieasy-premium')) {
-            $staticDbManager = DbManager::get_instance();
-            $staticDbManager->drop_table(Constants::TABLE_WEBSHOP);
-            $staticDbManager->drop_table(Constants::TABLE_TABLE);
-        }
-
-        aff_fs()->_uninstall_plugin_event();
     }
 
     public function add_menus_page_affiliation_table()
