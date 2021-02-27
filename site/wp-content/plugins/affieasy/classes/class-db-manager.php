@@ -186,29 +186,19 @@ class DbManager
         ) : new Table();
     }
 
-    public function edit_table($table, $isUpdateFromWebshopEdition)
+    public function edit_table($table)
     {
         require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
 
         $tableId = $table->getId();
-
         $responsiveBreakpoint = $table->getResponsiveBreakpoint();
         $maxWidth = $table->getMaxWidth();
         $backgroundColor = $table->getBackgroundColor();
         $values = array(
             "name" => $table->getName(),
             "headerType" => $table->getHeaderType(),
-            "headerOptions" => $isUpdateFromWebshopEdition ?
-                json_encode($table->getHeaderOptions()) :
-                str_replace('\\', '', $table->getHeaderOptions()),
-            "content" => json_encode($isUpdateFromWebshopEdition ? $table->getContent() : array_map(function ($row) {
-                return array_map(function ($cell) {
-                    return json_decode(
-                        str_replace("\\", "",
-                            str_replace('\\\\\\"', "&quot;",
-                                str_replace('\\n', '&NewLine;', $cell))));
-                }, $row);
-            }, $table->getContent())),
+            "headerOptions" => json_encode($table->getHeaderOptions()),
+            "content" => json_encode($table->getContent()),
             "maxWidth" => null,
             "responsiveBreakpoint" => Table::$defaultResponsiveBreakpoint,
             "backgroundColor" => Table::$defaultBackgroundColor);
@@ -272,7 +262,7 @@ class DbManager
 
             if ($shouldUpdate) {
                 $table->setContent($updatedContent);
-                $this->edit_table($table, true);
+                $this->edit_table($table);
             }
         }
     }

@@ -18,8 +18,8 @@ wp_localize_script( 'list-table-script', 'translations', array(
 
 wp_enqueue_style('wp-jquery-ui-dialog');
 
-$id = isset($_GET['id']) ? $_GET['id'] : null;
-$action = isset($_GET['action']) ?  $_GET['action'] : null;
+$id = isset($_GET['id']) ? sanitize_key($_GET['id']) : null;
+$action = isset($_GET['action']) ?  sanitize_key($_GET['action']) : null;
 
 $isValidDeleteAction = $action === 'delete-table' && is_numeric($id);
 if ($isValidDeleteAction) {

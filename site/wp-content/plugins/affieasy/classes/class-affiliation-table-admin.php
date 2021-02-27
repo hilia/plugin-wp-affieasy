@@ -75,7 +75,7 @@ class AffiliationTableAdmin
     public function display_table_views()
     {
         if (is_admin() && current_user_can('manage_options')) {
-            $action = isset($_GET['action']) ? $_GET['action'] : null;
+            $action = isset($_GET['action']) ? sanitize_key($_GET['action']) : null;
 
             switch ($action) {
                 case 'edit-table':
@@ -91,7 +91,7 @@ class AffiliationTableAdmin
     public function display_webshop_views()
     {
         if (is_admin() && current_user_can('manage_options')) {
-            $action = isset($_GET['action']) ? $_GET['action'] : null;
+            $action = isset($_GET['action']) ? sanitize_key($_GET['action']) : null;
 
             switch ($action) {
                 case 'edit-webshop':

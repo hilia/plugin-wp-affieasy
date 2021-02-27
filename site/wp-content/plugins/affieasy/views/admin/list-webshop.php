@@ -26,8 +26,8 @@ wp_enqueue_style('wp-jquery-ui-dialog');
 
 $dbManager = new DbManager();
 
-$id = isset($_GET['id']) ? $_GET['id'] : null;
-$action = isset($_GET['action']) ? $_GET['action'] : null;
+$id = isset($_GET['id']) ? sanitize_key($_GET['id']) : null;
+$action = isset($_GET['action']) ? sanitize_key($_GET['action']) : null;
 
 $isValidDeleteAction = $action === 'delete-webshop' && is_numeric($id);
 if ($isValidDeleteAction) {
