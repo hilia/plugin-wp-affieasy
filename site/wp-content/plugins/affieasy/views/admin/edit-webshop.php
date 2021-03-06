@@ -80,7 +80,7 @@ $webshopName = $webshop->getName();
 
 ?>
 
-<?php require_once ABSPATH . '/wp-content/plugins/' . $pluginName . '/inc/free-version-message.php'; ?>
+<?php require_once dirname(__DIR__, 3) . '/' . $pluginName . '/inc/free-version-message.php'; ?>
 <div class="wrap">
     <div class="header">
         <h1 class="wp-heading-inline"><?php echo empty($webshopId) ?

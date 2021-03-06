@@ -2,7 +2,7 @@
 
 $pluginName = Utils::get_plugin_name();
 
-require_once ABSPATH . '/wp-content/plugins/' . $pluginName . '/classes/class-webshop-list.php';
+require_once dirname(__DIR__, 3) . '/' . $pluginName . '/classes/class-webshop-list.php';
 
 wp_enqueue_style(
     'list-webshop-style',
@@ -59,7 +59,7 @@ $webshopList = new WebshopList();
 <div class="wrap">
 
     <div class="header">
-        <?php require_once ABSPATH . '/wp-content/plugins/' . $pluginName . '/inc/free-version-message.php'; ?>
+        <?php require_once dirname(__DIR__, 3) . '/' . $pluginName . '/inc/free-version-message.php'; ?>
         <h1 class="wp-heading-inline"><?php esc_html_e('Webshops', 'affieasy'); ?></h1>
 
         <?php if ($canUsePremiumCode || $currentWebshopCount < 2) { ?>

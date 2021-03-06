@@ -2,7 +2,7 @@
 
 $pluginName = Utils::get_plugin_name();
 
-require_once ABSPATH . '/wp-content/plugins/' . $pluginName . '/classes/class-table-list.php';
+require_once dirname(__DIR__, 3) . '/' . $pluginName . '/classes/class-table-list.php';
 
 wp_enqueue_script(
     'list-table-script',
@@ -37,7 +37,7 @@ $tableList = new TableList();
 </div>
 
 <div class="wrap">
-    <?php require_once ABSPATH . '/wp-content/plugins/' . $pluginName . '/inc/free-version-message.php'; ?>
+    <?php require_once dirname(__DIR__, 3) . '/' . $pluginName . '/inc/free-version-message.php'; ?>
     <h1 class="wp-heading-inline"><?php esc_html_e('Tables', 'affieasy'); ?></h1>
 
     <a href="admin.php?page=affieasy-table&action=edit-table" class="page-title-action">

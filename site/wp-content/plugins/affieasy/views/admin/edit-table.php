@@ -143,9 +143,7 @@ $isTableWithRowHeader = in_array($headerType, array('ROW_HEADER', 'BOTH'));
 $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
 ?>
 
-<script src="/wp-content/plugins/<?php echo $pluginName; ?>/js/utils.js"></script>
-
-<?php require_once ABSPATH . '/wp-content/plugins/' . $pluginName . '/inc/free-version-message.php'; ?>
+<?php require_once dirname(__DIR__, 3) . '/' . $pluginName . '/inc/free-version-message.php'; ?>
 <div id="edit-affiliation-link-modal" hidden>
     <?php if ($hasNoWebShop) { ?>
         <p>
