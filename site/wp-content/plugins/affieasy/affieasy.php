@@ -64,24 +64,21 @@ if (function_exists('aff_fs')) {
     require_once 'classes/class-afes-affiliation-table-admin.php';
     $plugin_instance = new affieasy\AFES_AffiliationTableAdmin();
 
-    register_activation_hook(__FILE__, 'AffiliationTableAdmin::initialize_affieasy_plugin');
+    register_activation_hook(__FILE__, array($plugin_instance, 'initialize_affieasy_plugin'));
 
-    if (!function_exists('after_plugins_loaded')) {
-        function after_plugins_loaded()
-        {
-            load_plugin_textdomain('affieasy', FALSE, basename(dirname(__FILE__)) . '/languages/');
-        }
+    function after_plugins_loaded()
+    {
+        load_plugin_textdomain('affieasy', FALSE, basename(dirname(__FILE__)) . '/languages/');
     }
 
     add_action('plugins_loaded', 'after_plugins_loaded');
 
-    if (!function_exists('aff_fs_uninstall_cleanup')) {
-        function aff_fs_uninstall_cleanup() {
-            if (!is_dir(ABSPATH . 'wp-content/plugins/affieasy') || !is_dir(ABSPATH . 'wp-content/plugins/affieasy-premium')) {
-                $staticDbManager = AFES_DbManager::get_instance();
-                $staticDbManager->drop_table(AFES_Constants::TABLE_WEBSHOP);
-                $staticDbManager->drop_table(AFES_Constants::TABLE_TABLE);
-            }
+    function aff_fs_uninstall_cleanup()
+    {
+        if (!is_dir(ABSPATH . 'wp-content/plugins/affieasy') || !is_dir(ABSPATH . 'wp-content/plugins/affieasy-premium')) {
+            $staticDbManager = AFES_DbManager::get_instance();
+            $staticDbManager->drop_table(AFES_Constants::TABLE_WEBSHOP);
+            $staticDbManager->drop_table(AFES_Constants::TABLE_TABLE);
         }
     }
 
