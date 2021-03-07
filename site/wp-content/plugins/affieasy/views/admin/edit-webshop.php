@@ -58,16 +58,16 @@ $isFromSaveAction = $submit === 'save-action';
 if(!$isActionForbidden) {
     if ($isFromSaveAction) {
         if (empty($webshop->getName())) {
-            array_push($errors, __('Name must not be empty', 'affieasy'));
+            array_push($errors, esc_html__('Name must not be empty', 'affieasy'));
         }
 
         $webshopUrl = $webshop->geturl();
         if (empty($webshopUrl)) {
-            array_push($errors, __('Url must not be empty', 'affieasy'));
+            array_push($errors, esc_html__('Url must not be empty', 'affieasy'));
         } else {
             if (!in_array(AFES_Constants::MANDATORY_URL_PARAM, $webshop->getParameters())) {
                 array_push($errors, sprintf(
-                    __('Url must contains at least [[%1$s]] parameter', 'affieasy'),
+                    esc_html__('Url must contains at least [[%1$s]] parameter', 'affieasy'),
                     AFES_Constants::MANDATORY_URL_PARAM));
             }
         }
@@ -89,8 +89,8 @@ $webshopName = $webshop->getName();
 <div class="wrap">
     <div class="header">
         <h1 class="wp-heading-inline"><?php echo empty($webshopId) ?
-                __('Create webshop', 'affieasy') :
-                __('Update webshop', 'affieasy') . ' ' . esc_html($webshopName); ?></h1>
+                esc_html__('Create webshop', 'affieasy') :
+                esc_html__('Update webshop', 'affieasy') . ' ' . esc_html($webshopName); ?></h1>
         <a href="admin.php?page=affieasy-webshop" class="page-title-action">
             <?php esc_html_e('Back to webshop list', 'affieasy'); ?>
         </a>

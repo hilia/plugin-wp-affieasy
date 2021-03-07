@@ -96,7 +96,7 @@ $submit = isset($_POST['submit']) ? sanitize_key($_POST['submit']) : null;
 $isFromSaveAction = $submit === 'save-action';
 if ($isFromSaveAction) {
     if (empty($table->getName())) {
-        array_push($errors, __('Name must not be empty', 'affieasy'));
+        array_push($errors, esc_html__('Name must not be empty', 'affieasy'));
     }
 
     $isNullTableContent = $table->getContent() == null;
@@ -104,17 +104,17 @@ if ($isFromSaveAction) {
     $tableContentSize = $isNullTableContent ? 0 : count($table->getContent());
 
     if ($isTableWithColumnHeader && $tableContentSize < 2 || !$isTableWithColumnHeader && $tableContentSize < 1) {
-        array_push($errors, __('Table must contains at least one row', 'affieasy'));
+        array_push($errors, esc_html__('Table must contains at least one row', 'affieasy'));
     }
 
     $responsiveBreakpoint = $table->getResponsiveBreakpoint();
     if ($responsiveBreakpoint !== '' && (!is_numeric($responsiveBreakpoint) || $responsiveBreakpoint < 0)) {
-        array_push($errors, __('Responsive breakpoint must be a positive number', 'affieasy'));
+        array_push($errors, esc_html__('Responsive breakpoint must be a positive number', 'affieasy'));
     }
 
     $maxWidth = $table->getMaxWidth();
     if ($maxWidth !== '' && (!is_numeric($maxWidth) || $maxWidth < 0)) {
-        array_push($errors, __('Max width must be a positive number', 'affieasy'));
+        array_push($errors, esc_html__('Max width must be a positive number', 'affieasy'));
     }
 
     if (count($errors) == 0) {
@@ -408,8 +408,8 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
 
     <div class="header">
         <h1 class="wp-heading-inline"><?php echo empty($tableId) ?
-                __('Create table', 'affieasy') :
-                __('Update table', 'affieasy') . ' ' . esc_html($tableName); ?></h1>
+                esc_html__('Create table', 'affieasy') :
+                esc_html__('Update table', 'affieasy') . ' ' . esc_html($tableName); ?></h1>
 
         <a href="admin.php?page=affieasy-table" class="page-title-action">
             <?php esc_html_e('Back to table list', 'affieasy'); ?>
@@ -512,8 +512,8 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                             <?php esc_html_e('Max width', 'affieasy'); ?>
                             <span
                                     class="dashicons dashicons-info info"
-                                    title="<?php echo __('Max width in pixels allowed for the table (100% of available space if not filled). ', 'affieasy')
-                                        . ($canUsePremiumCode ? '' : __('Get the premium version to edit this field.', 'affieasy')); ?>">
+                                    title="<?php echo esc_html__('Max width in pixels allowed for the table (100% of available space if not filled). ', 'affieasy')
+                                        . ($canUsePremiumCode ? '' : esc_html__('Get the premium version to edit this field.', 'affieasy')); ?>">
                                 </span>
                         </label>
                     </th>
@@ -534,8 +534,8 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                             <?php esc_html_e('Responsive breakpoint', 'affieasy'); ?>
                             <span
                                     class="dashicons dashicons-info info"
-                                    title="<?php echo __('Resolution in pixels below which the table take its responsive form. ', 'affieasy')
-                                    . ($canUsePremiumCode ? '' : __('Get the premium version to edit this field.', 'affieasy')); ?>">
+                                    title="<?php echo esc_html__('Resolution in pixels below which the table take its responsive form. ', 'affieasy')
+                                    . ($canUsePremiumCode ? '' : esc_html__('Get the premium version to edit this field.', 'affieasy')); ?>">
                             </span>
                         </label>
                     </th>
@@ -558,7 +558,7 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                         <?php if (!$canUsePremiumCode) { ?>
                             <span
                                     class="dashicons dashicons-info info"
-                                    title="<?php echo __('Get the premium version to edit this field.', 'affieasy'); ?>">
+                                    title="<?php echo esc_html__('Get the premium version to edit this field.', 'affieasy'); ?>">
                             </span>
                         <?php } ?>
                     </th>
@@ -850,7 +850,7 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                         type="button"
                         id="add-affiliation-row"
                         class="button-primary add-row-popover-button <?php echo $hasNoWebShop ? 'disabled' : '' ?>"
-                    <?php echo $hasNoWebShop ? 'title="' . __("Add webshop to use this functionnality.", "affieasy") . '" disabled' : ''; ?>>
+                    <?php echo $hasNoWebShop ? 'title="' . esc_html__("Add webshop to use this functionnality.", "affieasy") . '" disabled' : ''; ?>>
                     <?php esc_html_e('Affiliate links', 'affieasy'); ?>
                     <?php if ($hasNoWebShop) { ?>
                         <span class="dashicons dashicons-info dashicons-button-disabled"></span>

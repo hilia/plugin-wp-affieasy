@@ -57,8 +57,8 @@ class AFES_AffiliationTableAdmin
 
         add_submenu_page(
             'affieasy-table',
-            __('Tables', 'affieasy'),
-            __('Tables', 'affieasy'),
+            esc_html__('Tables', 'affieasy'),
+            esc_html__('Tables', 'affieasy'),
             'manage_options',
             'affieasy-table',
             array($this, 'display_table_views')
@@ -66,8 +66,8 @@ class AFES_AffiliationTableAdmin
 
         add_submenu_page(
             'affieasy-table',
-            __('Webshops', 'affieasy'),
-            __('Webshops', 'affieasy'),
+            esc_html__('Webshops', 'affieasy'),
+            esc_html__('Webshops', 'affieasy'),
             'manage_options',
             'affieasy-webshop',
             array($this, 'display_webshop_views')

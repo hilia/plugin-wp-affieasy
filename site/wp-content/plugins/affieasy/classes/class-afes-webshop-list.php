@@ -29,8 +29,8 @@ class AFES_WebshopList extends WP_List_Table
     function get_columns()
     {
         return [
-            'id' => __('Id', 'affieasy'),
-            'name' => __('Name', 'affieasy')
+            'id' => esc_html__('Id', 'affieasy'),
+            'name' => esc_html__('Name', 'affieasy')
         ];
     }
 
@@ -41,8 +41,8 @@ class AFES_WebshopList extends WP_List_Table
         return sprintf('%1$s %2$s',
             $item['id'],
             $this->row_actions(array(
-                'edit' => sprintf('<a href="admin.php?page=affieasy-webshop&action=edit-webshop&id=' . $id . '">' . __('Edit', 'affieasy') . '</a>'),
-                'delete' => sprintf('<a href="#" class="delete-link" data-id="' . $id . '">' . __('Delete', 'affieasy') . '</a>')
+                'edit' => sprintf('<a href="admin.php?page=affieasy-webshop&action=edit-webshop&id=' . $id . '">' . esc_html__('Edit', 'affieasy') . '</a>'),
+                'delete' => sprintf('<a href="#" class="delete-link" data-id="' . $id . '">' . esc_html__('Delete', 'affieasy') . '</a>')
             ))
         );
     }
