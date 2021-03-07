@@ -72,14 +72,15 @@ class AFES_Utils
             foreach($link as $key => $value) {
                 $key = sanitize_text_field($key);
 
-                if ($key === 'url') {
+                if ($key === 'id') {
+                    $value = intval(sanitize_text_field($value));
+                } else if ($key === 'url') {
                     $value = esc_url_raw($value);
                 } else if (in_array($key, array('color', 'background'))) {
                     $value = sanitize_hex_color($value);
                 } else {
                     $value = sanitize_text_field($value);
                 }
-                $value = $key === 'url' ? esc_url_raw($value) : sanitize_text_field($value);
 
                 $sanitizedLink[$key] = $value;
             }
