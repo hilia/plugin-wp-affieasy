@@ -1,29 +1,31 @@
 <?php
 
-require_once 'class-webshop.php';
-require_once 'class-table.php';
-require_once 'class-db-manager.php';
-require_once 'class-utils.php';
-require_once 'class-generation-utils.php';
-require_once dirname(__DIR__) . '/constants.php';
+namespace affieasy;
 
-class AffiliationTableAdmin
+require_once 'class-afes-webshop.php';
+require_once 'class-afes-table.php';
+require_once 'class-afes-db-manager.php';
+require_once 'class-afes-utils.php';
+require_once 'class-afes-generation-utils.php';
+require_once dirname(__DIR__) . '/afes-constants.php';
+
+class AFES_AffiliationTableAdmin
 {
     private $dbManager;
 
     function __construct()
     {
-        $this->dbManager = new DbManager();
+        $this->dbManager = new AFES_DbManager();
 
         add_action('admin_menu', array($this, 'add_menus_page_affiliation_table'));
 
-        add_shortcode(Constants::TABLE_TAG, array($this, 'affieasy_table_content_callback'));
+        add_shortcode(AFES_Constants::TABLE_TAG, array($this, 'affieasy_table_content_callback'));
 
         add_action('wp_enqueue_scripts', function () {
             wp_enqueue_style('dashicons');
             wp_enqueue_style(
                 'rendering-style',
-                plugins_url('/' . Utils::get_plugin_name() . '/css/rendering.css'),
+                plugins_url('/' . AFES_Utils::get_plugin_name() . '/css/rendering.css'),
                 array(),
                 time());
         });
@@ -31,12 +33,12 @@ class AffiliationTableAdmin
 
     public static function initialize_affieasy_plugin()
     {
-        $staticDbManager = DbManager::get_instance();
-        if (!$staticDbManager->table_exists(Constants::TABLE_WEBSHOP)) {
+        $staticDbManager = AFES_DbManager::get_instance();
+        if (!$staticDbManager->table_exists(AFES_Constants::TABLE_WEBSHOP)) {
             $staticDbManager->create_table_webshop();
         }
 
-        if (!$staticDbManager->table_exists(Constants::TABLE_TABLE)) {
+        if (!$staticDbManager->table_exists(AFES_Constants::TABLE_TABLE)) {
             $staticDbManager->create_table_table();
         }
     }
@@ -112,7 +114,7 @@ class AffiliationTableAdmin
         if ($table->getId() == null) { ?>
             <h6><?php esc_html_e('Table not found.', 'affieasy'); ?></h6>
         <?php } else {
-            GenerationUtils::generate_table($table);
+            AFES_GenerationUtils::generate_table($table);
         }
 
         return ob_get_clean();

@@ -1,6 +1,12 @@
 <?php
 
-$pluginName = Utils::get_plugin_name();
+use affieasy\AFES_DbManager;
+use affieasy\AFES_GenerationUtils;
+use affieasy\AFES_Table;
+use affieasy\AFES_Utils;
+use affieasy\AFES_Constants;
+
+$pluginName = AFES_Utils::get_plugin_name();
 
 wp_enqueue_style(
     'edit-table-style',
@@ -70,19 +76,19 @@ wp_localize_script( 'edit-table-script', 'translations', array(
 
 wp_enqueue_media();
 
-$table = new Table(
+$table = new AFES_Table(
     isset($_POST['id']) ? sanitize_key($_POST['id']) : null,
     isset($_POST['name']) ? sanitize_text_field($_POST['name']) : null,
     isset($_POST['header-type']) ? sanitize_text_field($_POST['header-type']) : null,
-    isset($_POST['header-options']) ? Utils::sanitize_header_options($_POST['header-options']) : null,
-    isset($_POST['content']) ? Utils::sanitize_content($_POST['content']) : null,
+    isset($_POST['header-options']) ? AFES_Utils::sanitize_header_options($_POST['header-options']) : null,
+    isset($_POST['content']) ? AFES_Utils::sanitize_content($_POST['content']) : null,
     isset($_POST['responsive-breakpoint']) ? sanitize_key($_POST['responsive-breakpoint']) : null,
     isset($_POST['max-width']) ? sanitize_key($_POST['max-width']) : null,
     isset($_POST['background-color']) ? sanitize_hex_color($_POST['background-color']) : null
 );
 
 $errors = array();
-$dbManager = new DbManager();
+$dbManager = new AFES_DbManager();
 $webshops = $dbManager->get_webshop_list();
 $hasNoWebShop = empty($webshops);
 
@@ -291,7 +297,7 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                 </th>
                 <td>
                     <select id="header-column-font-weight">
-                        <?php foreach (Constants::HEADER_FONT_WEIGHTS as $fontWeight) { ?>
+                        <?php foreach (AFES_Constants::HEADER_FONT_WEIGHTS as $fontWeight) { ?>
                             <option
                                     value="<?php echo esc_attr($fontWeight); ?>"
                                 <?php echo $headerOptions->{'column-font-weight'} == $fontWeight ? 'selected' : ''; ?>>
@@ -364,7 +370,7 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                 </th>
                 <td>
                     <select id="header-row-font-weight">
-                        <?php foreach (Constants::HEADER_FONT_WEIGHTS as $fontWeight) { ?>
+                        <?php foreach (AFES_Constants::HEADER_FONT_WEIGHTS as $fontWeight) { ?>
                             <option
                                     value="<?php echo esc_attr($fontWeight); ?>"
                                 <?php echo $headerOptions->{'row-font-weight'} == $fontWeight ? 'selected' : ''; ?>>
@@ -489,7 +495,7 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                     </th>
                     <td>
                         <select id="header-type" name="header-type" class="general-input">
-                            <?php foreach (Constants::HEADERS_TYPES as $key => $value) { ?>
+                            <?php foreach (AFES_Constants::HEADERS_TYPES as $key => $value) { ?>
                                 <option value="<?php echo $key ?>">
                                     <?php esc_html_e($value, 'affieasy'); ?>
                                 </option>
@@ -699,13 +705,12 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                         </td>
                         <?php for ($j = $isTableWithRowHeader ? 1 : 0; $j < count($row); $j++) {
                             $cellType = $row[$j]->type;
-                            $cellValue = $cellType == Constants::AFFILIATION ?
+                            $cellValue = $cellType == AFES_Constants::AFFILIATION ?
                                 $row[$j]->value :
                                 str_replace('&amp;NewLine;', '&NewLine;', $row[$j]->value);
-                            ;
 
                             $colId = $isTableWithRowHeader ? $j : $j + 1;
-                            if ($cellType == Constants::HTML) { ?>
+                            if ($cellType == AFES_Constants::HTML) { ?>
                                 <td
                                         id="cell-<?php echo $cellId; ?>"
                                         class="table-content-cell-html"
@@ -715,7 +720,7 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                                             maxLength="2048"
                                             class="table-content-cell-html-content"><?php echo $cellValue; ?></textarea>
                                 </td>
-                            <?php } else if ($cellType == Constants::IMAGE) { ?>
+                            <?php } else if ($cellType == AFES_Constants::IMAGE) { ?>
                                 <td
                                         id="cell-<?php echo $cellId; ?>"
                                         class="table-content-cell-image"
@@ -749,7 +754,7 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                                             substr($cellValue, 0, -1) . " class='table-content-cell-image-overview-content'>"; ?>
                                     </div>
                                 </td>
-                            <?php } else if ($cellType == Constants::AFFILIATION) {
+                            <?php } else if ($cellType == AFES_Constants::AFFILIATION) {
                                 $affiliateLinks = json_decode(str_replace("&quot;", '"', $cellValue));
                                 ?>
                                 <td
@@ -773,7 +778,7 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                                             <button
                                                     type="button"
                                                     class="affiliation-table-affiliate-link cell-content-link-list-button"
-                                                <?php echo GenerationUtils::get_affiliate_link_style($affiliateLink); ?>
+                                                <?php echo AFES_GenerationUtils::get_affiliate_link_style($affiliateLink); ?>
                                                     title="<?php esc_html_e('Edit affiliate link', 'affieasy'); ?>"
                                                     data-cell-id="<?php echo $cellId; ?>"
                                                     data-id="<?php echo $affiliateLink->id; ?>">

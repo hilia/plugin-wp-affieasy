@@ -1,8 +1,12 @@
 <?php
 
+namespace affieasy;
+
+use WP_List_Table;
+
 require_once ABSPATH . 'wp-admin/includes/class-wp-list-table.php';
 
-class TableList extends WP_List_Table
+class AFES_TableList extends WP_List_Table
 {
     private $dbManager;
 
@@ -14,7 +18,7 @@ class TableList extends WP_List_Table
             'ajax' => false,
         ]);
 
-        $this->dbManager = new DbManager();
+        $this->dbManager = new AFES_DbManager();
     }
 
     public function no_items()
@@ -50,8 +54,8 @@ class TableList extends WP_List_Table
 
     public function prepare_items()
     {
-        $per_page = Constants::ITEMS_PER_PAGE;
-        $total_items = $this->dbManager->get_table_count(Constants::TABLE_TABLE);
+        $per_page = AFES_Constants::ITEMS_PER_PAGE;
+        $total_items = $this->dbManager->get_table_count(AFES_Constants::TABLE_TABLE);
         $data = $this->dbManager->get_table_page($this->get_pagenum(), $per_page);
 
         $this->items = $data;

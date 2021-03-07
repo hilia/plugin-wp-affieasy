@@ -1,6 +1,11 @@
 <?php
 
-$pluginName = Utils::get_plugin_name();
+use affieasy\AFES_DbManager;
+use affieasy\AFES_Utils;
+use affieasy\AFES_Webshop;
+use affieasy\AFES_Constants;
+
+$pluginName = AFES_Utils::get_plugin_name();
 
 wp_enqueue_style(
     'edit-table-style',
@@ -23,7 +28,7 @@ wp_enqueue_script(
     time()
 );
 
-$dbManager = new DbManager();
+$dbManager = new AFES_DbManager();
 
 $id = isset($_GET['id']) ? sanitize_key($_GET['id']) : null;
 
@@ -34,10 +39,10 @@ if (aff_fs()->is__premium_only()) {
     }
 }
 
-$isActionForbidden = !$canUsePremiumCode && $id === null && $dbManager->get_table_count(Constants::TABLE_WEBSHOP) >= 2;
+$isActionForbidden = !$canUsePremiumCode && $id === null && $dbManager->get_table_count(AFES_Constants::TABLE_WEBSHOP) >= 2;
 
-$webshop = $isActionForbidden ? new Webshop() : new Webshop(
-    $id,
+$webshop = $isActionForbidden ? new AFES_Webshop() : new AFES_Webshop(
+    isset($_POST['id']) ? sanitize_text_field($_POST['id']) : null,
     isset($_POST['name']) ? sanitize_text_field($_POST['name']) : null,
     isset($_POST['url']) ? sanitize_text_field($_POST['url']) : null,
     isset($_POST['link-text-preference']) ? sanitize_text_field($_POST['link-text-preference']) : null,
@@ -60,10 +65,10 @@ if(!$isActionForbidden) {
         if (empty($webshopUrl)) {
             array_push($errors, __('Url must not be empty', 'affieasy'));
         } else {
-            if (!in_array(Constants::MANDATORY_URL_PARAM, $webshop->getParameters())) {
+            if (!in_array(AFES_Constants::MANDATORY_URL_PARAM, $webshop->getParameters())) {
                 array_push($errors, sprintf(
                     __('Url must contains at least [[%1$s]] parameter', 'affieasy'),
-                    Constants::MANDATORY_URL_PARAM));
+                    AFES_Constants::MANDATORY_URL_PARAM));
             }
         }
 

@@ -1,8 +1,12 @@
 <?php
 
-$pluginName = Utils::get_plugin_name();
+use affieasy\AFES_DbManager;
+use affieasy\AFES_TableList;
+use affieasy\AFES_Utils;
 
-require_once dirname(__DIR__, 3) . '/' . $pluginName . '/classes/class-table-list.php';
+$pluginName = AFES_Utils::get_plugin_name();
+
+require_once dirname(__DIR__, 3) . '/' . $pluginName . '/classes/class-afes-table-list.php';
 
 wp_enqueue_script(
     'list-table-script',
@@ -23,11 +27,11 @@ $action = isset($_GET['action']) ?  sanitize_key($_GET['action']) : null;
 
 $isValidDeleteAction = $action === 'delete-table' && is_numeric($id);
 if ($isValidDeleteAction) {
-    $dbManager = new DbManager();
+    $dbManager = new AFES_DbManager();
     $dbManager->delete_table($id);
 }
 
-$tableList = new TableList();
+$tableList = new AFES_TableList();
 ?>
 
 <div id="dialog-confirm-delete" title="<?php esc_html_e('Confirmation', 'affieasy'); ?>" hidden>

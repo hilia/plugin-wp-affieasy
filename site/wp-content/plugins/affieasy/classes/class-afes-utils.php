@@ -1,6 +1,10 @@
 <?php
 
-class Utils
+namespace affieasy;
+
+use stdClass;
+
+class AFES_Utils
 {
     static function get_plugin_name()
     {
@@ -31,8 +35,8 @@ class Utils
                 $type = isset($cellContent->type) ? sanitize_text_field($cellContent->type) : null;
                 $value = isset($cellContent->value) ? $cellContent->value : null;
                 if (isset($value)) {
-                    if ($type === Constants::AFFILIATION) {
-                        $value = Utils::sanitize_links(json_decode(
+                    if ($type === AFES_Constants::AFFILIATION) {
+                        $value = AFES_Utils::sanitize_links(json_decode(
                             str_replace("\\", "",
                                 str_replace('\\\\\\"', "&quot;",
                                     str_replace('\\\\\\\\\\\\\\"', '',
