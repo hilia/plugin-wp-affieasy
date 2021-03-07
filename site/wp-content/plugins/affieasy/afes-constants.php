@@ -1,6 +1,8 @@
 <?php
 
-class Constants {
+namespace affieasy;
+
+class AFES_Constants {
     const TABLE_WEBSHOP = 'wp_affieasy_webshop';
     const TABLE_TABLE = 'wp_affieasy_table';
 

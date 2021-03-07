@@ -1,6 +1,8 @@
 <?php
 
-class DbManager
+namespace affieasy;
+
+class AFES_DbManager
 {
     private $db;
 
@@ -11,7 +13,7 @@ class DbManager
     }
 
     public static function get_instance() {
-        return new DbManager();
+        return new AFES_DbManager();
     }
 
     /****************************** General functions ******************************/
@@ -37,7 +39,7 @@ class DbManager
     {
         require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
 
-        dbDelta(" CREATE TABLE " . Constants::TABLE_WEBSHOP . " (
+        dbDelta(" CREATE TABLE " . AFES_Constants::TABLE_WEBSHOP . " (
 			    id INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT,
 				name VARCHAR(255) NOT NULL,
 				url TEXT NOT NULL,
@@ -50,7 +52,7 @@ class DbManager
     public function get_webshop_list()
     {
         return array_map(function ($webshop) {
-            return new Webshop(
+            return new AFES_Webshop(
                 intval($webshop['id']),
                 $webshop['name'],
                 $webshop['url'],
@@ -58,13 +60,13 @@ class DbManager
                 $webshop['backgroundColorPreference'],
                 $webshop['textColorPreference']
             );
-        }, $this->db->get_results('SELECT * FROM ' . Constants::TABLE_WEBSHOP, ARRAY_A));
+        }, $this->db->get_results('SELECT * FROM ' . AFES_Constants::TABLE_WEBSHOP, ARRAY_A));
     }
 
     public function get_webshop_page($currentPage, $perPage)
     {
         $sql = $this->db->prepare(
-            "SELECT id, name FROM " . Constants::TABLE_WEBSHOP . " ORDER BY id DESC LIMIT %d, %d",
+            "SELECT id, name FROM " . AFES_Constants::TABLE_WEBSHOP . " ORDER BY id DESC LIMIT %d, %d",
             array((($currentPage - 1) * $perPage), $perPage));
 
         return $this->db->get_results($sql, ARRAY_A);
@@ -72,10 +74,10 @@ class DbManager
 
     public function get_webshop_by_id($id)
     {
-        $sql = $this->db->prepare("SELECT * FROM " . Constants::TABLE_WEBSHOP . " WHERE id=%d", array($id));
+        $sql = $this->db->prepare("SELECT * FROM " . AFES_Constants::TABLE_WEBSHOP . " WHERE id=%d", array($id));
         $webshop = $this->db->get_row($sql);
 
-        return new Webshop(
+        return new AFES_Webshop(
             $webshop->id,
             $webshop->name,
             $webshop->url,
@@ -98,8 +100,8 @@ class DbManager
             }
         }
 
-        if (!$canUsePremiumCode && $webshopId === null && $this->get_table_count(Constants::TABLE_WEBSHOP) >= 2) {
-            return new Webshop();
+        if (!$canUsePremiumCode && $webshopId === null && $this->get_table_count(AFES_Constants::TABLE_WEBSHOP) >= 2) {
+            return new AFES_Webshop();
         }
 
         $values = array(
@@ -110,11 +112,11 @@ class DbManager
             "textColorPreference" => $webshop->getTextColorPreference());
 
         if (empty($webshopId)) {
-            $this->db->insert(Constants::TABLE_WEBSHOP, $values);
+            $this->db->insert(AFES_Constants::TABLE_WEBSHOP, $values);
 
             $webshopId = $this->db->insert_id;
         } else {
-            $this->db->update(Constants::TABLE_WEBSHOP, $values, array("id" => $webshopId));
+            $this->db->update(AFES_Constants::TABLE_WEBSHOP, $values, array("id" => $webshopId));
         }
 
         return $this->get_webshop_by_id($webshopId);
@@ -122,7 +124,7 @@ class DbManager
 
     public function delete_webshop($id)
     {
-        $this->db->delete(Constants::TABLE_WEBSHOP, array('id' => $id));
+        $this->db->delete(AFES_Constants::TABLE_WEBSHOP, array('id' => $id));
         $this->remove_affiliate_links_in_table_by_webshop_id($id);
     }
 
@@ -132,7 +134,7 @@ class DbManager
     {
         require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
 
-        dbDelta("CREATE TABLE " . Constants::TABLE_TABLE . " (
+        dbDelta("CREATE TABLE " . AFES_Constants::TABLE_TABLE . " (
 			    id INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT,
 				name VARCHAR(255) NOT NULL,
 				headerType ENUM('COLUMN_HEADER', 'ROW_HEADER', 'BOTH', 'NONE') NOT NULL DEFAULT 'COLUMN_HEADER',
@@ -147,7 +149,7 @@ class DbManager
     public function get_table_list()
     {
         return array_map(function ($table) {
-            return new Table(
+            return new AFES_Table(
                 intval($table['id']),
                 $table['name'],
                 $table['headerType'],
@@ -157,13 +159,13 @@ class DbManager
                 $table['maxWidth'],
                 $table['backgroundColor']
             );
-        }, $this->db->get_results('SELECT * FROM ' . Constants::TABLE_TABLE, ARRAY_A));
+        }, $this->db->get_results('SELECT * FROM ' . AFES_Constants::TABLE_TABLE, ARRAY_A));
     }
 
     public function get_table_page($currentPage, $perPage)
     {
         $sql = $this->db->prepare(
-            "SELECT id, name FROM " . Constants::TABLE_TABLE . " ORDER BY id DESC LIMIT %d, %d",
+            "SELECT id, name FROM " . AFES_Constants::TABLE_TABLE . " ORDER BY id DESC LIMIT %d, %d",
             array((($currentPage - 1) * $perPage), $perPage));
 
         return $this->db->get_results($sql, ARRAY_A);
@@ -171,10 +173,10 @@ class DbManager
 
     public function get_table_by_id($id)
     {
-        $sql = $this->db->prepare("SELECT * FROM " . Constants::TABLE_TABLE . " WHERE id=%d", array($id));
+        $sql = $this->db->prepare("SELECT * FROM " . AFES_Constants::TABLE_TABLE . " WHERE id=%d", array($id));
         $table = $this->db->get_row($sql);
 
-        return isset($table->id) ? new Table(
+        return isset($table->id) ? new AFES_Table(
             $table->id,
             $table->name,
             $table->headerType,
@@ -183,35 +185,25 @@ class DbManager
             $table->responsiveBreakpoint,
             $table->maxWidth,
             $table->backgroundColor
-        ) : new Table();
+        ) : new AFES_Table();
     }
 
-    public function edit_table($table, $isUpdateFromWebshopEdition)
+    public function edit_table($table)
     {
         require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
 
         $tableId = $table->getId();
-
         $responsiveBreakpoint = $table->getResponsiveBreakpoint();
         $maxWidth = $table->getMaxWidth();
         $backgroundColor = $table->getBackgroundColor();
         $values = array(
             "name" => $table->getName(),
             "headerType" => $table->getHeaderType(),
-            "headerOptions" => $isUpdateFromWebshopEdition ?
-                json_encode($table->getHeaderOptions()) :
-                str_replace('\\', '', $table->getHeaderOptions()),
-            "content" => json_encode($isUpdateFromWebshopEdition ? $table->getContent() : array_map(function ($row) {
-                return array_map(function ($cell) {
-                    return json_decode(
-                        str_replace("\\", "",
-                            str_replace('\\\\\\"', "&quot;",
-                                str_replace('\\n', '&NewLine;', $cell))));
-                }, $row);
-            }, $table->getContent())),
+            "headerOptions" => json_encode($table->getHeaderOptions()),
+            "content" => json_encode($table->getContent()),
             "maxWidth" => null,
-            "responsiveBreakpoint" => Table::$defaultResponsiveBreakpoint,
-            "backgroundColor" => Table::$defaultBackgroundColor);
+            "responsiveBreakpoint" => AFES_Table::$defaultResponsiveBreakpoint,
+            "backgroundColor" => AFES_Table::$defaultBackgroundColor);
 
         if (aff_fs()->is__premium_only()) {
             if (aff_fs()->can_use_premium_code()) {
@@ -222,11 +214,11 @@ class DbManager
         }
 
         if (empty($tableId)) {
-            $this->db->insert(Constants::TABLE_TABLE, $values);
+            $this->db->insert(AFES_Constants::TABLE_TABLE, $values);
 
             $tableId = $this->db->insert_id;
         } else {
-            $this->db->update(Constants::TABLE_TABLE, $values, array("id" => $tableId));
+            $this->db->update(AFES_Constants::TABLE_TABLE, $values, array("id" => $tableId));
         }
 
         return $this->get_table_by_id($tableId);
@@ -234,7 +226,7 @@ class DbManager
 
     public function delete_table($id)
     {
-        $this->db->delete(Constants::TABLE_TABLE, array('id' => $id));
+        $this->db->delete(AFES_Constants::TABLE_TABLE, array('id' => $id));
     }
 
     private function remove_affiliate_links_in_table_by_webshop_id($id)
@@ -248,7 +240,7 @@ class DbManager
                 $isFirst = true;
 
                 foreach ($rows as $cell) {
-                    if ($cell->type === Constants::AFFILIATION && (!in_array($table->getHeaderType(), array('ROW_HEADER', 'BOTH')) || !$isFirst)) {
+                    if ($cell->type === AFES_Constants::AFFILIATION && (!in_array($table->getHeaderType(), array('ROW_HEADER', 'BOTH')) || !$isFirst)) {
                         $affiliateLinks = array();
 
                         foreach (json_decode(str_replace("&quot;", '"', $cell->value)) as $affiliateLink) {
@@ -272,7 +264,7 @@ class DbManager
 
             if ($shouldUpdate) {
                 $table->setContent($updatedContent);
-                $this->edit_table($table, true);
+                $this->edit_table($table);
             }
         }
     }

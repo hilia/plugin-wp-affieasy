@@ -1,6 +1,8 @@
 <?php
 
-class GenerationUtils
+namespace affieasy;
+
+class AFES_GenerationUtils
 {
     // extract background color and color from affiliate link if parameters exists and return style="color:.." or empty
     static function get_affiliate_link_style($affiliateLink)
@@ -28,11 +30,11 @@ class GenerationUtils
         $columnCount = count($table->getContent()[0]) + ($isTableWithBothHeader ? 1 : 0);
 
         $columnHeaderStyle = $isTableWithColumnHeader ?
-            GenerationUtils::get_header_style(Constants::COLUMN, $table->getHeaderOptions()) :
+            AFES_GenerationUtils::get_header_style(AFES_Constants::COLUMN, $table->getHeaderOptions()) :
             null;
 
         $rowHeaderStyle = $isTableWithRowHeader ?
-            GenerationUtils::get_header_style(Constants::ROW, $table->getHeaderOptions()) :
+            AFES_GenerationUtils::get_header_style(AFES_Constants::ROW, $table->getHeaderOptions()) :
             null;
 
         $responsiveBreakpoint = $table->getResponsiveBreakpoint();
@@ -52,7 +54,7 @@ class GenerationUtils
                 }
             </style>
         <?php }
-        GenerationUtils::generate_main_table(
+        AFES_GenerationUtils::generate_main_table(
             $table,
             $isTableWithBothHeader,
             $isTableWithRowHeader,
@@ -61,7 +63,7 @@ class GenerationUtils
             $rowHeaderStyle,
             $columnCount);
         if ($isResponsiveTable) {
-            GenerationUtils::generate_responsive_table($table, $columnHeaderStyle, $rowHeaderStyle);
+            AFES_GenerationUtils::generate_responsive_table($table, $columnHeaderStyle, $rowHeaderStyle);
         }
     }
 
@@ -77,7 +79,7 @@ class GenerationUtils
         <div
                 id="affieasy-table-<?php echo $table->getId(); ?>"
                 class="affieasy-table"
-            <?php echo GenerationUtils::get_table_style($table->getMaxWidth(), $columnCount); ?>>
+            <?php echo AFES_GenerationUtils::get_table_style($table->getMaxWidth(), $columnCount); ?>>
             <?php if ($isTableWithBothHeader) { ?>
                 <div class="affieasy-table-cell" <?php echo $columnHeaderStyle; ?>></div>
             <?php } ?>
@@ -90,13 +92,13 @@ class GenerationUtils
                 for ($j = 0; $j < count($rowContent); $j++) {
                     $cellContent = $rowContent[$j];
                     $cellType = isset($cellContent->type) ? $cellContent->type : null;
-                    $cellValue = isset($cellContent->value) ? str_replace('&quot;', '"', $cellContent->value) : null;
+                    $cellValue = isset($cellContent->value) ? AFES_GenerationUtils::format_html_content($cellContent->value) : null;
 
-                    if ($cellType === Constants::AFFILIATION && ($j !== 0 || !$isTableWithRowHeader)) {
-                        GenerationUtils::generate_affiliate_links_cell_content($cellValue, GenerationUtils::get_background_color_style_or_empty($backgroundColor), false);
+                    if ($cellType === AFES_Constants::AFFILIATION && ($j !== 0 || !$isTableWithRowHeader)) {
+                        AFES_GenerationUtils::generate_affiliate_links_cell_content($cellValue, AFES_GenerationUtils::get_background_color_style_or_empty($backgroundColor), false);
                         ?>
                     <?php } else { ?>
-                        <div class="affieasy-table-cell" <?php echo GenerationUtils::get_style_to_apply(
+                        <div class="affieasy-table-cell" <?php echo AFES_GenerationUtils::get_style_to_apply(
                             $i,
                             $j,
                             $backgroundColor,
@@ -104,7 +106,7 @@ class GenerationUtils
                             $isTableWithRowHeader,
                             $columnHeaderStyle,
                             $rowHeaderStyle) ?>>
-                            <?php echo $cellValue; ?>
+                            <?php echo str_replace('&amp;NewLine;', '', $cellValue); ?>
                         </div>
                     <?php }
                 }
@@ -116,13 +118,13 @@ class GenerationUtils
     {
         switch ($table->getHeaderType()) {
             case 'ROW_HEADER':
-                GenerationUtils::generate_responsive_table_row($table, $rowHeaderStyle);
+                AFES_GenerationUtils::generate_responsive_table_row($table, $rowHeaderStyle);
                 break;
             case 'BOTH':
-                GenerationUtils::generate_responsive_table_both($table, $columnHeaderStyle, $rowHeaderStyle);
+                AFES_GenerationUtils::generate_responsive_table_both($table, $columnHeaderStyle, $rowHeaderStyle);
                 break;
             default :
-                GenerationUtils::generate_responsive_table_column_or_none($table, $columnHeaderStyle);
+                AFES_GenerationUtils::generate_responsive_table_column_or_none($table, $columnHeaderStyle);
                 break;
         }
     }
@@ -135,20 +137,20 @@ class GenerationUtils
             <?php for ($i = 1; $i < count($tableContent[0]); $i++) {
                 for ($j = 0; $j < count($tableContent); $j++) { ?>
                     <div class="affieasy-table-cell affieasy-table-responsive-both-row-header" <?php echo $rowHeaderStyle; ?>>
-                        <?php echo str_replace('&quot;', '"', $tableContent[$j][0]->value); ?>
+                        <?php echo AFES_GenerationUtils::format_html_content($tableContent[$j][0]->value); ?>
                     </div>
 
                     <?php
                     $cellContent = $tableContent[$j][$i];
                     $cellType = isset($cellContent->type) ? $cellContent->type : null;
-                    $cellValue = isset($cellContent->value) ? str_replace('&quot;', '"', $cellContent->value) : null;
-                    $backgroundColor = GenerationUtils::get_background_color_style_or_empty($table->getBackgroundColor());
+                    $cellValue = isset($cellContent->value) ? AFES_GenerationUtils::format_html_content($cellContent->value) : null;
+                    $backgroundColor = AFES_GenerationUtils::get_background_color_style_or_empty($table->getBackgroundColor());
 
-                    if ($cellType === Constants::AFFILIATION) {
-                        GenerationUtils::generate_affiliate_links_cell_content($cellValue, $backgroundColor, true);
+                    if ($cellType === AFES_Constants::AFFILIATION) {
+                        AFES_GenerationUtils::generate_affiliate_links_cell_content($cellValue, $backgroundColor, true);
                     } else { ?>
                         <div class="affieasy-table-cell affieasy-table-responsive-both-row-content" <?php echo $backgroundColor; ?>>
-                            <?php echo str_replace('&quot;', '"', $tableContent[$j][$i]->value); ?>
+                            <?php echo $cellValue ?>
                         </div>
                     <?php }
                 }
@@ -164,27 +166,27 @@ class GenerationUtils
         <div id="affieasy-table-responsive-<?php echo $table->getId(); ?>" class="affieasy-table-responsive-both">
             <?php for ($i = 1; $i < count($tableContent[1]); $i++) { ?>
                 <div class="affieasy-table-cell affieasy-table-responsive-both-title" <?php echo $columnHeaderStyle; ?>>
-                    <?php echo str_replace('&quot;', '"', $tableContent[0][$i - 1]->value); ?>
+                    <?php echo AFES_GenerationUtils::format_html_content($tableContent[0][$i - 1]->value); ?>
                 </div>
 
                 <?php for ($j = 1; $j < count($tableContent); $j++) { ?>
                     <div class="affieasy-table-cell affieasy-table-responsive-both-row-header" <?php echo $rowHeaderStyle; ?>>
-                        <?php echo str_replace('&quot;', '"', $tableContent[$j][0]->value); ?>
+                        <?php echo AFES_GenerationUtils::format_html_content($tableContent[$j][0]->value); ?>
                     </div>
 
                     <?php
                     $cellContent = $tableContent[$j][$i];
                     $cellType = isset($cellContent->type) ? $cellContent->type : null;
-                    $cellValue = isset($cellContent->value) ? str_replace('&quot;', '"', $cellContent->value) : null;
-                    $backgroundColor = GenerationUtils::get_background_color_style_or_empty($table->getBackgroundColor());
+                    $cellValue = isset($cellContent->value) ? AFES_GenerationUtils::format_html_content($cellContent->value) : null;
+                    $backgroundColor = AFES_GenerationUtils::get_background_color_style_or_empty($table->getBackgroundColor());
 
-                    if ($cellType === Constants::AFFILIATION) {
-                        GenerationUtils::generate_affiliate_links_cell_content($cellValue, $backgroundColor, true);
+                    if ($cellType === AFES_Constants::AFFILIATION) {
+                        AFES_GenerationUtils::generate_affiliate_links_cell_content($cellValue, $backgroundColor, true);
                     } else { ?>
                         <div
                                 class="affieasy-table-cell affieasy-table-responsive-both-row-content"
-                            <?php echo GenerationUtils::get_background_color_style_or_empty($table->getBackgroundColor()); ?>>
-                            <?php echo str_replace('&quot;', '"', $tableContent[$j][$i]->value); ?>
+                            <?php echo AFES_GenerationUtils::get_background_color_style_or_empty($table->getBackgroundColor()); ?>>
+                            <?php echo $cellValue; ?>
                         </div>
                     <?php } ?>
                 <?php }
@@ -203,22 +205,22 @@ class GenerationUtils
             <?php for ($i = 0; $i < count($tableContent[0]); $i++) {
                 if ($isColumnTable) { ?>
                     <div class="affieasy-table-cell" <?php echo $columnHeaderStyle; ?>>
-                        <?php echo str_replace('&quot;', '"', $tableContent[0][$i]->value); ?>
+                        <?php echo AFES_GenerationUtils::format_html_content($tableContent[0][$i]->value); ?>
                     </div>
                 <?php }
 
                 for ($j = ($isColumnTable ? 1 : 0); $j < count($tableContent); $j++) {
                     $cellContent = $tableContent[$j][$i];
                     $cellType = isset($cellContent->type) ? $cellContent->type : null;
-                    $cellValue = isset($cellContent->value) ? str_replace('&quot;', '"', $cellContent->value) : null;
-                    $backgroundColor = GenerationUtils::get_background_color_style_or_empty($table->getBackgroundColor());
+                    $cellValue = isset($cellContent->value) ? AFES_GenerationUtils::format_html_content($cellContent->value) : null;
+                    $backgroundColor = AFES_GenerationUtils::get_background_color_style_or_empty($table->getBackgroundColor());
 
-                    if ($cellType === Constants::AFFILIATION) {
-                        GenerationUtils::generate_affiliate_links_cell_content($cellValue, $backgroundColor, false);
+                    if ($cellType === AFES_Constants::AFFILIATION) {
+                        AFES_GenerationUtils::generate_affiliate_links_cell_content($cellValue, $backgroundColor, false);
                     } else {
                         ?>
                         <div class="affieasy-table-cell" <?php echo $backgroundColor; ?>>
-                            <?php echo str_replace('&quot;', '"', $cellValue); ?>
+                            <?php echo $cellValue; ?>
                         </div>
                     <?php }
                 }
@@ -236,7 +238,7 @@ class GenerationUtils
             <?php foreach ($affiliateLinks as $affiliateLink) { ?>
                 <a
                         href="<?php echo $affiliateLink->url; ?>"
-                    <?php echo GenerationUtils::get_affiliate_link_style($affiliateLink); ?>
+                    <?php echo AFES_GenerationUtils::get_affiliate_link_style($affiliateLink); ?>
                         class="affieasy-table-cell-link <?php echo $isFirst ? '' : 'affieasy-table-cell-link-with-margin'; ?>"
                         target="_blank"
                         rel="nofollow">
@@ -290,11 +292,16 @@ class GenerationUtils
             return $rowHeaderStyle;
         }
 
-        return GenerationUtils::get_background_color_style_or_empty($backgroundColor);
+        return AFES_GenerationUtils::get_background_color_style_or_empty($backgroundColor);
     }
 
     private static function get_background_color_style_or_empty($backgroundColor)
     {
         return empty($backgroundColor) ? '' : 'style="background:' . $backgroundColor . '!important"';
+    }
+
+    private static function format_html_content($content)
+    {
+        return str_replace('&amp;NewLine;', '', str_replace('&quot;', '"', $content));
     }
 }

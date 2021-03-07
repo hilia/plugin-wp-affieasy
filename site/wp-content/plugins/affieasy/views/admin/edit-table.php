@@ -1,6 +1,12 @@
 <?php
 
-$pluginName = Utils::get_plugin_name();
+use affieasy\AFES_DbManager;
+use affieasy\AFES_GenerationUtils;
+use affieasy\AFES_Table;
+use affieasy\AFES_Utils;
+use affieasy\AFES_Constants;
+
+$pluginName = AFES_Utils::get_plugin_name();
 
 wp_enqueue_style(
     'edit-table-style',
@@ -70,71 +76,56 @@ wp_localize_script( 'edit-table-script', 'translations', array(
 
 wp_enqueue_media();
 
-$table = new Table(
-    isset($_POST['id']) ? $_POST['id'] : null,
-    isset($_POST['name']) ? $_POST['name'] : null,
-    isset($_POST['header-type']) ? $_POST['header-type'] : null,
-    isset($_POST['header-options']) ? $_POST['header-options'] : null,
-    isset($_POST['content']) ? $_POST['content'] : null,
-    isset($_POST['responsive-breakpoint']) ? $_POST['responsive-breakpoint'] : null,
-    isset($_POST['max-width']) ? $_POST['max-width'] : null,
-    isset($_POST['background-color']) ? $_POST['background-color'] : null
+$table = new AFES_Table(
+    isset($_POST['id']) ? sanitize_key($_POST['id']) : null,
+    isset($_POST['name']) ? sanitize_text_field($_POST['name']) : null,
+    isset($_POST['header-type']) ? sanitize_text_field($_POST['header-type']) : null,
+    isset($_POST['header-options']) ? AFES_Utils::sanitize_header_options($_POST['header-options']) : null,
+    isset($_POST['content']) ? AFES_Utils::sanitize_content($_POST['content']) : null,
+    isset($_POST['responsive-breakpoint']) ? sanitize_key($_POST['responsive-breakpoint']) : null,
+    isset($_POST['max-width']) ? sanitize_key($_POST['max-width']) : null,
+    isset($_POST['background-color']) ? sanitize_hex_color($_POST['background-color']) : null
 );
 
 $errors = array();
-$dbManager = new DbManager();
+$dbManager = new AFES_DbManager();
 $webshops = $dbManager->get_webshop_list();
 $hasNoWebShop = empty($webshops);
 
-$submit = isset($_POST['submit']) ? $_POST['submit'] : null;
+$submit = isset($_POST['submit']) ? sanitize_key($_POST['submit']) : null;
 $isFromSaveAction = $submit === 'save-action';
 if ($isFromSaveAction) {
     if (empty($table->getName())) {
-        array_push($errors, __('Name must not be empty', 'affieasy'));
+        array_push($errors, esc_html__('Name must not be empty', 'affieasy'));
     }
 
     $isNullTableContent = $table->getContent() == null;
     $isTableWithColumnHeader = in_array($table->getHeaderType(), array('COLUMN_HEADER', 'BOTH'));
     $tableContentSize = $isNullTableContent ? 0 : count($table->getContent());
+
     if ($isTableWithColumnHeader && $tableContentSize < 2 || !$isTableWithColumnHeader && $tableContentSize < 1) {
-        array_push($errors, __('Table must contains at least one row', 'affieasy'));
+        array_push($errors, esc_html__('Table must contains at least one row', 'affieasy'));
     }
 
     $responsiveBreakpoint = $table->getResponsiveBreakpoint();
     if ($responsiveBreakpoint !== '' && (!is_numeric($responsiveBreakpoint) || $responsiveBreakpoint < 0)) {
-        array_push($errors, __('Responsive breakpoint must be a positive number', 'affieasy'));
+        array_push($errors, esc_html__('Responsive breakpoint must be a positive number', 'affieasy'));
     }
 
     $maxWidth = $table->getMaxWidth();
     if ($maxWidth !== '' && (!is_numeric($maxWidth) || $maxWidth < 0)) {
-        array_push($errors, __('Max width must be a positive number', 'affieasy'));
+        array_push($errors, esc_html__('Max width must be a positive number', 'affieasy'));
     }
 
     if (count($errors) == 0) {
-        $table = $dbManager->edit_table($table, false);
+        $table = $dbManager->edit_table($table);
     } else {
         if ($isNullTableContent) {
             $table->initDefaultContent();
-        } else {
-            $table->setContent(array_map(function ($row) {
-                return array_map(function ($cell) {
-                    $cellContent = json_decode(
-                        str_replace("\\", "",
-                            str_replace('\\\\\\"', "&quot;",
-                                str_replace('\\n', '&NewLine;', $cell))));
-
-                    return (object)[
-                        'type' => isset($cellContent->type) ? $cellContent->type : null,
-                        'value' => isset($cellContent->value) ? $cellContent->value : null,
-                    ];
-                }, $row);
-            }, $table->getContent()));
-
-            $table->setHeaderOptions(json_decode(str_replace('\\', '', $table->getHeaderOptions())));
         }
     }
 } else {
-    $id = isset($_GET['id']) ? $_GET['id'] : null;
+    $id = isset($_GET['id']) ? sanitize_key($_GET['id']) : null;
     if (!empty($id)) {
         $table = $dbManager->get_table_by_id($id);
     }
@@ -158,9 +149,7 @@ $isTableWithRowHeader = in_array($headerType, array('ROW_HEADER', 'BOTH'));
 $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
 ?>
 
-<script src="/wp-content/plugins/<?php echo $pluginName; ?>/js/utils.js"></script>
-
-<?php require_once ABSPATH . '/wp-content/plugins/' . $pluginName . '/inc/free-version-message.php'; ?>
+<?php require_once dirname(__DIR__, 3) . '/' . $pluginName . '/inc/free-version-message.php'; ?>
 <div id="edit-affiliation-link-modal" hidden>
     <?php if ($hasNoWebShop) { ?>
         <p>
@@ -256,7 +245,7 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                     </th>
 
                     <td id="affiliation-link-overview">
-                        <?php echo $webshops[0]->getUrl(); ?>
+                        <?php echo esc_attr($webshops[0]->getUrl()); ?>
                     </td>
                 </tr>
             <?php }
@@ -282,7 +271,7 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                     <input
                             type="text"
                             id="header-column-background"
-                            value="<?php echo $hasHeaderOptions ? $headerOptions->{'column-background'} : null; ?>">
+                            value="<?php echo $hasHeaderOptions ? esc_attr($headerOptions->{'column-background'}) : null; ?>">
                 </td>
             </tr>
 
@@ -296,7 +285,7 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                     <input
                             type="text"
                             id="header-column-color"
-                            value="<?php echo $hasHeaderOptions ? $headerOptions->{'column-color'} : null; ?>">
+                            value="<?php echo $hasHeaderOptions ? esc_attr($headerOptions->{'column-color'}) : null; ?>">
                 </td>
             </tr>
 
@@ -308,9 +297,9 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                 </th>
                 <td>
                     <select id="header-column-font-weight">
-                        <?php foreach (Constants::HEADER_FONT_WEIGHTS as $fontWeight) { ?>
+                        <?php foreach (AFES_Constants::HEADER_FONT_WEIGHTS as $fontWeight) { ?>
                             <option
-                                    value="<?php echo $fontWeight; ?>"
+                                    value="<?php echo esc_attr($fontWeight); ?>"
                                 <?php echo $headerOptions->{'column-font-weight'} == $fontWeight ? 'selected' : ''; ?>>
                                 <?php esc_html_e(ucfirst($fontWeight), 'affieasy'); ?>
                             </option>
@@ -329,9 +318,9 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                     <select id="header-column-font-size">
                         <?php for ($fontSize = 10; $fontSize <= 35; $fontSize++) { ?>
                             <option
-                                    value="<?php echo $fontSize . 'px'; ?>"
+                                    value="<?php echo esc_attr($fontSize) . 'px'; ?>"
                                 <?php echo $headerOptions->{'column-font-size'} == $fontSize ? 'selected' : ''; ?>>
-                                <?php echo $fontSize; ?>
+                                <?php echo esc_attr($fontSize); ?>
                             </option>
                         <?php } ?>
                     </select>
@@ -355,7 +344,7 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                     <input
                             type="text"
                             id="header-row-background"
-                            value="<?php echo $hasHeaderOptions ? $headerOptions->{'row-background'} : null; ?>">
+                            value="<?php echo $hasHeaderOptions ? esc_attr($headerOptions->{'row-background'}) : null; ?>">
                 </td>
             </tr>
 
@@ -369,7 +358,7 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                     <input
                             type="text"
                             id="header-row-color"
-                            value="<?php echo $hasHeaderOptions ? $headerOptions->{'row-color'} : null; ?>">
+                            value="<?php echo $hasHeaderOptions ? esc_attr($headerOptions->{'row-color'}) : null; ?>">
                 </td>
             </tr>
 
@@ -381,9 +370,9 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                 </th>
                 <td>
                     <select id="header-row-font-weight">
-                        <?php foreach (Constants::HEADER_FONT_WEIGHTS as $fontWeight) { ?>
+                        <?php foreach (AFES_Constants::HEADER_FONT_WEIGHTS as $fontWeight) { ?>
                             <option
-                                    value="<?php echo $fontWeight; ?>"
+                                    value="<?php echo esc_attr($fontWeight); ?>"
                                 <?php echo $headerOptions->{'row-font-weight'} == $fontWeight ? 'selected' : ''; ?>>
                                 <?php esc_html_e(ucfirst($fontWeight), 'affieasy'); ?>
                             </option>
@@ -402,9 +391,9 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                     <select id="header-row-font-size">
                         <?php for ($fontSize = 10; $fontSize <= 35; $fontSize++) { ?>
                             <option
-                                    value="<?php echo $fontSize . 'px'; ?>"
+                                    value="<?php echo esc_attr($fontSize) . 'px'; ?>"
                                 <?php echo $headerOptions->{'row-font-size'} == $fontSize ? 'selected' : ''; ?>>
-                                <?php echo $fontSize; ?>
+                                <?php echo esc_attr($fontSize); ?>
                             </option>
                         <?php } ?>
                     </select>
@@ -419,8 +408,8 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
 
     <div class="header">
         <h1 class="wp-heading-inline"><?php echo empty($tableId) ?
-                __('Create table', 'affieasy') :
-                __('Update table', 'affieasy') . ' ' . $tableName; ?></h1>
+                esc_html__('Create table', 'affieasy') :
+                esc_html__('Update table', 'affieasy') . ' ' . esc_html($tableName); ?></h1>
 
         <a href="admin.php?page=affieasy-table" class="page-title-action">
             <?php esc_html_e('Back to table list', 'affieasy'); ?>
@@ -475,7 +464,7 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                                     class="general-input"
                                     maxlength="255"
                                     disabled
-                                    value="<?php echo $table->getTag(); ?>">
+                                    value="<?php echo esc_attr($table->getTag()); ?>">
                         </td>
                     </tr>
                 <?php } ?>
@@ -494,7 +483,7 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                                 id="name"
                                 class="general-input"
                                 maxlength="255"
-                                value="<?php echo $tableName; ?>">
+                                value="<?php echo esc_attr($tableName); ?>">
                     </td>
                 </tr>
 
@@ -506,7 +495,7 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                     </th>
                     <td>
                         <select id="header-type" name="header-type" class="general-input">
-                            <?php foreach (Constants::HEADERS_TYPES as $key => $value) { ?>
+                            <?php foreach (AFES_Constants::HEADERS_TYPES as $key => $value) { ?>
                                 <option value="<?php echo $key ?>">
                                     <?php esc_html_e($value, 'affieasy'); ?>
                                 </option>
@@ -523,8 +512,8 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                             <?php esc_html_e('Max width', 'affieasy'); ?>
                             <span
                                     class="dashicons dashicons-info info"
-                                    title="<?php echo __('Max width in pixels allowed for the table (100% of available space if not filled). ', 'affieasy')
-                                        . ($canUsePremiumCode ? '' : __('Get the premium version to edit this field.', 'affieasy')); ?>">
+                                    title="<?php echo esc_html__('Max width in pixels allowed for the table (100% of available space if not filled). ', 'affieasy')
+                                        . ($canUsePremiumCode ? '' : esc_html__('Get the premium version to edit this field.', 'affieasy')); ?>">
                                 </span>
                         </label>
                     </th>
@@ -535,7 +524,7 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                                 id="max-width"
                                 class="general-input"
                                 maxlength="5"
-                                value="<?php echo $table->getMaxWidth(); ?>">
+                                value="<?php echo esc_attr($table->getMaxWidth()); ?>">
                     </td>
                 </tr>
 
@@ -545,8 +534,8 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                             <?php esc_html_e('Responsive breakpoint', 'affieasy'); ?>
                             <span
                                     class="dashicons dashicons-info info"
-                                    title="<?php echo __('Resolution in pixels below which the table take its responsive form. ', 'affieasy')
-                                    . ($canUsePremiumCode ? '' : __('Get the premium version to edit this field.', 'affieasy')); ?>">
+                                    title="<?php echo esc_html__('Resolution in pixels below which the table take its responsive form. ', 'affieasy')
+                                    . ($canUsePremiumCode ? '' : esc_html__('Get the premium version to edit this field.', 'affieasy')); ?>">
                             </span>
                         </label>
                     </th>
@@ -557,7 +546,7 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                                 id="responsive-breakpoint"
                                 class="general-input"
                                 maxlength="5"
-                                value="<?php echo $table->getResponsiveBreakpoint(); ?>">
+                                value="<?php echo esc_attr($table->getResponsiveBreakpoint()); ?>">
                     </td>
                 </tr>
 
@@ -569,7 +558,7 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                         <?php if (!$canUsePremiumCode) { ?>
                             <span
                                     class="dashicons dashicons-info info"
-                                    title="<?php echo __('Get the premium version to edit this field.', 'affieasy'); ?>">
+                                    title="<?php echo esc_html__('Get the premium version to edit this field.', 'affieasy'); ?>">
                             </span>
                         <?php } ?>
                     </th>
@@ -580,7 +569,7 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                                 id="background-color"
                                 class="general-input"
                                 maxlength="10"
-                                value="<?php echo $table->getBackgroundColor(); ?>">
+                                value="<?php echo esc_attr($table->getBackgroundColor()); ?>">
                     </td>
                 </tr>
             </table>
@@ -707,19 +696,21 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                                 id="cell-0"
                                 class="table-content-cell-html table-content-header-row"
                                 data-col-id="0"
-                                data-cell-type="<?php echo $row[1]->type; ?>">
+                                data-cell-type="<?php echo esc_attr($row[1]->type); ?>">
                             <input
                                     type="text"
                                     maxLength="255"
                                     class="table-header-row-cell-content"
-                                    value="<?php echo $isTableWithRowHeader ? $row[0]->value : ''; ?>">
+                                    value="<?php echo $isTableWithRowHeader ? esc_attr($row[0]->value) : ''; ?>">
                         </td>
                         <?php for ($j = $isTableWithRowHeader ? 1 : 0; $j < count($row); $j++) {
                             $cellType = $row[$j]->type;
-                            $cellValue = $row[$j]->value;
+                            $cellValue = $cellType == AFES_Constants::AFFILIATION ?
+                                $row[$j]->value :
+                                str_replace('&amp;NewLine;', '&NewLine;', $row[$j]->value);
 
                             $colId = $isTableWithRowHeader ? $j : $j + 1;
-                            if ($cellType == Constants::HTML) { ?>
+                            if ($cellType == AFES_Constants::HTML) { ?>
                                 <td
                                         id="cell-<?php echo $cellId; ?>"
                                         class="table-content-cell-html"
@@ -729,7 +720,7 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                                             maxLength="2048"
                                             class="table-content-cell-html-content"><?php echo $cellValue; ?></textarea>
                                 </td>
-                            <?php } else if ($cellType == Constants::IMAGE) { ?>
+                            <?php } else if ($cellType == AFES_Constants::IMAGE) { ?>
                                 <td
                                         id="cell-<?php echo $cellId; ?>"
                                         class="table-content-cell-image"
@@ -763,7 +754,7 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                                             substr($cellValue, 0, -1) . " class='table-content-cell-image-overview-content'>"; ?>
                                     </div>
                                 </td>
-                            <?php } else if ($cellType == Constants::AFFILIATION) {
+                            <?php } else if ($cellType == AFES_Constants::AFFILIATION) {
                                 $affiliateLinks = json_decode(str_replace("&quot;", '"', $cellValue));
                                 ?>
                                 <td
@@ -787,7 +778,7 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                                             <button
                                                     type="button"
                                                     class="affiliation-table-affiliate-link cell-content-link-list-button"
-                                                <?php echo GenerationUtils::get_affiliate_link_style($affiliateLink); ?>
+                                                <?php echo AFES_GenerationUtils::get_affiliate_link_style($affiliateLink); ?>
                                                     title="<?php esc_html_e('Edit affiliate link', 'affieasy'); ?>"
                                                     data-cell-id="<?php echo $cellId; ?>"
                                                     data-id="<?php echo $affiliateLink->id; ?>">
@@ -859,7 +850,7 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                         type="button"
                         id="add-affiliation-row"
                         class="button-primary add-row-popover-button <?php echo $hasNoWebShop ? 'disabled' : '' ?>"
-                    <?php echo $hasNoWebShop ? 'title="' . __("Add webshop to use this functionnality.", "affieasy") . '" disabled' : ''; ?>>
+                    <?php echo $hasNoWebShop ? 'title="' . esc_html__("Add webshop to use this functionnality.", "affieasy") . '" disabled' : ''; ?>>
                     <?php esc_html_e('Affiliate links', 'affieasy'); ?>
                     <?php if ($hasNoWebShop) { ?>
                         <span class="dashicons dashicons-info dashicons-button-disabled"></span>

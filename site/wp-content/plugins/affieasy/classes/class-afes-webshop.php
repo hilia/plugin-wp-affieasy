@@ -1,6 +1,8 @@
 <?php
 
-class Webshop
+namespace affieasy;
+
+class AFES_Webshop
 {
     private $id;
     private $name;

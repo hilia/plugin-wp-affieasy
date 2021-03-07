@@ -6,10 +6,11 @@ Plugin URI:        https://www.affieasy.com/
 Tags:              comparison tables, pricing tables, responsive tables, table maker, wordpress table, affiliate table
 Donate link:
 Requires at least: 5.1
-Tested up to:      5.6.1
-Version:           0.9.14
+Tested up to:      5.6.2
+Version:           0.9.21
 Requires PHP:      7.2
-Stable tag:        trunk
+Stable tag:        0.9.21
+License: GPLv2 or later
 
 Build comparison tables in minutes with autoaffiliate link!
 

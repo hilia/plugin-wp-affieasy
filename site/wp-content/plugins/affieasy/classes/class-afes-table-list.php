@@ -1,32 +1,36 @@
 <?php
 
+namespace affieasy;
+
+use WP_List_Table;
+
 require_once ABSPATH . 'wp-admin/includes/class-wp-list-table.php';
 
-class WebshopList extends WP_List_Table
+class AFES_TableList extends WP_List_Table
 {
     private $dbManager;
 
     function __construct()
     {
         parent::__construct([
-            'singular' => 'Webshop',
-            'plural' => 'Webshops',
+            'singular' => 'Table',
+            'plural' => 'Tables',
             'ajax' => false,
         ]);
 
-        $this->dbManager = new DbManager();
+        $this->dbManager = new AFES_DbManager();
     }
 
     public function no_items()
     {
-        _e('No webshop found.', 'affieasy');
+        _e('No table found.', 'affieasy');
     }
 
     function get_columns()
     {
         return [
-            'id' => __('Id', 'affieasy'),
-            'name' => __('Name', 'affieasy')
+            'id' => esc_html__('Id', 'affieasy'),
+            'name' => esc_html__('Name', 'affieasy')
         ];
     }
 
@@ -37,8 +41,8 @@ class WebshopList extends WP_List_Table
         return sprintf('%1$s %2$s',
             $item['id'],
             $this->row_actions(array(
-                'edit' => sprintf('<a href="admin.php?page=affieasy-webshop&action=edit-webshop&id=' . $id . '">' . __('Edit', 'affieasy') . '</a>'),
-                'delete' => sprintf('<a href="#" class="delete-link" data-id="' . $id . '">' . __('Delete', 'affieasy') . '</a>')
+                'edit' => sprintf('<a href="admin.php?page=affieasy-table&action=edit-table&id=' . $id . '">' . esc_html__('Edit', 'affieasy') . '</a>'),
+                'delete' => sprintf('<a href="#" class="delete-link" data-id="' . $id . '">' . esc_html__('Delete', 'affieasy') . '</a>')
             ))
         );
     }
@@ -50,9 +54,9 @@ class WebshopList extends WP_List_Table
 
     public function prepare_items()
     {
-        $per_page = Constants::ITEMS_PER_PAGE;
-        $total_items = $this->dbManager->get_table_count(Constants::TABLE_WEBSHOP);
-        $data = $this->dbManager->get_webshop_page($this->get_pagenum(), $per_page);
+        $per_page = AFES_Constants::ITEMS_PER_PAGE;
+        $total_items = $this->dbManager->get_table_count(AFES_Constants::TABLE_TABLE);
+        $data = $this->dbManager->get_table_page($this->get_pagenum(), $per_page);
 
         $this->items = $data;
         $this->_column_headers = array($this->get_columns(), array(), array());

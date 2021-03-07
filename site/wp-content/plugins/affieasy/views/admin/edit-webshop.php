@@ -1,6 +1,11 @@
 <?php
 
-$pluginName = Utils::get_plugin_name();
+use affieasy\AFES_DbManager;
+use affieasy\AFES_Utils;
+use affieasy\AFES_Webshop;
+use affieasy\AFES_Constants;
+
+$pluginName = AFES_Utils::get_plugin_name();
 
 wp_enqueue_style(
     'edit-table-style',
@@ -23,9 +28,9 @@ wp_enqueue_script(
     time()
 );
 
-$dbManager = new DbManager();
+$dbManager = new AFES_DbManager();
 
-$id = isset($_GET['id']) ? $_GET['id'] : null;
+$id = isset($_GET['id']) ? sanitize_key($_GET['id']) : null;
 
 $canUsePremiumCode = false;
 if (aff_fs()->is__premium_only()) {
@@ -34,36 +39,36 @@ if (aff_fs()->is__premium_only()) {
     }
 }
 
-$isActionForbidden = !$canUsePremiumCode && $id === null && $dbManager->get_table_count(Constants::TABLE_WEBSHOP) >= 2;
+$isActionForbidden = !$canUsePremiumCode && $id === null && $dbManager->get_table_count(AFES_Constants::TABLE_WEBSHOP) >= 2;
 
-$webshop = $isActionForbidden ? new Webshop() : new Webshop(
-    $id,
-    isset($_POST['name']) ? $_POST['name'] : null,
-    isset($_POST['url']) ? $_POST['url'] : null,
-    isset($_POST['link-text-preference']) ? $_POST['link-text-preference'] : null,
-    isset($_POST['background-color-preference']) ? $_POST['background-color-preference'] : null,
-    isset($_POST['text-color-preference']) ? $_POST['text-color-preference'] : null
+$webshop = $isActionForbidden ? new AFES_Webshop() : new AFES_Webshop(
+    isset($_POST['id']) ? sanitize_text_field($_POST['id']) : null,
+    isset($_POST['name']) ? sanitize_text_field($_POST['name']) : null,
+    isset($_POST['url']) ? sanitize_text_field($_POST['url']) : null,
+    isset($_POST['link-text-preference']) ? sanitize_text_field($_POST['link-text-preference']) : null,
+    isset($_POST['background-color-preference']) ? sanitize_hex_color($_POST['background-color-preference']) : null,
+    isset($_POST['text-color-preference']) ? sanitize_hex_color($_POST['text-color-preference']) : null
 );
 
 $errors = array();
 
-$submit = isset($_POST['submit']) ? $_POST['submit'] : null;
+$submit = isset($_POST['submit']) ? sanitize_key($_POST['submit']) : null;
 $isFromSaveAction = $submit === 'save-action';
 
 if(!$isActionForbidden) {
     if ($isFromSaveAction) {
         if (empty($webshop->getName())) {
-            array_push($errors, __('Name must not be empty', 'affieasy'));
+            array_push($errors, esc_html__('Name must not be empty', 'affieasy'));
         }
 
         $webshopUrl = $webshop->geturl();
         if (empty($webshopUrl)) {
-            array_push($errors, __('Url must not be empty', 'affieasy'));
+            array_push($errors, esc_html__('Url must not be empty', 'affieasy'));
         } else {
-            if (!in_array(Constants::MANDATORY_URL_PARAM, $webshop->getParameters())) {
+            if (!in_array(AFES_Constants::MANDATORY_URL_PARAM, $webshop->getParameters())) {
                 array_push($errors, sprintf(
-                    __('Url must contains at least [[%1$s]] parameter', 'affieasy'),
-                    Constants::MANDATORY_URL_PARAM));
+                    esc_html__('Url must contains at least [[%1$s]] parameter', 'affieasy'),
+                    AFES_Constants::MANDATORY_URL_PARAM));
             }
         }
 
@@ -80,12 +85,12 @@ $webshopName = $webshop->getName();
 
 ?>
 
-<?php require_once ABSPATH . '/wp-content/plugins/' . $pluginName . '/inc/free-version-message.php'; ?>
+<?php require_once dirname(__DIR__, 3) . '/' . $pluginName . '/inc/free-version-message.php'; ?>
 <div class="wrap">
     <div class="header">
         <h1 class="wp-heading-inline"><?php echo empty($webshopId) ?
-                __('Create webshop', 'affieasy') :
-                __('Update webshop', 'affieasy') . ' ' . $webshopName; ?></h1>
+                esc_html__('Create webshop', 'affieasy') :
+                esc_html__('Update webshop', 'affieasy') . ' ' . esc_html($webshopName); ?></h1>
         <a href="admin.php?page=affieasy-webshop" class="page-title-action">
             <?php esc_html_e('Back to webshop list', 'affieasy'); ?>
         </a>
@@ -167,7 +172,7 @@ $webshopName = $webshop->getName();
                             name="name"
                             id="name"
                             maxlength="255"
-                            value="<?php echo $webshopName; ?>"
+                            value="<?php echo esc_attr($webshopName); ?>"
                             <?php echo $isActionForbidden ? 'disabled' : ''; ?>>
                 </td>
             </tr>
@@ -184,7 +189,7 @@ $webshopName = $webshop->getName();
                             name="url"
                             id="url"
                             maxlength="2048"
-                            value="<?php echo $webshop->getUrl(); ?>"
+                            value="<?php echo esc_attr($webshop->getUrl()); ?>"
                             placeholder="<?php esc_html_e('Ex: https://www.awin1.com/cread.php?p=[[product_url]]&clickref=[[click_ref]]', 'affieasy'); ?>"
                             <?php echo $isActionForbidden ? 'disabled' : ''; ?>>
                 </td>
@@ -212,7 +217,7 @@ $webshopName = $webshop->getName();
                             name="link-text-preference"
                             id="link-text-preference"
                             maxlength="255"
-                            value="<?php echo $webshop->getLinkTextPreference(); ?>"
+                            value="<?php echo esc_attr($webshop->getLinkTextPreference()); ?>"
                             <?php echo $isActionForbidden ? 'disabled' : ''; ?>>
                 </td>
             </tr>
@@ -228,7 +233,7 @@ $webshopName = $webshop->getName();
                             type="text"
                             id="background-color-preference"
                             name="background-color-preference"
-                            value="<?php echo $webshop->getBackgroundColorPreference(); ?>"
+                            value="<?php echo esc_attr($webshop->getBackgroundColorPreference());?>"
                             <?php echo $isActionForbidden ? 'disabled' : ''; ?>>
                 </td>
             </tr>
@@ -244,7 +249,7 @@ $webshopName = $webshop->getName();
                             type="text"
                             id="text-color-preference"
                             name="text-color-preference"
-                            value="<?php echo $webshop->getTextColorPreference(); ?>"
+                            value="<?php echo esc_attr($webshop->getTextColorPreference()); ?>"
                             <?php echo $isActionForbidden ? 'disabled' : ''; ?>>
                 </td>
             </tr>

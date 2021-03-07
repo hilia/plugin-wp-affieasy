@@ -1,8 +1,13 @@
 <?php
 
-$pluginName = Utils::get_plugin_name();
+use affieasy\AFES_DbManager;
+use affieasy\AFES_Utils;
+use affieasy\AFES_WebshopList;
+use affieasy\AFES_Constants;
 
-require_once ABSPATH . '/wp-content/plugins/' . $pluginName . '/classes/class-webshop-list.php';
+$pluginName = AFES_Utils::get_plugin_name();
+
+require_once dirname(__DIR__, 3) . '/' . $pluginName . '/classes/class-afes-webshop-list.php';
 
 wp_enqueue_style(
     'list-webshop-style',
@@ -24,10 +29,10 @@ wp_localize_script( 'list-webshop-script', 'translations', array(
 
 wp_enqueue_style('wp-jquery-ui-dialog');
 
-$dbManager = new DbManager();
+$dbManager = new AFES_DbManager();
 
-$id = isset($_GET['id']) ? $_GET['id'] : null;
-$action = isset($_GET['action']) ? $_GET['action'] : null;
+$id = isset($_GET['id']) ? sanitize_key($_GET['id']) : null;
+$action = isset($_GET['action']) ? sanitize_key($_GET['action']) : null;
 
 $isValidDeleteAction = $action === 'delete-webshop' && is_numeric($id);
 if ($isValidDeleteAction) {
@@ -41,13 +46,13 @@ if (aff_fs()->is__premium_only()) {
     }
 }
 
-$dbManager = new DbManager();
+$dbManager = new AFES_DbManager();
 $currentWebshopCount = 0;
 if (!$canUsePremiumCode) {
-    $currentWebshopCount = $dbManager->get_table_count(Constants::TABLE_WEBSHOP);
+    $currentWebshopCount = $dbManager->get_table_count(AFES_Constants::TABLE_WEBSHOP);
 }
 
-$webshopList = new WebshopList();
+$webshopList = new AFES_WebshopList();
 ?>
 
 <div id="dialog-confirm-delete" title="<?php esc_html_e('Confirmation', 'affieasy'); ?>" hidden>
@@ -59,7 +64,7 @@ $webshopList = new WebshopList();
 <div class="wrap">
 
     <div class="header">
-        <?php require_once ABSPATH . '/wp-content/plugins/' . $pluginName . '/inc/free-version-message.php'; ?>
+        <?php require_once dirname(__DIR__, 3) . '/' . $pluginName . '/inc/free-version-message.php'; ?>
         <h1 class="wp-heading-inline"><?php esc_html_e('Webshops', 'affieasy'); ?></h1>
 
         <?php if ($canUsePremiumCode || $currentWebshopCount < 2) { ?>

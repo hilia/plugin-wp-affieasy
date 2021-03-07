@@ -1,8 +1,12 @@
 <?php
 
-$pluginName = Utils::get_plugin_name();
+use affieasy\AFES_DbManager;
+use affieasy\AFES_TableList;
+use affieasy\AFES_Utils;
 
-require_once ABSPATH . '/wp-content/plugins/' . $pluginName . '/classes/class-table-list.php';
+$pluginName = AFES_Utils::get_plugin_name();
+
+require_once dirname(__DIR__, 3) . '/' . $pluginName . '/classes/class-afes-table-list.php';
 
 wp_enqueue_script(
     'list-table-script',
@@ -18,16 +22,16 @@ wp_localize_script( 'list-table-script', 'translations', array(
 
 wp_enqueue_style('wp-jquery-ui-dialog');
 
-$id = isset($_GET['id']) ? $_GET['id'] : null;
-$action = isset($_GET['action']) ?  $_GET['action'] : null;
+$id = isset($_GET['id']) ? sanitize_key($_GET['id']) : null;
+$action = isset($_GET['action']) ?  sanitize_key($_GET['action']) : null;
 
 $isValidDeleteAction = $action === 'delete-table' && is_numeric($id);
 if ($isValidDeleteAction) {
-    $dbManager = new DbManager();
+    $dbManager = new AFES_DbManager();
     $dbManager->delete_table($id);
 }
 
-$tableList = new TableList();
+$tableList = new AFES_TableList();
 ?>
 
 <div id="dialog-confirm-delete" title="<?php esc_html_e('Confirmation', 'affieasy'); ?>" hidden>
@@ -37,7 +41,7 @@ $tableList = new TableList();
 </div>
 
 <div class="wrap">
-    <?php require_once ABSPATH . '/wp-content/plugins/' . $pluginName . '/inc/free-version-message.php'; ?>
+    <?php require_once dirname(__DIR__, 3) . '/' . $pluginName . '/inc/free-version-message.php'; ?>
     <h1 class="wp-heading-inline"><?php esc_html_e('Tables', 'affieasy'); ?></h1>
 
     <a href="admin.php?page=affieasy-table&action=edit-table" class="page-title-action">

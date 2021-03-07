@@ -1,6 +1,8 @@
 <?php
 
-class Table
+namespace affieasy;
+
+class AFES_Table
 {
     private $defaultHeaderType = 'COLUMN_HEADER';
     private $defaultTableColumnNumber = 4;
@@ -89,7 +91,7 @@ class Table
 
     public function getTag()
     {
-        return '[' . Constants::TABLE_TAG . ' id=' . $this->id . ']';
+        return '[' . AFES_Constants::TABLE_TAG . ' id=' . $this->id . ']';
     }
 
     public function getCellCount()
@@ -106,8 +108,8 @@ class Table
     public function initDefaultContent()
     {
         $this->headerType = $this->defaultHeaderType;
-        $this->responsiveBreakpoint = Table::$defaultResponsiveBreakpoint;
-        $this->backgroundColor = Table::$defaultBackgroundColor;
+        $this->responsiveBreakpoint = AFES_Table::$defaultResponsiveBreakpoint;
+        $this->backgroundColor = AFES_Table::$defaultBackgroundColor;
 
         $this->headerOptions = (object)[
           'column-background' => $this->defaultHeaderBackgroundColor,
