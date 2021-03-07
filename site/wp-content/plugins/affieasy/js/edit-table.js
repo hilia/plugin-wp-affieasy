@@ -472,8 +472,8 @@ jQuery(($) => {
             currentCellId = event.data.cellId;
             currentAffiliateLinkId = event.data.id;
 
-            let affilitateLinkValue = !!id ? JSON.parse($('#cell-content-' + currentCellId).val())
-                .find(affilitateLinkValue => affilitateLinkValue.id === currentAffiliateLinkId) : null;
+            let affilitateLinkValue = !!currentAffiliateLinkId ? JSON.parse($('#cell-content-' + currentCellId).val())
+                .find(affilitateLinkValue => !!affilitateLinkValue && affilitateLinkValue.id === currentAffiliateLinkId) : null;
 
             if (!affilitateLinkValue) {
                 $('#webshop-select option:first').prop('selected', true);
