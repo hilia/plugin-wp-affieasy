@@ -2,7 +2,7 @@
 /*
  * Plugin Name: AffiEasy
  * Description: Plugin to easily and quickly generate responsive tables and manage affiliate links.
- * Version: 0.9.21
+ * Version: 0.9.22
  * Text Domain: affieasy
  * Author: Affieasy Team
  * Author URI: https://www.affieasy.com/

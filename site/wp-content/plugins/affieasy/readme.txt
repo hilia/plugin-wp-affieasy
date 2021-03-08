@@ -7,9 +7,9 @@ Tags:              comparison tables, pricing tables, responsive tables, table m
 Donate link:
 Requires at least: 5.1
 Tested up to:      5.6.2
-Version:           0.9.21
+Version:           0.9.22
 Requires PHP:      7.2
-Stable tag:        0.9.21
+Stable tag:        0.9.22
 License: GPLv2 or later
 
 Build comparison tables in minutes with autoaffiliate link!
