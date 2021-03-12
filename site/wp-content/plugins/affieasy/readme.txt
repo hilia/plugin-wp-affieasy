@@ -3,10 +3,10 @@
 Contributors:      perrinalexandre05, wpoduj
 Plugin Name:       AffiEasy
 Plugin URI:        https://www.affieasy.com/
-Tags:              comparison tables, pricing tables, responsive tables, table maker, wordpress table, affiliate table
+Tags:              tables, affiliate links, responsive, comparison tables, pricing tables, responsive tables, table maker, wordpress table, affiliate table
 Donate link:
 Requires at least: 5.1
-Tested up to:      5.6.2
+Tested up to:      5.7
 Version:           0.9.22
 Requires PHP:      7.2
 Stable tag:        0.9.22
@@ -16,29 +16,29 @@ Build comparison tables in minutes with autoaffiliate link!
 
 == Description ==
 
-Build easy comparison table in a really easy way, you can do everything: comparison tables, TOP tables, etc.
+Build comparison table in a really easy way. You can do everything: comparison tables, TOP tables, etc.
 
 The magic appears with the autoaffiliate link module with you just need to **put the URL of the product** and **that's all**!
 AffiEasy rebuild your URL with your affiliate parameters. It'll **save you tons of time** and when your need to change the product, it's really fast because you just need to change only the URL.
+See our [tutorial](https://www.affieasy.com/how-to-use-affieasy/ "Tutorial") or watch the video below to discover the possibilities offered by this plugin.
 
-See how it's fast:
-[youtube https://www.youtube.com/watch?v=NfCv35Guhdos]
+[youtube https://www.youtube.com/watch?v=NfCv35Guhdo]
 
 == Features ==
 
 Free version:
-*   2 webshops
-*   Unlimited rows/columns
-*   Responsive table
+*   Create 2 webshops and manage preferences for affiliate links (text, background color and text color)
+*   Unlimited table creation which may contain HTML, images and affiliate links
+*   Customize table headers (background color, text color, font weight and font size)
+*   Display responsive tables
 
-See all the differences with the premium version: [AffiEasy](https://www.affieasy.com/pricing/ "Your easy comparison table")
-
-Premium version:
+Additional features for the premium version:
 *   Unlimited webshops
-*   Unlimited rows/columns
-*   Drag & Drop
+*   Drag & Drop rows and columns
 *   Responsive table parameters unlocked
-*   Full Customization
+*   Full table customization
+
+See all the differences between free and premium versions: [AffiEasy](https://www.affieasy.com/pricing/ "Your easy comparison table")
 
 == Installation ==
 
@@ -49,17 +49,17 @@ Premium version:
 
 == Screenshots ==
 
-1. [https://www.affieasy.com/wp-content/uploads/2021/02/screenshot-1.png Final looks on desktop]
-2. [https://www.affieasy.com/wp-content/uploads/2021/02/screenshot-2.png Responsive table]
-3. [https://www.affieasy.com/wp-content/uploads/2021/02/screenshot-3.png Table interface configuration]
-4. [https://www.affieasy.com/wp-content/uploads/2021/02/screenshot-4.png Webshop configuration (building affiliate links)]
-5. [https://www.affieasy.com/wp-content/uploads/2021/02/screenshot-5.png Customize table header options]
-6. [https://www.affieasy.com/wp-content/uploads/2021/02/screenshot-6.png Easy way to create affiliate link]
+1. Final looks on desktop
+2. Responsive table
+3. Table interface configuration
+4. Webshop configuration (building affiliate links)
+5. Customize table header options
+6. Easy way to create affiliate link
 
 == Changelog ==
 
-= 0.9.14 =
-First release on Wordpress.org
+= 0.9.22 =
+Initial release
 
 == Frequently Asked Questions ==
 
