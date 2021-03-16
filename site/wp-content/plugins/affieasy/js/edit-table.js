@@ -848,15 +848,11 @@ jQuery(($) => {
     }
 
     function removeSpecialCharsFromUrlParameter(parameter) {
-        if (!!parameter) {
-            parameter = Object.keys(SPECIAL_CHARS)
+        return !!parameter ?
+            Object.keys(SPECIAL_CHARS)
                 .reduce((acc, cur) => acc.replace(new RegExp(SPECIAL_CHARS[cur], 'g'), cur), parameter)
                 .replaceAll(/"/g, '')
-                .replaceAll(/'/g, '');
-
-            return !!parameter ? parameter.toLowerCase() : '';
-        }
-
-        return '';
+                .replaceAll(/'/g, '') :
+            '';
     }
 });
