@@ -66,6 +66,15 @@ class AFES_AffiliationTableAdmin
 
         add_submenu_page(
             'affieasy-table',
+            esc_html__('Affiliate links', 'affieasy'),
+            esc_html__('Affiliate links', 'affieasy'),
+            'manage_options',
+            'affieasy-link',
+            array($this, 'display_links_view')
+        );
+
+        add_submenu_page(
+            'affieasy-table',
             esc_html__('Webshops', 'affieasy'),
             esc_html__('Webshops', 'affieasy'),
             'manage_options',
@@ -87,6 +96,13 @@ class AFES_AffiliationTableAdmin
                     include(dirname(__DIR__) . '/views/admin/list-table.php');
                     break;
             }
+        }
+    }
+
+    public function display_links_view()
+    {
+        if (is_admin() && current_user_can('manage_options')) {
+            include(dirname(__DIR__) . '/views/admin/edit-links.php');
         }
     }
 
