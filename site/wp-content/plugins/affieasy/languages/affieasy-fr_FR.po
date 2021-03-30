@@ -360,3 +360,7 @@ msgstr "Le rendu pourra être légèrement différent on fonction du thème appl
 
 msgid "Save table"
 msgstr "Sauvegarder tableau"
+
+#Links edition
+msgid "Add new link"
+msgstr "Ajouter un lien"

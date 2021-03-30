@@ -269,6 +269,23 @@ class AFES_DbManager
         }
     }
 
+    /****************************** Link functions ******************************/
+
+    public function create_table_link()
+    {
+        require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+
+        dbDelta(" CREATE TABLE " . AFES_Constants::TABLE_LINK . " (
+			    id INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT,
+				webshopId INTEGER,
+			    linkText TEXT NOT NULL,
+				parameters JSON NOT NULL,
+			    generatedLink TEXT NOT NULL,
+				noFollow BOOLEAN NOT NULL DEFAULT TRUE,
+				FOREIGN KEY (webshopId) REFERENCES " . AFES_Constants::TABLE_WEBSHOP . "(id) ON DELETE CASCADE
+			);");
+    }
+    
     /****************************** Utils functions ******************************/
     private function table_row_content_to_table_content($tableRowContent)
     {

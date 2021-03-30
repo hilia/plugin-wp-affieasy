@@ -360,3 +360,7 @@ msgstr ""
 
 msgid "Save table"
 msgstr ""
+
+#Links edition
+msgid "Add new link"
+msgstr ""

@@ -5,6 +5,7 @@ namespace affieasy;
 class AFES_Constants {
     const TABLE_WEBSHOP = 'wp_affieasy_webshop';
     const TABLE_TABLE = 'wp_affieasy_table';
+    const TABLE_LINK = 'wp_affieasy_link';
 
     const ITEMS_PER_PAGE = 10;
 

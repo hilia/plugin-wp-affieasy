@@ -41,6 +41,10 @@ class AFES_AffiliationTableAdmin
         if (!$staticDbManager->table_exists(AFES_Constants::TABLE_TABLE)) {
             $staticDbManager->create_table_table();
         }
+
+        if (!$staticDbManager->table_exists(AFES_Constants::TABLE_LINK)) {
+            $staticDbManager->create_table_link();
+        }
     }
 
     public function add_menus_page_affiliation_table()
