@@ -30,8 +30,14 @@ msgstr "page de paiement"
 msgid "to take full advantage of the features available!"
 msgstr "pour bénéficier de toutes les fonctionnalités !"
 
+msgid "Webshop"
+msgstr "Boutique"
+
 msgid "Webshops"
 msgstr "Boutiques"
+
+msgid "Url"
+msgstr "Url"
 
 msgid "Tables"
 msgstr "Tableaux"
@@ -56,6 +62,9 @@ msgstr "Poids police"
 
 msgid "Id"
 msgstr "Id"
+
+msgid "Tag"
+msgstr "Tag"
 
 msgid "Name"
 msgstr "Nom"
@@ -247,9 +256,6 @@ msgstr "Mise à jour tableau"
 msgid "Table %1$s saved"
 msgstr "Tableau %1$s sauvegardé"
 
-msgid "Tag"
-msgstr "Tag"
-
 msgid "Put this tag in your page to include the table"
 msgstr "Ajouter ce tag dans une de vos pages pour afficher le tableau"
 
@@ -364,3 +370,9 @@ msgstr "Sauvegarder tableau"
 #Links edition
 msgid "Add new link"
 msgstr "Ajouter un lien"
+
+msgid "No Link found."
+msgstr "Aucun lien trouvé."
+
+msgid "Link label"
+msgstr "Libellé lien"

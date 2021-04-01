@@ -278,14 +278,27 @@ class AFES_DbManager
         dbDelta(" CREATE TABLE " . AFES_Constants::TABLE_LINK . " (
 			    id INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT,
 				webshopId INTEGER,
-			    linkText TEXT NOT NULL,
+			    label VARCHAR(255) NOT NULL,
 				parameters JSON NOT NULL,
-			    generatedLink TEXT NOT NULL,
+			    url TEXT NOT NULL,
 				noFollow BOOLEAN NOT NULL DEFAULT TRUE,
 				FOREIGN KEY (webshopId) REFERENCES " . AFES_Constants::TABLE_WEBSHOP . "(id) ON DELETE CASCADE
 			);");
     }
-    
+
+    public function get_link_page($currentPage, $perPage)
+    {
+        $sql = $this->db->prepare(
+            "SELECT tl.id as id, CONCAT('[" . AFES_Constants::LINK_TAG . " id=', tl.id, ']') as tag, tw.name as webshop, tl.label as label, tl.url as url 
+            FROM " . AFES_Constants::TABLE_LINK . " tl
+            INNER JOIN " . AFES_Constants::TABLE_WEBSHOP . " tw  
+            ON tl.webshopId = tw.id
+            ORDER BY tl.id DESC LIMIT %d, %d",
+            array((($currentPage - 1) * $perPage), $perPage));
+
+        return $this->db->get_results($sql, ARRAY_A);
+    }
+
     /****************************** Utils functions ******************************/
     private function table_row_content_to_table_content($tableRowContent)
     {

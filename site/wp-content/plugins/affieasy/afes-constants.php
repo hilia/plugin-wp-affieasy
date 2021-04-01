@@ -10,6 +10,7 @@ class AFES_Constants {
     const ITEMS_PER_PAGE = 10;
 
     const TABLE_TAG = 'affieasy_table_content';
+    const LINK_TAG = 'affieasy_link';
 
     const MANDATORY_URL_PARAM = 'product_url';
 

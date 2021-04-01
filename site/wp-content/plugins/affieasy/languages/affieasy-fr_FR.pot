@@ -30,7 +30,13 @@ msgstr ""
 msgid "to take full advantage of the features available!"
 msgstr ""
 
+msgid "Webshop"
+msgstr ""
+
 msgid "Webshops"
+msgstr ""
+
+msgid "Url"
 msgstr ""
 
 msgid "Tables"
@@ -49,6 +55,9 @@ msgid "Background color"
 msgstr ""
 
 msgid "Id"
+msgstr ""
+
+msgid "Tag"
 msgstr ""
 
 msgid "Font size"
@@ -247,9 +256,6 @@ msgstr ""
 msgid "Table %1$s saved"
 msgstr ""
 
-msgid "Tag"
-msgstr ""
-
 msgid "Put this tag in your page to include the table"
 msgstr ""
 
@@ -363,4 +369,10 @@ msgstr ""
 
 #Links edition
 msgid "Add new link"
+msgstr ""
+
+msgid "No Link found."
+msgstr ""
+
+msgid "Link label"
 msgstr ""
