@@ -376,3 +376,9 @@ msgstr ""
 
 msgid "Link label"
 msgstr ""
+
+msgid "No follow link"
+msgstr ""
+
+msgid "New link added"
+msgstr ""

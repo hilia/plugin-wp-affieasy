@@ -4,6 +4,7 @@ namespace affieasy;
 
 require_once 'class-afes-webshop.php';
 require_once 'class-afes-table.php';
+require_once 'class-afes-link.php';
 require_once 'class-afes-db-manager.php';
 require_once 'class-afes-utils.php';
 require_once 'class-afes-generation-utils.php';

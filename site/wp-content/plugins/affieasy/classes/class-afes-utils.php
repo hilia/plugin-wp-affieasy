@@ -18,7 +18,7 @@ class AFES_Utils
         foreach (json_decode(str_replace('\\', '', $headerOptions)) as $key => $value) {
             $sanitizedHeaderOptions->{sanitize_key($key)} = strpos($key, 'color') !== false || strpos($key, 'background') !== false  ?
                 sanitize_hex_color($value) :
-                sanitize_key($value);;
+                sanitize_key($value);
         }
 
         return $sanitizedHeaderOptions;
@@ -89,5 +89,16 @@ class AFES_Utils
         }
 
         return str_replace('"', '&quot;', json_encode($sanitizedLinks));
+    }
+
+    static function sanitize_parameters($parameters)
+    {
+        $sanitizedParameters = new stdClass();
+
+        foreach (json_decode(str_replace('\\', '', $parameters)) as $key => $value) {
+            $sanitizedParameters->{sanitize_key($key)} = sanitize_text_field($value);
+        }
+
+        return $sanitizedParameters;
     }
 }

@@ -299,6 +299,28 @@ class AFES_DbManager
         return $this->db->get_results($sql, ARRAY_A);
     }
 
+    public function edit_link($link)
+    {
+        require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+
+        $id = $link->getId();
+
+        $values = array(
+            "id" => $id,
+            "webshopId" => $link->getWebshopId(),
+            "label" => $link->getLabel(),
+            "parameters" => json_encode($link->getParameters()),
+            "url" => $link->getUrl(),
+            "noFollow" => $link->isNoFollow()
+        );
+
+        if (isset($id)) {
+            // TODO update
+        } else {
+            $this->db->insert(AFES_Constants::TABLE_LINK, $values);
+        }
+    }
+
     /****************************** Utils functions ******************************/
     private function table_row_content_to_table_content($tableRowContent)
     {
