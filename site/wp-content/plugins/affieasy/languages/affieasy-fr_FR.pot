@@ -371,6 +371,9 @@ msgstr ""
 msgid "Add new link"
 msgstr ""
 
+msgid "Edit link"
+msgstr ""
+
 msgid "No Link found."
 msgstr ""
 
@@ -381,6 +384,9 @@ msgid "No follow link"
 msgstr ""
 
 msgid "New link added"
+msgstr ""
+
+msgid "The link has been updated"
 msgstr ""
 
 msgid "Are you sure you want to delete the link?"

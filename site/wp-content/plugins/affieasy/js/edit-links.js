@@ -2,64 +2,80 @@ jQuery(($) => {
 
     let url = '';
 
+    // Add openEditModal on each delete link
+    $('.update-link').each(((index, element) => {
+        const jqueryElement = $(element);
+        jqueryElement.on('click', null, {
+            id: $(element).data('id'),
+            webshopId: $(element).data('webshopId'),
+            label: $(element).data('label'),
+            parameters: $(element).data('parameters'),
+            url: $(element).data('url'),
+            noFollow: $(element).data('noFollow')
+        }, openEditModal);
+    }));
+
     // Add openDeleteModal on each delete link
     $('.delete-link').each(((index, element) => {
         const jqueryElement = $(element);
         jqueryElement.on('click', null, {id: $(element).data('id')}, openDeleteModal);
     }));
 
-    function openDeleteModal(event) {
-        if (!!event && !!event.data && !isNaN(event.data.id)) {
-            $('#dialog-confirm-delete').dialog({
-                resizable: false,
-                width: 350,
-                modal: true,
-                buttons: {
-                    [translations.yes]: function () {
-                        $('#actionType').val('deletion');
-                        $('#id').val(event.data.id);
-                        $('#form').trigger('submit');
-                    },
-                    [translations.no]: function () {
-                        $(this).dialog('close');
-                    }
-                }
-            });
-        }
-    }
-
     $('#add-new-link').on('click', () => {
-        const cancel = () => function () {
-            $(this).dialog('close');
-        }
+        openEditModal();
+    });
 
-        let buttons;
+    $('#webshopIdParam').on('change', () => {
+        updateParameterInputs();
+    });
 
-        buttons = {
-            [translations.add]: editLink,
-            [translations.cancel] : cancel()
-        }
+    function openEditModal(event) {
+        const isEdition = !!event;
 
         $('#edit-link-modal').dialog({
             resizable: true,
             minWidth: 600,
-            title: translations.addNewLink,
+            title: isEdition ? translations.editLink : translations.addNewLink,
             modal: true,
-            buttons
+            buttons : {
+                [isEdition ? translations.edit : translations.add]: editLink,
+                [translations.cancel] : function () {
+                    $(this).dialog('close');
+                }
+            }
         });
 
-        $('#label').val("");
-        updateParameterInputs();
-    });
+        if (isEdition) {
+            const data = event.data;
 
-    $('#webshopId').on('change', () => {
-        updateParameterInputs();
-    });
+            $('#idParam').val(data.id);
+            $('#webshopIdParam').val(data.webshopId);
+            $('#labelParam').val(data.label);
+            $('#noFollowParam').prop('checked', data.noFollow === 1);
 
+            updateParameterInputs();
+
+            const parameters = JSON.parse(data.parameters.replaceAll("'", '"'));
+            Object.keys(parameters).forEach(key => {
+                $(`[data-parameter="${key}"]`).val(parameters[key]);
+            });
+
+            $('#p-overview').text(data.url);
+        } else {
+            $('#idParam').val('');
+            $("#webshopIdParam option:first").attr('selected','selected').trigger("change");
+            $('#labelParam').val('');
+            $('#noFollowParam').prop('checked', true);
+
+            updateParameterInputs();
+        }
+    }
+
+    // Add inputs depending on webshop parameters
     function updateParameterInputs() {
         $('.link-parameter-row').remove();
 
-        let selectedWebshop = $("#webshopId option:selected");
+        let selectedWebshop = $("#webshopIdParam option:selected");
         if (selectedWebshop) {
             url = selectedWebshop.data('url');
 
@@ -94,9 +110,29 @@ jQuery(($) => {
             parameters[jqueryInput.data('parameter')] = !!jqueryInput.val() ? jqueryInput.val() : jqueryInput.data('parameter');
         });
 
-        $('#parameters').val(JSON.stringify(parameters));
+        $('#parametersParam').val(JSON.stringify(parameters));
         $('#urlParam').val($('#p-overview').text());
 
         $('#form').trigger('submit');
+    }
+
+    function openDeleteModal(event) {
+        if (!!event && !!event.data && !isNaN(event.data.id)) {
+            $('#dialog-confirm-delete').dialog({
+                resizable: false,
+                width: 350,
+                modal: true,
+                buttons: {
+                    [translations.yes]: function () {
+                        $('#actionType').val('deletion');
+                        $('#idParam').val(event.data.id);
+                        $('#form').trigger('submit');
+                    },
+                    [translations.no]: function () {
+                        $(this).dialog('close');
+                    }
+                }
+            });
+        }
     }
 });

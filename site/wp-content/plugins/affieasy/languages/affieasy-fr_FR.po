@@ -371,6 +371,9 @@ msgstr "Sauvegarder tableau"
 msgid "Add new link"
 msgstr "Ajouter un lien"
 
+msgid "Edit link"
+msgstr "Modifier le lien"
+
 msgid "No Link found."
 msgstr "Aucun lien trouvé."
 
@@ -382,6 +385,9 @@ msgstr "Lien no follow"
 
 msgid "New link added"
 msgstr "Nouveau lien ajouté"
+
+msgid "The link has been updated"
+msgstr "Le lien a été mis à jour"
 
 msgid "Are you sure you want to delete the link?"
 msgstr "Êtes-vous sûr de vouloir supprimer ce lien ?"

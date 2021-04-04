@@ -289,7 +289,7 @@ class AFES_DbManager
     public function get_link_page($currentPage, $perPage)
     {
         $sql = $this->db->prepare(
-            "SELECT tl.id as id, CONCAT('[" . AFES_Constants::LINK_TAG . " id=', tl.id, ']') as tag, tw.name as webshop, tl.label as label, tl.url as url 
+            "SELECT tl.id as id, CONCAT('[" . AFES_Constants::LINK_TAG . " id=', tl.id, ']') as tag, tw.name as webshop, tl.webshopId as webshopId, tl.label as label, tl.parameters as parameters, tl.url as url, tl.noFollow as noFollow 
             FROM " . AFES_Constants::TABLE_LINK . " tl
             INNER JOIN " . AFES_Constants::TABLE_WEBSHOP . " tw  
             ON tl.webshopId = tw.id
@@ -315,7 +315,7 @@ class AFES_DbManager
         );
 
         if (isset($id)) {
-            // TODO update
+            $this->db->update(AFES_Constants::TABLE_LINK, $values, array("id" => $id));
         } else {
             $this->db->insert(AFES_Constants::TABLE_LINK, $values);
         }

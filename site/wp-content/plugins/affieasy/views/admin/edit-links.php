@@ -35,7 +35,9 @@ wp_enqueue_script(
 
 wp_localize_script('edit-links-script', 'translations', array(
     'addNewLink' => esc_html__('Add new link', 'affieasy'),
+    'editLink' => esc_html__('Edit link', 'affieasy'),
     'add' => esc_html__('Add', 'affieasy'),
+    'edit' => esc_html__('Edit', 'affieasy'),
     'cancel' => esc_html__('Cancel', 'affieasy'),
     'yes' => esc_html__('Yes', 'affieasy'),
     'no' => esc_html__('No', 'affieasy'),
@@ -44,7 +46,7 @@ wp_localize_script('edit-links-script', 'translations', array(
 $dbManager = new AFES_DbManager();
 
 $actionType = isset($_POST['actionType']) ? sanitize_key($_POST['actionType']) : null;
-$id = isset($_POST['id']) && is_numeric($_POST['id']) ? intval(sanitize_key($_POST['id'])) : null;
+$id = isset($_POST['idParam']) && is_numeric($_POST['idParam']) ? intval(sanitize_key($_POST['idParam'])) : null;
 
 if (isset($actionType)) {
     if ($actionType === 'deletion' && isset($id) && is_numeric($id)) {
@@ -52,11 +54,11 @@ if (isset($actionType)) {
     } else if ($actionType === 'edition') {
         $dbManager->edit_link(new AFES_Link(
             $id,
-            isset($_POST['webshopId']) ? sanitize_key($_POST['webshopId']) : null,
-            isset($_POST['label']) ? sanitize_text_field($_POST['label']) : null,
-            isset($_POST['parameters']) ? AFES_Utils::sanitize_parameters($_POST['parameters']) : null,
+            isset($_POST['webshopIdParam']) ? sanitize_key($_POST['webshopIdParam']) : null,
+            isset($_POST['labelParam']) ? sanitize_text_field($_POST['labelParam']) : null,
+            isset($_POST['parametersParam']) ? AFES_Utils::sanitize_parameters($_POST['parametersParam']) : null,
             isset($_POST['urlParam']) ? esc_url_raw(str_replace('[', '', str_replace(']', '', $_POST['urlParam']))) : null,
-            isset($_POST['noFollow']) ? sanitize_key($_POST['noFollow']) === 'on' : false,
+            isset($_POST['noFollowParam']) ? sanitize_key($_POST['noFollowParam']) === 'on' : false,
         ));
     }
 }
@@ -72,20 +74,20 @@ $webshops = $dbManager->get_webshop_list();
 
 <div id="edit-link-modal" hidden>
     <form id="form" class="validate" method="post">
-        <input type="hidden" id="id" name="id" value="">
+        <input type="hidden" id="idParam" name="idParam" value="">
         <input type="hidden" id="actionType" name="actionType" value="edition">
-        <input type="hidden" id="parameters" name="parameters" value="">
+        <input type="hidden" id="parametersParam" name="parametersParam" value="">
         <input type="hidden" id="urlParam" name="urlParam" value="">
         <table class="form-table">
             <tbody>
             <tr>
                 <th scope="row">
-                    <label for="webshopId">
+                    <label for="webshopIdParam">
                         <?php esc_html_e('Webshop', 'affieasy'); ?>
                     </label>
                 </th>
                 <td>
-                    <select id="webshopId" name="webshopId" class="width-100">
+                    <select id="webshopIdParam" name="webshopIdParam" class="width-100">
                         <?php foreach ($webshops as $webshop) { ?>
                             <option
                                     value="<?php echo $webshop->getId(); ?>"
@@ -99,28 +101,28 @@ $webshops = $dbManager->get_webshop_list();
             </tr>
             <tr>
                 <th scope="row">
-                    <label for="label">
+                    <label for="labelParam">
                         <?php esc_html_e('Link label', 'affieasy'); ?>
                     </label>
                 </th>
                 <td>
                     <input
-                            id="label"
-                            name="label"
+                            id="labelParam"
+                            name="labelParam"
                             type="text"
-                            class="label width-100"
+                            class="width-100"
                             maxlength="255"
                             value="">
                 </td>
             </tr>
             <tr id="no-follow-row">
                 <th scope="row">
-                    <label for="noFollow">
+                    <label for="noFollowParam">
                         <?php esc_html_e('No follow link', 'affieasy'); ?>
                     </label>
                 </th>
                 <td>
-                    <input type="checkbox" id="noFollow" name="noFollow" checked>
+                    <input type="checkbox" id="noFollowParam" name="noFollowParam" checked>
                 </td>
             </tr>
             <tr>
@@ -155,7 +157,7 @@ $webshops = $dbManager->get_webshop_list();
                     <?php if ($actionType === 'deletion') {
                         esc_html_e('The link has been deleted', 'affieasy');
                     } else {
-                        esc_html_e('New link added', 'affieasy');
+                        esc_html_e(isset($id) ? 'The link has been updated' : 'New link added', 'affieasy');
                     }
                     ?>
                 </strong>
