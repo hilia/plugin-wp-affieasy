@@ -37,30 +37,43 @@ wp_localize_script('edit-links-script', 'translations', array(
     'addNewLink' => esc_html__('Add new link', 'affieasy'),
     'add' => esc_html__('Add', 'affieasy'),
     'cancel' => esc_html__('Cancel', 'affieasy'),
+    'yes' => esc_html__('Yes', 'affieasy'),
+    'no' => esc_html__('No', 'affieasy'),
 ));
 
 $dbManager = new AFES_DbManager();
 
-$isFromSaveAction = isset($_POST['edition']) ? $_POST['edition'] === "1" : false;
-$id = isset($_POST['id']) ? sanitize_key($_POST['id']) : null;
+$actionType = isset($_POST['actionType']) ? sanitize_key($_POST['actionType']) : null;
+$id = isset($_POST['id']) && is_numeric($_POST['id']) ? intval(sanitize_key($_POST['id'])) : null;
 
-if ($isFromSaveAction) {
-    $dbManager->edit_link(new AFES_Link(
-        $id,
-        isset($_POST['webshopId']) ? sanitize_key($_POST['webshopId']) : null,
-        isset($_POST['label']) ? sanitize_text_field($_POST['label']) : null,
-        isset($_POST['parameters']) ? AFES_Utils::sanitize_parameters($_POST['parameters']) : null,
-        isset($_POST['urlParam']) ? esc_url_raw(str_replace('[', '', str_replace(']', '', $_POST['urlParam']))) : null,
-        isset($_POST['noFollow']) ? sanitize_key($_POST['noFollow']) === 'on' : false,
-    ));
+if (isset($actionType)) {
+    if ($actionType === 'deletion' && isset($id) && is_numeric($id)) {
+        $dbManager->delete_link($id);
+    } else if ($actionType === 'edition') {
+        $dbManager->edit_link(new AFES_Link(
+            $id,
+            isset($_POST['webshopId']) ? sanitize_key($_POST['webshopId']) : null,
+            isset($_POST['label']) ? sanitize_text_field($_POST['label']) : null,
+            isset($_POST['parameters']) ? AFES_Utils::sanitize_parameters($_POST['parameters']) : null,
+            isset($_POST['urlParam']) ? esc_url_raw(str_replace('[', '', str_replace(']', '', $_POST['urlParam']))) : null,
+            isset($_POST['noFollow']) ? sanitize_key($_POST['noFollow']) === 'on' : false,
+        ));
+    }
 }
 
 $webshops = $dbManager->get_webshop_list();
 ?>
 
+<div id="dialog-confirm-delete" title="<?php esc_html_e('Confirmation', 'affieasy'); ?>" hidden>
+    <p>
+        <?php esc_html_e('Are you sure you want to delete the link?', 'affieasy'); ?>
+    </p>
+</div>
+
 <div id="edit-link-modal" hidden>
     <form id="form" class="validate" method="post">
-        <input type="hidden" id="edition" name="edition" value="1">
+        <input type="hidden" id="id" name="id" value="">
+        <input type="hidden" id="actionType" name="actionType" value="edition">
         <input type="hidden" id="parameters" name="parameters" value="">
         <input type="hidden" id="urlParam" name="urlParam" value="">
         <table class="form-table">
@@ -136,9 +149,17 @@ $webshops = $dbManager->get_webshop_list();
 
     <hr class="wp-header-end">
 
-    <?php if ($isFromSaveAction) { ?>
+    <?php if (isset($actionType)) { ?>
         <div id="message" class="notice notice-success is-dismissible">
-            <p><strong><?php esc_html_e('New link added', 'affieasy'); ?></strong></p>
+            <p><strong>
+                    <?php if ($actionType === 'deletion') {
+                        esc_html_e('The link has been deleted', 'affieasy');
+                    } else {
+                        esc_html_e('New link added', 'affieasy');
+                    }
+                    ?>
+                </strong>
+            </p>
         </div>
     <?php } ?>
 

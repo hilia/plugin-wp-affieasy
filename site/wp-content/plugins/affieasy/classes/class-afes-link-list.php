@@ -36,6 +36,16 @@ class AFES_LinkList extends WP_List_Table
         ];
     }
 
+    function column_tag($item)
+    {
+        return sprintf('%1$s %2$s',
+            $item['tag'],
+            $this->row_actions(array(
+                'delete' => sprintf('<a href="#" class="delete-link" data-id="' . $item['id'] . '">' . esc_html__('Delete', 'affieasy') . '</a>'),
+            ))
+        );
+    }
+
     function column_default($item, $column_name)
     {
         return stripslashes($item[$column_name]);

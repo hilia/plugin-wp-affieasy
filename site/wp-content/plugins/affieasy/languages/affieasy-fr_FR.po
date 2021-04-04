@@ -382,3 +382,9 @@ msgstr "Lien no follow"
 
 msgid "New link added"
 msgstr "Nouveau lien ajouté"
+
+msgid "Are you sure you want to delete the link?"
+msgstr "Êtes-vous sûr de vouloir supprimer ce lien ?"
+
+msgid "The link has been deleted"
+msgstr "Le lien a été supprimé"

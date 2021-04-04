@@ -2,6 +2,32 @@ jQuery(($) => {
 
     let url = '';
 
+    // Add openDeleteModal on each delete link
+    $('.delete-link').each(((index, element) => {
+        const jqueryElement = $(element);
+        jqueryElement.on('click', null, {id: $(element).data('id')}, openDeleteModal);
+    }));
+
+    function openDeleteModal(event) {
+        if (!!event && !!event.data && !isNaN(event.data.id)) {
+            $('#dialog-confirm-delete').dialog({
+                resizable: false,
+                width: 350,
+                modal: true,
+                buttons: {
+                    [translations.yes]: function () {
+                        $('#actionType').val('deletion');
+                        $('#id').val(event.data.id);
+                        $('#form').trigger('submit');
+                    },
+                    [translations.no]: function () {
+                        $(this).dialog('close');
+                    }
+                }
+            });
+        }
+    }
+
     $('#add-new-link').on('click', () => {
         const cancel = () => function () {
             $(this).dialog('close');
@@ -10,7 +36,7 @@ jQuery(($) => {
         let buttons;
 
         buttons = {
-            [translations.add]: createLink,
+            [translations.add]: editLink,
             [translations.cancel] : cancel()
         }
 
@@ -60,14 +86,13 @@ jQuery(($) => {
         }
     }
 
-    function createLink() {
+    function editLink() {
         const parameters = {};
 
         $('.link-parameter-input').each((colIndex, input) => {
             const jqueryInput = $(input);
             parameters[jqueryInput.data('parameter')] = !!jqueryInput.val() ? jqueryInput.val() : jqueryInput.data('parameter');
         });
-
 
         $('#parameters').val(JSON.stringify(parameters));
         $('#urlParam').val($('#p-overview').text());

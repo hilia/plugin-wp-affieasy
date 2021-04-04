@@ -321,6 +321,10 @@ class AFES_DbManager
         }
     }
 
+    public function delete_link($id) {
+        $this->db->delete(AFES_Constants::TABLE_LINK, array('id' => $id));
+    }
+
     /****************************** Utils functions ******************************/
     private function table_row_content_to_table_content($tableRowContent)
     {

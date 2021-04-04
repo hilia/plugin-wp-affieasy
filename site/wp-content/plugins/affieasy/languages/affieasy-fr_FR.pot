@@ -382,3 +382,9 @@ msgstr ""
 
 msgid "New link added"
 msgstr ""
+
+msgid "Are you sure you want to delete the link?"
+msgstr ""
+
+msgid "The link has been deleted"
+msgstr ""
