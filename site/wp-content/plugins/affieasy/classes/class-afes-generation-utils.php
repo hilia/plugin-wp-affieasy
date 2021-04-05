@@ -67,6 +67,14 @@ class AFES_GenerationUtils
         }
     }
 
+    // Generate link
+    static function generate_link($link)
+    {
+        if (isset($link) && is_numeric($link->getId())) { ?>
+            <a href="<?php echo esc_url_raw($link->getUrl()) ?>" <?php echo $link->isNoFollow() === "1" ? 'rel=nofollow' : '' ?>><?php echo sanitize_text_field($link->getLabel()); ?></a>
+        <?php }
+    }
+
     private static function generate_main_table(
         $table,
         $isTableWithBothHeader,

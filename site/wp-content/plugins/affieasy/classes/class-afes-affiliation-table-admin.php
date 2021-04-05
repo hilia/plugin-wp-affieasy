@@ -21,6 +21,7 @@ class AFES_AffiliationTableAdmin
         add_action('admin_menu', array($this, 'add_menus_page_affiliation_table'));
 
         add_shortcode(AFES_Constants::TABLE_TAG, array($this, 'affieasy_table_content_callback'));
+        add_shortcode(AFES_Constants::LINK_TAG, array($this, 'affieasy_link_content_callback'));
 
         add_action('wp_enqueue_scripts', function () {
             wp_enqueue_style('dashicons');
@@ -136,6 +137,17 @@ class AFES_AffiliationTableAdmin
             <h6><?php esc_html_e('Table not found.', 'affieasy'); ?></h6>
         <?php } else {
             AFES_GenerationUtils::generate_table($table);
+        }
+
+        return ob_get_clean();
+    }
+
+    public function affieasy_link_content_callback($atts) {
+        ob_start();
+
+        $link = $this->dbManager->get_link_by_id(intval($atts['id']));
+        if (isset($link)) {
+            AFES_GenerationUtils::generate_link($link);
         }
 
         return ob_get_clean();
