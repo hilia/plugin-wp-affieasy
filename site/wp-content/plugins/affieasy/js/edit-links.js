@@ -60,7 +60,13 @@ jQuery(($) => {
                 $(`[data-parameter="${key}"]`).val(parameters[key]);
             });
 
-            $('#p-overview').text(data.url);
+            recalculateLink({
+               data: {
+                   url: $("#webshopIdParam option:selected").data('url'),
+                   parametersSelector: '.link-parameter-input',
+                   linkOverviewSelector: '#p-overview'
+               }
+            });
         } else {
             $('#idParam').val('');
             $("#webshopIdParam option:first").attr('selected','selected').trigger("change");
@@ -107,7 +113,7 @@ jQuery(($) => {
 
         $('.link-parameter-input').each((colIndex, input) => {
             const jqueryInput = $(input);
-            parameters[jqueryInput.data('parameter')] = !!jqueryInput.val() ? jqueryInput.val() : jqueryInput.data('parameter');
+            parameters[jqueryInput.data('parameter')] = !!jqueryInput.val() ? jqueryInput.val() : '';
         });
 
         $('#parametersParam').val(JSON.stringify(parameters));

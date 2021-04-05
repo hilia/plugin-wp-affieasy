@@ -75,7 +75,7 @@ class AFES_Utils
                 if ($key === 'id') {
                     $value = intval(sanitize_text_field($value));
                 } else if ($key === 'url') {
-                    $value = esc_url_raw($value);
+                    $value = esc_url_raw(str_replace('[', '', str_replace(']', '', preg_replace('/\[[\s\S]+?]/', '', $value))));
                 } else if (in_array($key, array('color', 'background'))) {
                     $value = sanitize_hex_color($value);
                 } else {

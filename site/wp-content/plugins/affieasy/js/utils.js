@@ -15,16 +15,20 @@ function recalculateLink(event) {
     if (event && event.data) {
         let data = event.data;
         let url = data.url;
-        Array.from(document.querySelectorAll(event.data.parametersSelector)).forEach(input => {
-            if (input && input.value) {
-                const cleanedValue = removeSpecialCharsFromUrlParameter(input.value);
-                input.value = cleanedValue;
+        Array.from(document.querySelectorAll(data.parametersSelector)).forEach(input => {
+            if (input) {
+                let cleanedValue = '';
 
-                url = url.replace(`[[${input.dataset.parameter}]]`, cleanedValue);
+                if (input.value) {
+                    cleanedValue = removeSpecialCharsFromUrlParameter(input.value);
+                    url = url.replace(`[[${input.dataset.parameter}]]`, cleanedValue);
+                }
+
+                input.value = cleanedValue;
             }
         });
 
-        const pOverview = document.querySelector(event.data.linkOverviewSelector);
+        const pOverview = document.querySelector(data.linkOverviewSelector);
         if (pOverview) {
             pOverview.textContent = url;
         }

@@ -57,8 +57,8 @@ if (isset($actionType)) {
             isset($_POST['webshopIdParam']) ? sanitize_key($_POST['webshopIdParam']) : null,
             isset($_POST['labelParam']) ? sanitize_text_field($_POST['labelParam']) : null,
             isset($_POST['parametersParam']) ? AFES_Utils::sanitize_parameters($_POST['parametersParam']) : null,
-            isset($_POST['urlParam']) ? esc_url_raw(str_replace('[', '', str_replace(']', '', $_POST['urlParam']))) : null,
-            isset($_POST['noFollowParam']) ? sanitize_key($_POST['noFollowParam']) === 'on' : false,
+            isset($_POST['urlParam']) ? esc_url_raw(str_replace('[', '', str_replace(']', '', preg_replace('/\[[\s\S]+?]/', '', $_POST['urlParam'])))) : null,
+            isset($_POST['noFollowParam']) ? sanitize_key($_POST['noFollowParam']) === 'on' : false
         ));
     }
 }
