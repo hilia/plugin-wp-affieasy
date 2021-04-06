@@ -47,6 +47,15 @@ class AFES_LinkList extends WP_List_Table
         );
     }
 
+    public function get_sortable_columns()
+    {
+        return array(
+            'tag' => array('tag', false),
+            'webshop' => array('webshop', false),
+            'label' => array('label', false),
+            'url' => array('url', false));
+    }
+
     function column_default($item, $column_name)
     {
         return stripslashes($item[$column_name]);
@@ -56,10 +65,15 @@ class AFES_LinkList extends WP_List_Table
     {
         $per_page = AFES_Constants::ITEMS_PER_PAGE;
         $total_items = $this->dbManager->get_table_count(AFES_Constants::TABLE_LINK);
-        $data = $this->dbManager->get_link_page($this->get_pagenum(), $per_page);
+
+        $data = $this->dbManager->get_link_page(
+            $this->get_pagenum(),
+            $per_page,
+            isset($_GET['orderby']) ? sanitize_key($_GET['orderby']) : null,
+            isset($_GET['order']) ? sanitize_key($_GET['order']) : null);
 
         $this->items = $data;
-        $this->_column_headers = array($this->get_columns(), array(), array());
+        $this->_column_headers = array($this->get_columns(), array(), $this->get_sortable_columns());
         $this->set_pagination_args(array(
             'total_items' => $total_items,
             'per_page' => $per_page,

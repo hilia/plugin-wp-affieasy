@@ -286,14 +286,30 @@ class AFES_DbManager
 			);");
     }
 
-    public function get_link_page($currentPage, $perPage)
+    public function get_link_page($currentPage, $perPage, $orderBy, $order)
     {
+        switch ($orderBy) {
+            case 'webshop':
+                $orderBy = 'tw.name';
+                break;
+            case 'label':
+                $orderBy = 'tl.label';
+                break;
+            case 'url':
+                $orderBy = 'tl.url';
+                break;
+            default :
+                $orderBy = 'tl.id';
+        }
+
+        $order = in_array($order, array('asc', 'desc')) ? $order : 'asc';
+
         $sql = $this->db->prepare(
             "SELECT tl.id as id, CONCAT('[" . AFES_Constants::LINK_TAG . " id=', tl.id, ']') as tag, tw.name as webshop, tl.webshopId as webshopId, tl.label as label, tl.parameters as parameters, tl.url as url, tl.noFollow as noFollow 
             FROM " . AFES_Constants::TABLE_LINK . " tl
             INNER JOIN " . AFES_Constants::TABLE_WEBSHOP . " tw  
             ON tl.webshopId = tw.id
-            ORDER BY tl.id DESC LIMIT %d, %d",
+            ORDER BY " . $orderBy . " " . $order .  " LIMIT %d, %d",
             array((($currentPage - 1) * $perPage), $perPage));
 
         return $this->db->get_results($sql, ARRAY_A);
