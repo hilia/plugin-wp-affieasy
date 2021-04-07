@@ -2,6 +2,19 @@ jQuery(($) => {
 
     let url = '';
 
+    // Remove wordpress search event and add a custom new one
+    $('#search-submit')
+        .removeAttr("type")
+        .attr("type", "button")
+        .off()
+        .on('click', () => search());
+
+    $('#affieasy-search-input').on('keypress', (event) => {
+        if (event.key === 'Enter') {
+            search();
+        }
+    });
+
     // Add openEditModal on each delete link
     $('.update-link').each(((index, element) => {
         const jqueryElement = $(element);
@@ -28,6 +41,24 @@ jQuery(($) => {
     $('#webshopIdParam').on('change', () => {
         updateParameterInputs();
     });
+
+    function search() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const searchValue = $('#affieasy-search-input').val();
+
+        let isSearchFilled = false;
+        const params = [];
+        urlParams.forEach((value, key) => {
+            params.push(`${key}=${key === 's' ? searchValue : value}`);
+            isSearchFilled = isSearchFilled || key === 's';
+        });
+
+        if (!isSearchFilled) {
+            params.push('s=' + searchValue);
+        }
+
+        window.location.href = location.protocol + '//' + location.host + location.pathname + "?" +  params.join('&');
+    }
 
     function openEditModal(event) {
         const isEdition = !!event;

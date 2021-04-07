@@ -394,3 +394,6 @@ msgstr "Êtes-vous sûr de vouloir supprimer ce lien ?"
 
 msgid "The link has been deleted"
 msgstr "Le lien a été supprimé"
+
+msgid "Search links"
+msgstr "Rechercher des liens"

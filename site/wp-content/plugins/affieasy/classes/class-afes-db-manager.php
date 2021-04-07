@@ -286,7 +286,31 @@ class AFES_DbManager
 			);");
     }
 
-    public function get_link_page($currentPage, $perPage, $orderBy, $order)
+    public function get_link_count($search)
+    {
+        $sqlSearch = '';
+        $sqlParameters = array();
+        if (isset($search)) {
+            $sqlSearch = "WHERE tw.name LIKE CONCAT('%',%s,'%') OR tl.label LIKE CONCAT('%',%s,'%') OR tl.url LIKE CONCAT('%',%s,'%')";
+            array_push($sqlParameters, $search, $search, $search);
+
+            if (is_numeric($search)) {
+                $sqlSearch .= "OR tl.id = %d";
+                array_push($sqlParameters, intval($search));
+            }
+        }
+
+        $sql = $this->db->prepare(
+            "SELECT COUNT(*) AS number
+            FROM " . AFES_Constants::TABLE_LINK . " tl
+            INNER JOIN " . AFES_Constants::TABLE_WEBSHOP . " tw  
+            ON tl.webshopId = tw.id " . $sqlSearch,
+            $sqlParameters);
+
+        return intval($this->db->get_results($sql, ARRAY_A)[0]['number']);
+    }
+
+    public function get_link_page($currentPage, $perPage, $orderBy, $order, $search)
     {
         switch ($orderBy) {
             case 'webshop':
@@ -304,13 +328,27 @@ class AFES_DbManager
 
         $order = in_array($order, array('asc', 'desc')) ? $order : 'asc';
 
+        $sqlSearch = '';
+        $sqlParameters = array();
+        if (isset($search)) {
+            $sqlSearch = "WHERE tw.name LIKE CONCAT('%',%s,'%') OR tl.label LIKE CONCAT('%',%s,'%') OR tl.url LIKE CONCAT('%',%s,'%')";
+            array_push($sqlParameters, $search, $search, $search);
+
+            if (is_numeric($search)) {
+                $sqlSearch .= "OR tl.id = %d";
+                array_push($sqlParameters, intval($search));
+            }
+        }
+
+        array_push($sqlParameters, (($currentPage - 1) * $perPage), $perPage);
+
         $sql = $this->db->prepare(
             "SELECT tl.id as id, CONCAT('[" . AFES_Constants::LINK_TAG . " id=', tl.id, ']') as tag, tw.name as webshop, tl.webshopId as webshopId, tl.label as label, tl.parameters as parameters, tl.url as url, tl.noFollow as noFollow 
             FROM " . AFES_Constants::TABLE_LINK . " tl
             INNER JOIN " . AFES_Constants::TABLE_WEBSHOP . " tw  
-            ON tl.webshopId = tw.id
+            ON tl.webshopId = tw.id " . $sqlSearch . " 
             ORDER BY " . $orderBy . " " . $order .  " LIMIT %d, %d",
-            array((($currentPage - 1) * $perPage), $perPage));
+            $sqlParameters);
 
         return $this->db->get_results($sql, ARRAY_A);
     }

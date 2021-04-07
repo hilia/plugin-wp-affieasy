@@ -147,6 +147,17 @@ $webshops = $dbManager->get_webshop_list();
         <button type="button" id="add-new-link" class="page-title-action">
             <?php esc_html_e('Add new link', 'affieasy'); ?>
         </button>
+
+        <?php
+        if (isset($_REQUEST['s']) && strlen($_REQUEST['s'])) {
+            echo '<span class="subtitle">';
+            printf(
+                __('Search results for: %s'),
+                '<strong>' . esc_html($_REQUEST['s']) . '</strong>'
+            );
+            echo '</span>';
+        }
+        ?>
     </div>
 
     <hr class="wp-header-end">
@@ -168,6 +179,7 @@ $webshops = $dbManager->get_webshop_list();
     <form method="GET">
         <?php
         $linkList->prepare_items();
+        $linkList->search_box(esc_html__('Search links', 'affieasy'), 'affieasy');
         $linkList->display();
         ?>
     </form>

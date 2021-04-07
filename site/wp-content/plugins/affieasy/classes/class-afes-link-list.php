@@ -64,13 +64,19 @@ class AFES_LinkList extends WP_List_Table
     public function prepare_items()
     {
         $per_page = AFES_Constants::ITEMS_PER_PAGE;
-        $total_items = $this->dbManager->get_table_count(AFES_Constants::TABLE_LINK);
+
+        $search = isset($_GET['s']) ? sanitize_text_field($_GET['s']) : null;
+        $total_items = $search === null ?
+            $this->dbManager->get_table_count(AFES_Constants::TABLE_LINK) :
+            $this->dbManager->get_link_count($search);
 
         $data = $this->dbManager->get_link_page(
             $this->get_pagenum(),
             $per_page,
             isset($_GET['orderby']) ? sanitize_key($_GET['orderby']) : null,
-            isset($_GET['order']) ? sanitize_key($_GET['order']) : null);
+            isset($_GET['order']) ? sanitize_key($_GET['order']) : null,
+            $search
+        );
 
         $this->items = $data;
         $this->_column_headers = array($this->get_columns(), array(), $this->get_sortable_columns());

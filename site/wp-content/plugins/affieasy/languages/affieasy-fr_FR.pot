@@ -394,3 +394,6 @@ msgstr ""
 
 msgid "The link has been deleted"
 msgstr ""
+
+msgid "Search links"
+msgstr ""
