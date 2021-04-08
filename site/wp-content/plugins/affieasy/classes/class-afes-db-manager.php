@@ -279,6 +279,7 @@ class AFES_DbManager
 			    id INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT,
 				webshopId INTEGER,
 			    label VARCHAR(255) NOT NULL,
+			    category VARCHAR(255) NOT NULL,
 				parameters JSON NOT NULL,
 			    url TEXT NOT NULL,
 				noFollow BOOLEAN NOT NULL DEFAULT TRUE,
@@ -291,8 +292,8 @@ class AFES_DbManager
         $sqlSearch = '';
         $sqlParameters = array();
         if (isset($search)) {
-            $sqlSearch = "WHERE tw.name LIKE CONCAT('%',%s,'%') OR tl.label LIKE CONCAT('%',%s,'%') OR tl.url LIKE CONCAT('%',%s,'%')";
-            array_push($sqlParameters, $search, $search, $search);
+            $sqlSearch = "WHERE tw.name LIKE CONCAT('%',%s,'%') OR tl.label LIKE CONCAT('%',%s,'%') OR tl.category LIKE CONCAT('%',%s,'%') OR tl.url LIKE CONCAT('%',%s,'%')";
+            array_push($sqlParameters, $search, $search, $search, $search);
 
             if (is_numeric($search)) {
                 $sqlSearch .= "OR tl.id = %d";
@@ -319,6 +320,9 @@ class AFES_DbManager
             case 'label':
                 $orderBy = 'tl.label';
                 break;
+            case 'category':
+                $orderBy = 'tl.category';
+                break;
             case 'url':
                 $orderBy = 'tl.url';
                 break;
@@ -331,8 +335,8 @@ class AFES_DbManager
         $sqlSearch = '';
         $sqlParameters = array();
         if (isset($search)) {
-            $sqlSearch = "WHERE tw.name LIKE CONCAT('%',%s,'%') OR tl.label LIKE CONCAT('%',%s,'%') OR tl.url LIKE CONCAT('%',%s,'%')";
-            array_push($sqlParameters, $search, $search, $search);
+            $sqlSearch = "WHERE tw.name LIKE CONCAT('%',%s,'%') OR tl.label LIKE CONCAT('%',%s,'%') OR tl.category LIKE CONCAT('%',%s,'%') OR tl.url LIKE CONCAT('%',%s,'%')";
+            array_push($sqlParameters, $search, $search, $search, $search);
 
             if (is_numeric($search)) {
                 $sqlSearch .= "OR tl.id = %d";
@@ -343,7 +347,7 @@ class AFES_DbManager
         array_push($sqlParameters, (($currentPage - 1) * $perPage), $perPage);
 
         $sql = $this->db->prepare(
-            "SELECT tl.id as id, CONCAT('[" . AFES_Constants::LINK_TAG . " id=', tl.id, ']') as tag, tw.name as webshop, tl.webshopId as webshopId, tl.label as label, tl.parameters as parameters, tl.url as url, tl.noFollow as noFollow 
+            "SELECT tl.id as id, CONCAT('[" . AFES_Constants::LINK_TAG . " id=', tl.id, ']') as tag, tw.name as webshop, tl.webshopId as webshopId, tl.label as label, tl.category as category, tl.parameters as parameters, tl.url as url, tl.noFollow as noFollow 
             FROM " . AFES_Constants::TABLE_LINK . " tl
             INNER JOIN " . AFES_Constants::TABLE_WEBSHOP . " tw  
             ON tl.webshopId = tw.id " . $sqlSearch . " 
@@ -366,6 +370,7 @@ class AFES_DbManager
             $link->id,
             $link->webshopId,
             $link->label,
+            $link->category,
             $link->parameters,
             $link->url,
             $link->noFollow
@@ -382,6 +387,7 @@ class AFES_DbManager
             "id" => $id,
             "webshopId" => $link->getWebshopId(),
             "label" => $link->getLabel(),
+            "category" => $link->getCategory(),
             "parameters" => json_encode($link->getParameters()),
             "url" => $link->getUrl(),
             "noFollow" => $link->isNoFollow()

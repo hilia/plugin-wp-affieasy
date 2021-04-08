@@ -56,6 +56,7 @@ if (isset($actionType)) {
             $id,
             isset($_POST['webshopIdParam']) ? sanitize_key($_POST['webshopIdParam']) : null,
             isset($_POST['labelParam']) ? sanitize_text_field($_POST['labelParam']) : null,
+            isset($_POST['categoryParam']) ? sanitize_text_field($_POST['categoryParam']) : null,
             isset($_POST['parametersParam']) ? AFES_Utils::sanitize_parameters($_POST['parametersParam']) : null,
             isset($_POST['urlParam']) ? esc_url_raw(str_replace('[', '', str_replace(']', '', preg_replace('/\[[\s\S]+?]/', '', $_POST['urlParam'])))) : null,
             isset($_POST['noFollowParam']) ? sanitize_key($_POST['noFollowParam']) === 'on' : false
@@ -109,6 +110,22 @@ $webshops = $dbManager->get_webshop_list();
                     <input
                             id="labelParam"
                             name="labelParam"
+                            type="text"
+                            class="width-100"
+                            maxlength="255"
+                            value="">
+                </td>
+            </tr>
+            <tr>
+                <th scope="row">
+                    <label for="categoryParam">
+                        <?php esc_html_e('Category', 'affieasy'); ?>
+                    </label>
+                </th>
+                <td>
+                    <input
+                            id="categoryParam"
+                            name="categoryParam"
                             type="text"
                             class="width-100"
                             maxlength="255"

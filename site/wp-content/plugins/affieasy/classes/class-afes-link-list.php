@@ -31,7 +31,8 @@ class AFES_LinkList extends WP_List_Table
         return [
             'tag' => esc_html__('Tag', 'affieasy'),
             'webshop' => esc_html__('Webshop', 'affieasy'),
-            'label'  => esc_html__('Link label', 'affieasy'),
+            'label' => esc_html__('Link label', 'affieasy'),
+            'category' => esc_html__('Category', 'affieasy'),
             'url'  => esc_html__('Url', 'affieasy'),
         ];
     }
@@ -41,7 +42,7 @@ class AFES_LinkList extends WP_List_Table
         return sprintf('%1$s %2$s',
             $item['tag'],
             $this->row_actions(array(
-                'edit' => sprintf('<a href="#" class="update-link" data-id="' . $item['id'] . '" data-webshop-id="' . $item['webshopId'] . '" data-label="' . $item['label'] . '" data-parameters="' . str_replace('"', "'", $item['parameters']) . '" data-url="' . $item['url'] . '" data-no-follow="' . $item['noFollow'] . '">' . esc_html__('Edit', 'affieasy') . '</a>'),
+                'edit' => sprintf('<a href="#" class="update-link" data-id="' . $item['id'] . '" data-webshop-id="' . $item['webshopId'] . '" data-label="' . $item['label'] . '" data-category="' . $item['category'] . '" data-parameters="' . str_replace('"', "'", $item['parameters']) . '" data-url="' . $item['url'] . '" data-no-follow="' . $item['noFollow'] . '">' . esc_html__('Edit', 'affieasy') . '</a>'),
                 'delete' => sprintf('<a href="#" class="delete-link" data-id="' . $item['id'] . '">' . esc_html__('Delete', 'affieasy') . '</a>'),
             ))
         );
@@ -53,6 +54,7 @@ class AFES_LinkList extends WP_List_Table
             'tag' => array('tag', false),
             'webshop' => array('webshop', false),
             'label' => array('label', false),
+            'category' => array('category', false),
             'url' => array('url', false));
     }
 

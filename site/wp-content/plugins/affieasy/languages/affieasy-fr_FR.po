@@ -380,6 +380,9 @@ msgstr "Aucun lien trouvé."
 msgid "Link label"
 msgstr "Libellé lien"
 
+msgid "Category"
+msgstr "Categorie"
+
 msgid "No follow link"
 msgstr "Lien no follow"
 

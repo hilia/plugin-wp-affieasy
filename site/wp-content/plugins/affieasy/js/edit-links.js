@@ -22,6 +22,7 @@ jQuery(($) => {
             id: $(element).data('id'),
             webshopId: $(element).data('webshopId'),
             label: $(element).data('label'),
+            category: $(element).data('category'),
             parameters: $(element).data('parameters'),
             url: $(element).data('url'),
             noFollow: $(element).data('noFollow')
@@ -82,6 +83,7 @@ jQuery(($) => {
             $('#idParam').val(data.id);
             $('#webshopIdParam').val(data.webshopId);
             $('#labelParam').val(data.label);
+            $('#categoryParam').val(data.category);
             $('#noFollowParam').prop('checked', data.noFollow === 1);
 
             updateParameterInputs();
@@ -102,6 +104,7 @@ jQuery(($) => {
             $('#idParam').val('');
             $("#webshopIdParam option:first").attr('selected','selected').trigger("change");
             $('#labelParam').val('');
+            $('#categoryParam').val('');
             $('#noFollowParam').prop('checked', true);
 
             updateParameterInputs();

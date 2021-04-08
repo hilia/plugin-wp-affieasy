@@ -7,6 +7,7 @@ class AFES_Link
     private $id;
     private $webshopId;
     private $label;
+    private $category;
     private $parameters;
     private $url;
     private $noFollow;
@@ -15,6 +16,7 @@ class AFES_Link
         $id = null,
         $webshopId = null,
         $label = null,
+        $category = null,
         $parameters = null,
         $url = null,
         $noFollow = null)
@@ -22,6 +24,7 @@ class AFES_Link
         $this->id = $id;
         $this->webshopId = $webshopId;
         $this->label = $label;
+        $this->category = $category;
         $this->parameters = $parameters;
         $this->url = $url;
         $this->noFollow = $noFollow;
@@ -40,6 +43,11 @@ class AFES_Link
     public function getLabel()
     {
         return $this->label;
+    }
+
+    public function getCategory()
+    {
+        return $this->category;
     }
 
     public function getParameters()
