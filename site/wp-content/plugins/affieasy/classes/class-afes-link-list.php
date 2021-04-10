@@ -10,6 +10,8 @@ class AFES_LinkList extends WP_List_Table
 {
     private $dbManager;
 
+    private $baseUrl;
+
     function __construct()
     {
         parent::__construct([
@@ -19,6 +21,9 @@ class AFES_LinkList extends WP_List_Table
         ]);
 
         $this->dbManager = new AFES_DbManager();
+
+        $protocol = ((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
+        $this->baseUrl =  strstr($protocol . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], 'wp-admin', true);
     }
 
     public function no_items()
@@ -33,19 +38,28 @@ class AFES_LinkList extends WP_List_Table
             'webshop' => esc_html__('Webshop', 'affieasy'),
             'label' => esc_html__('Link label', 'affieasy'),
             'category' => esc_html__('Category', 'affieasy'),
+            'shortUrl' => esc_html__('Short url', 'affieasy'),
             'url'  => esc_html__('Url', 'affieasy'),
         ];
     }
 
     function column_tag($item)
     {
+        $tag = $item['tag'];
+
         return sprintf('%1$s %2$s',
-            $item['tag'],
+            '<span data-type="tag" data-value="' . $tag . '" class="dashicons dashicons-admin-links copy-to-clipboard" title="' . esc_html__('Copy to clipboard', 'affieasy') . '"></span>' . $tag,
             $this->row_actions(array(
                 'edit' => sprintf('<a href="#" class="update-link" data-id="' . $item['id'] . '" data-webshop-id="' . $item['webshopId'] . '" data-label="' . $item['label'] . '" data-category="' . $item['category'] . '" data-parameters="' . str_replace('"', "'", $item['parameters']) . '" data-url="' . $item['url'] . '" data-no-follow="' . $item['noFollow'] . '">' . esc_html__('Edit', 'affieasy') . '</a>'),
                 'delete' => sprintf('<a href="#" class="delete-link" data-id="' . $item['id'] . '">' . esc_html__('Delete', 'affieasy') . '</a>'),
             ))
         );
+    }
+
+    function column_shortUrl($item)
+    {
+        $shortUrl = $this->baseUrl . '?' . AFES_Constants::SHORT_LINK_SLUG . '=' . $item['id'];
+        return '<span data-value="' . $shortUrl . '" class="dashicons dashicons-admin-links copy-to-clipboard" title="' . esc_html__('Copy to clipboard', 'affieasy') . '"></span>' . $shortUrl;
     }
 
     public function get_sortable_columns()
@@ -55,6 +69,7 @@ class AFES_LinkList extends WP_List_Table
             'webshop' => array('webshop', false),
             'label' => array('label', false),
             'category' => array('category', false),
+            'shortUrl' => array('shortUrl', false),
             'url' => array('url', false));
     }
 

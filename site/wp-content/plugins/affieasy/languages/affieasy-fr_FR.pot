@@ -380,6 +380,9 @@ msgstr ""
 msgid "Link label"
 msgstr ""
 
+msgid "Useful if you display your links using tags, otherwise useless"
+msgstr ""
+
 msgid "Category"
 msgstr ""
 
@@ -399,4 +402,16 @@ msgid "The link has been deleted"
 msgstr ""
 
 msgid "Search links"
+msgstr ""
+
+msgid "Short url"
+msgstr ""
+
+msgid "Copy to clipboard"
+msgstr ""
+
+msgid "Tag copied!"
+msgstr ""
+
+msgid "Short url copied!"
 msgstr ""

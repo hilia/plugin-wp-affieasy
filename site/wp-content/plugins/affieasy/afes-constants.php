@@ -12,6 +12,8 @@ class AFES_Constants {
     const TABLE_TAG = 'affieasy_table_content';
     const LINK_TAG = 'affieasy_link';
 
+    const SHORT_LINK_SLUG = 'affieasy-link';
+
     const MANDATORY_URL_PARAM = 'product_url';
 
     const HTML = 'HTML';

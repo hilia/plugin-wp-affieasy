@@ -36,6 +36,9 @@ wp_enqueue_script(
 wp_localize_script('edit-links-script', 'translations', array(
     'addNewLink' => esc_html__('Add new link', 'affieasy'),
     'editLink' => esc_html__('Edit link', 'affieasy'),
+    'copyToClipboard' => esc_html__('Copy to clipboard', 'affieasy'),
+    'tagCopied' => esc_html__('Tag copied!', 'affieasy'),
+    'shortUrlCopied' => esc_html__('Url copied!', 'affieasy'),
     'add' => esc_html__('Add', 'affieasy'),
     'edit' => esc_html__('Edit', 'affieasy'),
     'cancel' => esc_html__('Cancel', 'affieasy'),
@@ -105,6 +108,7 @@ $webshops = $dbManager->get_webshop_list();
                     <label for="labelParam">
                         <?php esc_html_e('Link label', 'affieasy'); ?>
                     </label>
+                    <span class="dashicons dashicons-info" title="<?php esc_html_e('Useful if you display your links using tags, otherwise useless', 'affieasy'); ?>"></span>
                 </th>
                 <td>
                     <input

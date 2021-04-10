@@ -23,6 +23,8 @@ class AFES_AffiliationTableAdmin
         add_shortcode(AFES_Constants::TABLE_TAG, array($this, 'affieasy_table_content_callback'));
         add_shortcode(AFES_Constants::LINK_TAG, array($this, 'affieasy_link_content_callback'));
 
+        add_action( 'template_redirect', array( __CLASS__, 'link_redirect' ) );
+
         add_action('wp_enqueue_scripts', function () {
             wp_enqueue_style('dashicons');
             wp_enqueue_style(
@@ -142,7 +144,8 @@ class AFES_AffiliationTableAdmin
         return ob_get_clean();
     }
 
-    public function affieasy_link_content_callback($atts) {
+    public function affieasy_link_content_callback($atts)
+    {
         ob_start();
 
         $link = $this->dbManager->get_link_by_id(intval($atts['id']));
@@ -151,5 +154,17 @@ class AFES_AffiliationTableAdmin
         }
 
         return ob_get_clean();
+    }
+
+    public static function link_redirect()
+    {
+        $linkId = isset($_GET['affieasy-link']) ? $_GET['affieasy-link'] : null;
+
+        if ($linkId !== null && is_numeric($linkId)) {
+            $link = AFES_DbManager::get_instance()->get_link_by_id($linkId);
+
+            wp_redirect( $link->getUrl(), intval(301));
+            exit();
+        }
     }
 }

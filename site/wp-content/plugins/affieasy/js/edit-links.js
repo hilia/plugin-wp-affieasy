@@ -29,6 +29,22 @@ jQuery(($) => {
         }, openEditModal);
     }));
 
+    $('.copy-to-clipboard').each(((index, element) => {
+        const jqueryElement = $(element);
+
+        jqueryElement.on('click', null, () => {
+            navigator.clipboard.writeText($(element).data('value'));
+            jqueryElement.attr('title', $(element).data('type') === 'tag' ?
+                translations.tagCopied :
+                translations.shortUrlCopied
+            );
+        });
+
+        jqueryElement.on('mouseout', null, () => {
+            jqueryElement.attr('title', translations.copyToClipboard);
+        });
+    }));
+
     // Add openDeleteModal on each delete link
     $('.delete-link').each(((index, element) => {
         const jqueryElement = $(element);

@@ -380,6 +380,9 @@ msgstr "Aucun lien trouvé."
 msgid "Link label"
 msgstr "Libellé lien"
 
+msgid "Useful if you display your links using tags, otherwise useless"
+msgstr "Utile si vous affichez vos liens grâce aux tags, inutile sinon"
+
 msgid "Category"
 msgstr "Categorie"
 
@@ -400,3 +403,15 @@ msgstr "Le lien a été supprimé"
 
 msgid "Search links"
 msgstr "Rechercher des liens"
+
+msgid "Short url"
+msgstr "Url courte"
+
+msgid "Copy to clipboard"
+msgstr "Copier dans le presse-papier"
+
+msgid "Tag copied!"
+msgstr "Tag copié !"
+
+msgid "Short url copied!"
+msgstr "Url courte copiée !"
