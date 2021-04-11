@@ -386,6 +386,9 @@ msgstr "Utile si vous affichez vos liens grâce aux tags, inutile sinon"
 msgid "Category"
 msgstr "Categorie"
 
+msgid "Open in new tab"
+msgstr "Ouvrir dans un nouvel onglet"
+
 msgid "No follow link"
 msgstr "Lien no follow"
 

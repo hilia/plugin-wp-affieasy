@@ -25,7 +25,8 @@ jQuery(($) => {
             category: $(element).data('category'),
             parameters: $(element).data('parameters'),
             url: $(element).data('url'),
-            noFollow: $(element).data('noFollow')
+            noFollow: $(element).data('noFollow'),
+            openInNewTab: $(element).data('openInNewTab'),
         }, openEditModal);
     }));
 
@@ -101,6 +102,7 @@ jQuery(($) => {
             $('#labelParam').val(data.label);
             $('#categoryParam').val(data.category);
             $('#noFollowParam').prop('checked', data.noFollow === 1);
+            $('#openInNewTabParam').prop('checked', data.openInNewTab === 1);
 
             updateParameterInputs();
 
@@ -122,6 +124,7 @@ jQuery(($) => {
             $('#labelParam').val('');
             $('#categoryParam').val('');
             $('#noFollowParam').prop('checked', true);
+            $('#openInNewTabParam').prop('checked', true);
 
             updateParameterInputs();
         }

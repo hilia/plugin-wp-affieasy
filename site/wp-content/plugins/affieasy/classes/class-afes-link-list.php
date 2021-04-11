@@ -50,7 +50,7 @@ class AFES_LinkList extends WP_List_Table
         return sprintf('%1$s %2$s',
             '<span data-type="tag" data-value="' . $tag . '" class="dashicons dashicons-admin-links copy-to-clipboard" title="' . esc_html__('Copy to clipboard', 'affieasy') . '"></span>' . $tag,
             $this->row_actions(array(
-                'edit' => sprintf('<a href="#" class="update-link" data-id="' . $item['id'] . '" data-webshop-id="' . $item['webshopId'] . '" data-label="' . $item['label'] . '" data-category="' . $item['category'] . '" data-parameters="' . str_replace('"', "'", $item['parameters']) . '" data-url="' . $item['url'] . '" data-no-follow="' . $item['noFollow'] . '">' . esc_html__('Edit', 'affieasy') . '</a>'),
+                'edit' => sprintf('<a href="#" class="update-link" data-id="' . $item['id'] . '" data-webshop-id="' . $item['webshopId'] . '" data-label="' . $item['label'] . '" data-category="' . $item['category'] . '" data-parameters="' . str_replace('"', "'", $item['parameters']) . '" data-url="' . $item['url'] . '" data-no-follow="' . $item['noFollow'] . '" data-open-in-new-tab="' . $item['openInNewTab'] . '">' . esc_html__('Edit', 'affieasy') . '</a>'),
                 'delete' => sprintf('<a href="#" class="delete-link" data-id="' . $item['id'] . '">' . esc_html__('Delete', 'affieasy') . '</a>'),
             ))
         );

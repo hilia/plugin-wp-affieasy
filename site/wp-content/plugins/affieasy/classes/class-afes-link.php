@@ -11,6 +11,7 @@ class AFES_Link
     private $parameters;
     private $url;
     private $noFollow;
+    private $openInNewTab;
 
     function __construct(
         $id = null,
@@ -19,7 +20,8 @@ class AFES_Link
         $category = null,
         $parameters = null,
         $url = null,
-        $noFollow = null)
+        $noFollow = null,
+        $openInNewTab = null)
     {
         $this->id = $id;
         $this->webshopId = $webshopId;
@@ -28,6 +30,7 @@ class AFES_Link
         $this->parameters = $parameters;
         $this->url = $url;
         $this->noFollow = $noFollow;
+        $this->openInNewTab = $openInNewTab;
     }
 
     public function getId()
@@ -63,5 +66,10 @@ class AFES_Link
     public function isNoFollow()
     {
         return $this->noFollow;
+    }
+
+    public function isOpenInNewTab()
+    {
+        return $this->openInNewTab;
     }
 }

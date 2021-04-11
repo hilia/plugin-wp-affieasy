@@ -283,6 +283,7 @@ class AFES_DbManager
 				parameters JSON NOT NULL,
 			    url TEXT NOT NULL,
 				noFollow BOOLEAN NOT NULL DEFAULT TRUE,
+				openInNewTab BOOLEAN NOT NULL DEFAULT TRUE,
 				FOREIGN KEY (webshopId) REFERENCES " . AFES_Constants::TABLE_WEBSHOP . "(id) ON DELETE CASCADE
 			);");
     }
@@ -347,7 +348,7 @@ class AFES_DbManager
         array_push($sqlParameters, (($currentPage - 1) * $perPage), $perPage);
 
         $sql = $this->db->prepare(
-            "SELECT tl.id as id, CONCAT('[" . AFES_Constants::LINK_TAG . " id=', tl.id, ']') as tag, tw.name as webshop, tl.webshopId as webshopId, tl.label as label, tl.category as category, tl.parameters as parameters, tl.url as url, tl.noFollow as noFollow 
+            "SELECT tl.id as id, CONCAT('[" . AFES_Constants::LINK_TAG . " id=', tl.id, ']') as tag, tw.name as webshop, tl.webshopId as webshopId, tl.label as label, tl.category as category, tl.parameters as parameters, tl.url as url, tl.noFollow as noFollow, tl.openInNewTab as openInNewTab  
             FROM " . AFES_Constants::TABLE_LINK . " tl
             INNER JOIN " . AFES_Constants::TABLE_WEBSHOP . " tw  
             ON tl.webshopId = tw.id " . $sqlSearch . " 
@@ -373,7 +374,8 @@ class AFES_DbManager
             $link->category,
             $link->parameters,
             $link->url,
-            $link->noFollow
+            $link->noFollow,
+            $link->openInNewTab,
         ) : new AFES_Link();
     }
 
@@ -390,7 +392,8 @@ class AFES_DbManager
             "category" => $link->getCategory(),
             "parameters" => json_encode($link->getParameters()),
             "url" => $link->getUrl(),
-            "noFollow" => $link->isNoFollow()
+            "noFollow" => $link->isNoFollow(),
+            "openInNewTab" => $link->isOpenInNewTab()
         );
 
         if (isset($id)) {

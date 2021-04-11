@@ -386,6 +386,9 @@ msgstr ""
 msgid "Category"
 msgstr ""
 
+msgid "Open in new tab"
+msgstr ""
+
 msgid "No follow link"
 msgstr ""
 

@@ -62,7 +62,8 @@ if (isset($actionType)) {
             isset($_POST['categoryParam']) ? sanitize_text_field($_POST['categoryParam']) : null,
             isset($_POST['parametersParam']) ? AFES_Utils::sanitize_parameters($_POST['parametersParam']) : null,
             isset($_POST['urlParam']) ? esc_url_raw(str_replace('[', '', str_replace(']', '', preg_replace('/\[[\s\S]+?]/', '', $_POST['urlParam'])))) : null,
-            isset($_POST['noFollowParam']) ? sanitize_key($_POST['noFollowParam']) === 'on' : false
+            isset($_POST['noFollowParam']) ? sanitize_key($_POST['noFollowParam']) === 'on' : false,
+            isset($_POST['openInNewTabParam']) ? sanitize_key($_POST['openInNewTabParam']) === 'on' : false,
         ));
     }
 }
@@ -134,6 +135,16 @@ $webshops = $dbManager->get_webshop_list();
                             class="width-100"
                             maxlength="255"
                             value="">
+                </td>
+            </tr>
+            <tr>
+                <th scope="row">
+                    <label for="openInNewTabParam">
+                        <?php esc_html_e('Open in new tab', 'affieasy'); ?>
+                    </label>
+                </th>
+                <td>
+                    <input type="checkbox" id="openInNewTabParam" name="openInNewTabParam" checked>
                 </td>
             </tr>
             <tr id="no-follow-row">
