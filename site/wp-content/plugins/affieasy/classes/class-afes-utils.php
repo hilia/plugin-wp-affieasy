@@ -11,6 +11,12 @@ class AFES_Utils
         return strpos(dirname(__DIR__), '-premium') === false ? 'affieasy' : 'affieasy-premium';
     }
 
+    static function get_base_url()
+    {
+        return (((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://") .
+            strstr($_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], '/', true);
+    }
+
     static function sanitize_header_options($headerOptions)
     {
         $sanitizedHeaderOptions = new stdClass();

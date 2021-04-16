@@ -163,7 +163,15 @@ class AFES_AffiliationTableAdmin
         if ($linkId !== null && is_numeric($linkId)) {
             $link = AFES_DbManager::get_instance()->get_link_by_id($linkId);
 
-            wp_redirect( $link->getUrl(), intval(301));
+            if ($link->getId() === null) {
+                global $wp_query;
+                $wp_query->set_404();
+                status_header( 404 );
+                get_template_part( 404 );
+            } else {
+                wp_redirect( $link->getUrl(), intval(301));
+            }
+
             exit();
         }
     }

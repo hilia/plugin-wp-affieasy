@@ -38,7 +38,7 @@ wp_localize_script('edit-links-script', 'translations', array(
     'editLink' => esc_html__('Edit link', 'affieasy'),
     'copyToClipboard' => esc_html__('Copy to clipboard', 'affieasy'),
     'tagCopied' => esc_html__('Tag copied!', 'affieasy'),
-    'shortUrlCopied' => esc_html__('Url copied!', 'affieasy'),
+    'shortUrlCopied' => esc_html__('Short url copied!', 'affieasy'),
     'add' => esc_html__('Add', 'affieasy'),
     'edit' => esc_html__('Edit', 'affieasy'),
     'cancel' => esc_html__('Cancel', 'affieasy'),
@@ -78,6 +78,7 @@ $webshops = $dbManager->get_webshop_list();
 </div>
 
 <div id="edit-link-modal" hidden>
+    <h4><span class="dashicons dashicons-info"></span> <?php esc_html_e("If you don't use tags to display links, only urls parameters should be filled in.", 'affieasy'); ?></h4>
     <form id="form" class="validate" method="post">
         <input type="hidden" id="idParam" name="idParam" value="">
         <input type="hidden" id="actionType" name="actionType" value="edition">
@@ -109,7 +110,6 @@ $webshops = $dbManager->get_webshop_list();
                     <label for="labelParam">
                         <?php esc_html_e('Link label', 'affieasy'); ?>
                     </label>
-                    <span class="dashicons dashicons-info" title="<?php esc_html_e('Useful if you display your links using tags, otherwise useless', 'affieasy'); ?>"></span>
                 </th>
                 <td>
                     <input
@@ -215,4 +215,6 @@ $webshops = $dbManager->get_webshop_list();
         $linkList->display();
         ?>
     </form>
+
+    <div id="usage-info"><span class="dashicons dashicons-info"></span> <?php esc_html_e('Favor the use of tags to keep your links up to date in your pages and benefit from automatic generation.', 'affieasy'); ?></div>
 </div>

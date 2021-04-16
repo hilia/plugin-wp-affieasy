@@ -377,11 +377,14 @@ msgstr "Modifier le lien"
 msgid "No Link found."
 msgstr "Aucun lien trouvé."
 
+msgid "Favor the use of tags to keep your links up to date in your pages and benefit from automatic generation."
+msgstr "Privilégiez l'utilisation des tags pour conserver vos liens à jour dans vos pages et bénéficier de la génération automatique."
+
+msgid "If you don't use tags to display links, only urls parameters should be filled in."
+msgstr "Si vous n'utilisez pas les tags pour affichez les liens, seuls les paramètres d'urls devraient être renseignés."
+
 msgid "Link label"
 msgstr "Libellé lien"
-
-msgid "Useful if you display your links using tags, otherwise useless"
-msgstr "Utile si vous affichez vos liens grâce aux tags, inutile sinon"
 
 msgid "Category"
 msgstr "Categorie"

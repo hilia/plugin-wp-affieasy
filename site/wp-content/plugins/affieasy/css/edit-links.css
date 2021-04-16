@@ -15,3 +15,7 @@
 .dashicons-info {
     cursor: help;
 }
+
+#usage-info {
+    text-align: center;
+}

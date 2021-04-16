@@ -21,9 +21,7 @@ class AFES_LinkList extends WP_List_Table
         ]);
 
         $this->dbManager = new AFES_DbManager();
-
-        $protocol = ((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
-        $this->baseUrl =  strstr($protocol . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], 'wp-admin', true);
+        $this->baseUrl =  AFES_Utils::get_base_url();
     }
 
     public function no_items()
