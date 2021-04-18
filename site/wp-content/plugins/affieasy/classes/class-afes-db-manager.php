@@ -385,6 +385,17 @@ class AFES_DbManager
 
         $id = $link->getId();
 
+        $canUsePremiumCode = false;
+        if (aff_fs()->is__premium_only()) {
+            if (aff_fs()->can_use_premium_code()) {
+                $canUsePremiumCode = true;
+            }
+        }
+
+        if (!$canUsePremiumCode && $id === null && $this->get_table_count(AFES_Constants::TABLE_LINK) >= 50) {
+            return new AFES_Link();
+        }
+
         $values = array(
             "id" => $id,
             "webshopId" => $link->getWebshopId(),

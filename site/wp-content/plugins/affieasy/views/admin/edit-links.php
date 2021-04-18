@@ -1,5 +1,6 @@
 <?php
 
+use affieasy\AFES_Constants;
 use affieasy\AFES_DbManager;
 use affieasy\AFES_Link;
 use affieasy\AFES_LinkList;
@@ -66,6 +67,18 @@ if (isset($actionType)) {
             isset($_POST['openInNewTabParam']) ? sanitize_key($_POST['openInNewTabParam']) === 'on' : false,
         ));
     }
+}
+
+$canUsePremiumCode = false;
+if (aff_fs()->is__premium_only()) {
+    if (aff_fs()->can_use_premium_code()) {
+        $canUsePremiumCode = true;
+    }
+}
+
+$currentLinkCount = 0;
+if (!$canUsePremiumCode) {
+    $currentLinkCount = $dbManager->get_table_count(AFES_Constants::TABLE_LINK);
 }
 
 $webshops = $dbManager->get_webshop_list();
@@ -175,31 +188,31 @@ $hasNoWebshop = empty($webshops);
 
 <div class="wrap">
     <div class="header">
+        <?php require_once dirname(__DIR__, 3) . '/' . $pluginName . '/inc/free-version-message.php'; ?>
         <h1 class="wp-heading-inline"><?php echo esc_html__('Affiliate links', 'affieasy'); ?></h1>
 
         <?php if ($hasNoWebshop) { ?>
+            <?php require_once dirname(__DIR__, 3) . '/' . $pluginName . '/inc/afes-link-search-message.php'; ?>
             <h4>
                 <span class="dashicons dashicons-info"></span>
                 <span>
                     <?php esc_html_e('Add webshop to use this functionnality.', 'affieasy'); ?>
                 </span>
             </h4>
-        <?php } else { ?>
+        <?php } else if ($canUsePremiumCode || $currentLinkCount < 50) { ?>
             <button type="button" id="add-new-link" class="page-title-action">
                 <?php esc_html_e('Add new link', 'affieasy'); ?>
             </button>
+            <?php require_once dirname(__DIR__, 3) . '/' . $pluginName . '/inc/afes-link-search-message.php'; ?>
+        <?php } else { ?>
+            <?php require_once dirname(__DIR__, 3) . '/' . $pluginName . '/inc/afes-link-search-message.php'; ?>
+            <h4>
+                <span class="dashicons dashicons-info"></span>
+                <span>
+                    <?php esc_html_e('Buy a premium licence to create more than 50 links.', 'affieasy'); ?>
+                </span>
+            </h4>
         <?php } ?>
-
-        <?php
-        if (isset($_REQUEST['s']) && strlen($_REQUEST['s'])) {
-            echo '<span class="subtitle">';
-            printf(
-                __('Search results for: %s'),
-                '<strong>' . esc_html($_REQUEST['s']) . '</strong>'
-            );
-            echo '</span>';
-        }
-        ?>
     </div>
 
     <hr class="wp-header-end">

@@ -374,6 +374,9 @@ msgstr "Ajouter un lien"
 msgid "Edit link"
 msgstr "Modifier le lien"
 
+msgid "Buy a premium licence to create more than 50 links."
+msgstr "Obtenez une licence premium pour créer plus de 50 liens."
+
 msgid "No Link found."
 msgstr "Aucun lien trouvé."
 
