@@ -375,7 +375,7 @@ class AFES_DbManager
             $link->parameters,
             $link->url,
             $link->noFollow,
-            $link->openInNewTab,
+            $link->openInNewTab
         ) : new AFES_Link();
     }
 

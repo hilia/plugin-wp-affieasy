@@ -164,8 +164,8 @@ msgstr "mais vous pouvez en ajouter autant que nécessaire"
 msgid "between"
 msgstr "entre"
 
-msgid "Now You can add affiliate links for decathlon in your tables (edit table -> add row -> Affiliate links -> select decathlon). Parameters"
-msgstr "Vous pouvez désormais ajouter des liens d'affiliations dans vos tableaux (Créer/Mettre à jour tableau -> Ajouter une ligne -> Liens d'affiliations -> sélectionner décathlon). Les paramètres"
+msgid "Now You can create affiliate links for decathlon or add some directly to your tables (edit table -> add row -> Affiliate links -> select decathlon). Parameters"
+msgstr "Vous pouvez désormais créer des liens d'affiliations decathlon ou en ajouter directement dans vos tableaux (Créer/Mettre à jour tableau -> Ajouter une ligne -> Liens d'affiliations -> sélectionner décathlon). Les paramètres"
 
 msgid "will be asked during creation process and the url will be automatically generated."
 msgstr "seront demandés durant le processus de création de liens et l'url sera générée automatiquement."

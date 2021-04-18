@@ -167,7 +167,7 @@ msgstr ""
 msgid "between"
 msgstr ""
 
-msgid "Now You can add affiliate links for decathlon in your tables (edit table -> add row -> Affiliate links -> select decathlon). Parameters"
+msgid "Now You can create affiliate links for decathlon or add some directly to your tables (edit table -> add row -> Affiliate links -> select decathlon). Parameters"
 msgstr ""
 
 msgid "will be asked during creation process and the url will be automatically generated."
