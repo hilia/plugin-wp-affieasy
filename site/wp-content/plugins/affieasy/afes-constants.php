@@ -16,6 +16,8 @@ class AFES_Constants {
 
     const MANDATORY_URL_PARAM = 'product_url';
 
+    const AFFIEASY_PLUGIN_VERSION = 'affieasy_plugin_version';
+
     const HTML = 'HTML';
     const IMAGE = 'IMAGE';
     const AFFILIATION = 'AFFILIATION';
