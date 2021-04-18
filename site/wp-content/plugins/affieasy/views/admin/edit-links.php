@@ -69,6 +69,7 @@ if (isset($actionType)) {
 }
 
 $webshops = $dbManager->get_webshop_list();
+$hasNoWebshop = empty($webshops);
 ?>
 
 <div id="dialog-confirm-delete" title="<?php esc_html_e('Confirmation', 'affieasy'); ?>" hidden>
@@ -176,9 +177,18 @@ $webshops = $dbManager->get_webshop_list();
     <div class="header">
         <h1 class="wp-heading-inline"><?php echo esc_html__('Affiliate links', 'affieasy'); ?></h1>
 
-        <button type="button" id="add-new-link" class="page-title-action">
-            <?php esc_html_e('Add new link', 'affieasy'); ?>
-        </button>
+        <?php if ($hasNoWebshop) { ?>
+            <h4>
+                <span class="dashicons dashicons-info"></span>
+                <span>
+                    <?php esc_html_e('Add webshop to use this functionnality.', 'affieasy'); ?>
+                </span>
+            </h4>
+        <?php } else { ?>
+            <button type="button" id="add-new-link" class="page-title-action">
+                <?php esc_html_e('Add new link', 'affieasy'); ?>
+            </button>
+        <?php } ?>
 
         <?php
         if (isset($_REQUEST['s']) && strlen($_REQUEST['s'])) {
