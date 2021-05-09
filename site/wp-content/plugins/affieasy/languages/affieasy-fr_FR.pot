@@ -90,13 +90,19 @@ msgstr ""
 msgid "Edit"
 msgstr ""
 
-msgid "(Required)"
+msgid "Duplicate"
 msgstr ""
 
 msgid "Name must not be empty"
 msgstr ""
 
+msgid "(Required)"
+msgstr ""
+
 msgid "Table not found."
+msgstr ""
+
+msgid "copy"
 msgstr ""
 
 #Webshop list
@@ -193,6 +199,9 @@ msgid "Are you sure you want to delete the table?"
 msgstr ""
 
 msgid "Add new table"
+msgstr ""
+
+msgid "The table has been duplicated"
 msgstr ""
 
 msgid "The table has been deleted"

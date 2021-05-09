@@ -87,6 +87,9 @@ msgstr "Fermer"
 msgid "Edit"
 msgstr "Modifier"
 
+msgid "Duplicate"
+msgstr "Dupliquer"
+
 msgid "Delete"
 msgstr "Supprimer"
 
@@ -95,6 +98,12 @@ msgstr "Le nom ne doit pas être vide"
 
 msgid "(Required)"
 msgstr "(Requis)"
+
+msgid "Table not found."
+msgstr "Tableau non trouvé."
+
+msgid "copy"
+msgstr "copie"
 
 # Webshop list
 msgid "Add new webshop"
@@ -185,15 +194,15 @@ msgstr "Si vous remplissez les préférences, les champs des liens d'affiliation
 msgid "Save webshop"
 msgstr "Sauvegarder boutique"
 
-msgid "Table not found."
-msgstr "Tableau non trouvé."
-
 #Table list
 msgid "Are you sure you want to delete the table?"
 msgstr "Êtes-vous sûr de vouloir supprimer ce tableau ?"
 
 msgid "Add new table"
 msgstr "Ajouter un tableau"
+
+msgid "The table has been duplicated"
+msgstr "Le tableau a été dupliqué"
 
 msgid "The table has been deleted"
 msgstr "Le tableau a été supprimé"

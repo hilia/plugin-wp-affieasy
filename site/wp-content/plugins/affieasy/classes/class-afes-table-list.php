@@ -42,6 +42,7 @@ class AFES_TableList extends WP_List_Table
             $item['id'],
             $this->row_actions(array(
                 'edit' => sprintf('<a href="admin.php?page=affieasy-table&action=edit-table&id=' . $id . '">' . esc_html__('Edit', 'affieasy') . '</a>'),
+                'duplicate' => sprintf('<a href="admin.php?page=affieasy-table&action=duplicate-table&id=' . $id . '">' . esc_html__('Duplicate', 'affieasy') . '</a>'),
                 'delete' => sprintf('<a href="#" class="delete-link" data-id="' . $id . '">' . esc_html__('Delete', 'affieasy') . '</a>')
             ))
         );

@@ -224,6 +224,19 @@ class AFES_DbManager
         return $this->get_table_by_id($tableId);
     }
 
+    public function duplicate_table($id)
+    {
+        $table = $this->get_table_by_id($id);
+
+        if (isset($table) && is_numeric($table->getId())) {
+            $table->setId(null);
+            $table->setName($table->getName() . ' - ' . esc_html__('copy', 'affieasy'));
+            return $this->edit_table($table);
+        }
+
+        return new AFES_Table();
+    }
+
     public function delete_table($id)
     {
         $this->db->delete(AFES_Constants::TABLE_TABLE, array('id' => $id));
