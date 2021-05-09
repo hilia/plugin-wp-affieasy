@@ -33,9 +33,16 @@ wp_register_script('pop-modal', plugins_url('/' . $pluginName . '/libs/pop-modal
 wp_register_script('table-dragger', plugins_url('/' . $pluginName . '/libs/table-dragger/table-dragger.min.js'));
 
 wp_enqueue_script(
+    'utils-script',
+    plugins_url('/' . $pluginName . '/js/utils.js'),
+    array(),
+    time()
+);
+
+wp_enqueue_script(
     'edit-table-script',
     plugins_url('/' . $pluginName . '/js/edit-table.js'),
-    array('jquery', 'color-picker', 'pop-modal', 'table-dragger', 'jquery-ui-dialog'),
+    array('jquery', 'utils-script', 'color-picker', 'pop-modal', 'table-dragger', 'jquery-ui-dialog'),
     time()
 );
 

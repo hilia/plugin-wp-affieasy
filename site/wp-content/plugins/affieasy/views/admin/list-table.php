@@ -26,9 +26,14 @@ $id = isset($_GET['id']) ? sanitize_key($_GET['id']) : null;
 $action = isset($_GET['action']) ?  sanitize_key($_GET['action']) : null;
 
 $isValidDeleteAction = $action === 'delete-table' && is_numeric($id);
-if ($isValidDeleteAction) {
+
+if (is_numeric($id)) {
     $dbManager = new AFES_DbManager();
-    $dbManager->delete_table($id);
+    if ($action === 'delete-table') {
+        $dbManager->delete_table($id);
+    } else if ($action === 'duplicate-table') {
+        $dbManager->duplicate_table($id);
+    }
 }
 
 $tableList = new AFES_TableList();
@@ -49,9 +54,11 @@ $tableList = new AFES_TableList();
     </a>
     <hr class="wp-header-end">
 
-    <?php if ($isValidDeleteAction) { ?>
+    <?php if (isset($action)) { ?>
         <div class="notice notice-success settings-error is-dismissible">
-            <p><strong><?php esc_html_e('The table has been deleted', 'affieasy'); ?></strong></p>
+            <p><strong><?php esc_html_e($action === 'delete-table' ?
+                        'The table has been deleted' :
+                        'The table has been duplicated', 'affieasy'); ?></strong></p>
         </div>
     <?php } ?>
 

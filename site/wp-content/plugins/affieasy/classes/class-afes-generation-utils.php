@@ -67,6 +67,14 @@ class AFES_GenerationUtils
         }
     }
 
+    // Generate link
+    static function generate_link($link)
+    {
+        if (isset($link) && is_numeric($link->getId())) { ?>
+            <a href="<?php echo '/?' . AFES_Constants::SHORT_LINK_SLUG . '=' . $link->getId(); ?>" <?php echo $link->isNoFollow() === "1" ? 'rel=nofollow' : ''; ?> <?php echo $link->isOpenInNewTab() ? 'target="_blank"' : ''; ?>><?php echo sanitize_text_field($link->getLabel()); ?></a>
+        <?php }
+    }
+
     private static function generate_main_table(
         $table,
         $isTableWithBothHeader,

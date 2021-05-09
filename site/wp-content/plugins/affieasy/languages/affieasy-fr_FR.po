@@ -30,8 +30,14 @@ msgstr "page de paiement"
 msgid "to take full advantage of the features available!"
 msgstr "pour bénéficier de toutes les fonctionnalités !"
 
+msgid "Webshop"
+msgstr "Boutique"
+
 msgid "Webshops"
 msgstr "Boutiques"
+
+msgid "Url"
+msgstr "Url"
 
 msgid "Tables"
 msgstr "Tableaux"
@@ -57,6 +63,9 @@ msgstr "Poids police"
 msgid "Id"
 msgstr "Id"
 
+msgid "Tag"
+msgstr "Tag"
+
 msgid "Name"
 msgstr "Nom"
 
@@ -78,6 +87,9 @@ msgstr "Fermer"
 msgid "Edit"
 msgstr "Modifier"
 
+msgid "Duplicate"
+msgstr "Dupliquer"
+
 msgid "Delete"
 msgstr "Supprimer"
 
@@ -86,6 +98,12 @@ msgstr "Le nom ne doit pas être vide"
 
 msgid "(Required)"
 msgstr "(Requis)"
+
+msgid "Table not found."
+msgstr "Tableau non trouvé."
+
+msgid "copy"
+msgstr "copie"
 
 # Webshop list
 msgid "Add new webshop"
@@ -155,8 +173,8 @@ msgstr "mais vous pouvez en ajouter autant que nécessaire"
 msgid "between"
 msgstr "entre"
 
-msgid "Now You can add affiliate links for decathlon in your tables (edit table -> add row -> Affiliate links -> select decathlon). Parameters"
-msgstr "Vous pouvez désormais ajouter des liens d'affiliations dans vos tableaux (Créer/Mettre à jour tableau -> Ajouter une ligne -> Liens d'affiliations -> sélectionner décathlon). Les paramètres"
+msgid "Now You can create affiliate links for decathlon or add some directly to your tables (edit table -> add row -> Affiliate links -> select decathlon). Parameters"
+msgstr "Vous pouvez désormais créer des liens d'affiliations decathlon ou en ajouter directement dans vos tableaux (Créer/Mettre à jour tableau -> Ajouter une ligne -> Liens d'affiliations -> sélectionner décathlon). Les paramètres"
 
 msgid "will be asked during creation process and the url will be automatically generated."
 msgstr "seront demandés durant le processus de création de liens et l'url sera générée automatiquement."
@@ -176,15 +194,15 @@ msgstr "Si vous remplissez les préférences, les champs des liens d'affiliation
 msgid "Save webshop"
 msgstr "Sauvegarder boutique"
 
-msgid "Table not found."
-msgstr "Tableau non trouvé."
-
 #Table list
 msgid "Are you sure you want to delete the table?"
 msgstr "Êtes-vous sûr de vouloir supprimer ce tableau ?"
 
 msgid "Add new table"
 msgstr "Ajouter un tableau"
+
+msgid "The table has been duplicated"
+msgstr "Le tableau a été dupliqué"
 
 msgid "The table has been deleted"
 msgstr "Le tableau a été supprimé"
@@ -246,9 +264,6 @@ msgstr "Mise à jour tableau"
 
 msgid "Table %1$s saved"
 msgstr "Tableau %1$s sauvegardé"
-
-msgid "Tag"
-msgstr "Tag"
 
 msgid "Put this tag in your page to include the table"
 msgstr "Ajouter ce tag dans une de vos pages pour afficher le tableau"
@@ -360,3 +375,61 @@ msgstr "Le rendu pourra être légèrement différent on fonction du thème appl
 
 msgid "Save table"
 msgstr "Sauvegarder tableau"
+
+#Links edition
+msgid "Add new link"
+msgstr "Ajouter un lien"
+
+msgid "Edit link"
+msgstr "Modifier le lien"
+
+msgid "Buy a premium licence to create more than 50 links."
+msgstr "Obtenez une licence premium pour créer plus de 50 liens."
+
+msgid "No Link found."
+msgstr "Aucun lien trouvé."
+
+msgid "Favor the use of tags to keep your links up to date in your pages and benefit from automatic generation."
+msgstr "Privilégiez l'utilisation des tags pour conserver vos liens à jour dans vos pages et bénéficier de la génération automatique."
+
+msgid "If you don't use tags to display links, only urls parameters should be filled in."
+msgstr "Si vous n'utilisez pas les tags pour affichez les liens, seuls les paramètres d'urls devraient être renseignés."
+
+msgid "Link label"
+msgstr "Libellé lien"
+
+msgid "Category"
+msgstr "Categorie"
+
+msgid "Open in new tab"
+msgstr "Ouvrir dans un nouvel onglet"
+
+msgid "No follow link"
+msgstr "Lien no follow"
+
+msgid "New link added"
+msgstr "Nouveau lien ajouté"
+
+msgid "The link has been updated"
+msgstr "Le lien a été mis à jour"
+
+msgid "Are you sure you want to delete the link?"
+msgstr "Êtes-vous sûr de vouloir supprimer ce lien ?"
+
+msgid "The link has been deleted"
+msgstr "Le lien a été supprimé"
+
+msgid "Search links"
+msgstr "Rechercher des liens"
+
+msgid "Short url"
+msgstr "Url courte"
+
+msgid "Copy to clipboard"
+msgstr "Copier dans le presse-papier"
+
+msgid "Tag copied!"
+msgstr "Tag copié !"
+
+msgid "Short url copied!"
+msgstr "Url courte copiée !"

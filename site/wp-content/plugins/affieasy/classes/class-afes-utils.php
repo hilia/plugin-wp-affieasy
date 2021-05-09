@@ -11,6 +11,12 @@ class AFES_Utils
         return strpos(dirname(__DIR__), '-premium') === false ? 'affieasy' : 'affieasy-premium';
     }
 
+    static function get_base_url()
+    {
+        return (((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://") .
+            strstr($_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], '/', true);
+    }
+
     static function sanitize_header_options($headerOptions)
     {
         $sanitizedHeaderOptions = new stdClass();
@@ -18,7 +24,7 @@ class AFES_Utils
         foreach (json_decode(str_replace('\\', '', $headerOptions)) as $key => $value) {
             $sanitizedHeaderOptions->{sanitize_key($key)} = strpos($key, 'color') !== false || strpos($key, 'background') !== false  ?
                 sanitize_hex_color($value) :
-                sanitize_key($value);;
+                sanitize_key($value);
         }
 
         return $sanitizedHeaderOptions;
@@ -75,7 +81,7 @@ class AFES_Utils
                 if ($key === 'id') {
                     $value = intval(sanitize_text_field($value));
                 } else if ($key === 'url') {
-                    $value = esc_url_raw($value);
+                    $value = esc_url_raw(str_replace('[', '', str_replace(']', '', preg_replace('/\[[\s\S]+?]/', '', $value))));
                 } else if (in_array($key, array('color', 'background'))) {
                     $value = sanitize_hex_color($value);
                 } else {
@@ -89,5 +95,16 @@ class AFES_Utils
         }
 
         return str_replace('"', '&quot;', json_encode($sanitizedLinks));
+    }
+
+    static function sanitize_parameters($parameters)
+    {
+        $sanitizedParameters = new stdClass();
+
+        foreach (json_decode(str_replace('\\', '', $parameters)) as $key => $value) {
+            $sanitizedParameters->{sanitize_key($key)} = sanitize_text_field($value);
+        }
+
+        return $sanitizedParameters;
     }
 }

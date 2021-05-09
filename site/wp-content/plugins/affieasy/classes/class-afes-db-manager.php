@@ -224,6 +224,19 @@ class AFES_DbManager
         return $this->get_table_by_id($tableId);
     }
 
+    public function duplicate_table($id)
+    {
+        $table = $this->get_table_by_id($id);
+
+        if (isset($table) && is_numeric($table->getId())) {
+            $table->setId(null);
+            $table->setName($table->getName() . ' - ' . esc_html__('copy', 'affieasy'));
+            return $this->edit_table($table);
+        }
+
+        return new AFES_Table();
+    }
+
     public function delete_table($id)
     {
         $this->db->delete(AFES_Constants::TABLE_TABLE, array('id' => $id));
@@ -267,6 +280,155 @@ class AFES_DbManager
                 $this->edit_table($table);
             }
         }
+    }
+
+    /****************************** Link functions ******************************/
+
+    public function create_table_link()
+    {
+        require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+
+        dbDelta(" CREATE TABLE " . AFES_Constants::TABLE_LINK . " (
+			    id INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT,
+				webshopId INTEGER,
+			    label VARCHAR(255) NOT NULL,
+			    category VARCHAR(255) NOT NULL,
+				parameters JSON NOT NULL,
+			    url TEXT NOT NULL,
+				noFollow BOOLEAN NOT NULL DEFAULT TRUE,
+				openInNewTab BOOLEAN NOT NULL DEFAULT TRUE,
+				FOREIGN KEY (webshopId) REFERENCES " . AFES_Constants::TABLE_WEBSHOP . "(id) ON DELETE CASCADE
+			);");
+    }
+
+    public function get_link_count($search)
+    {
+        $sqlSearch = '';
+        $sqlParameters = array();
+        if (isset($search)) {
+            $sqlSearch = "WHERE tw.name LIKE CONCAT('%',%s,'%') OR tl.label LIKE CONCAT('%',%s,'%') OR tl.category LIKE CONCAT('%',%s,'%') OR tl.url LIKE CONCAT('%',%s,'%')";
+            array_push($sqlParameters, $search, $search, $search, $search);
+
+            if (is_numeric($search)) {
+                $sqlSearch .= "OR tl.id = %d";
+                array_push($sqlParameters, intval($search));
+            }
+        }
+
+        $sql = $this->db->prepare(
+            "SELECT COUNT(*) AS number
+            FROM " . AFES_Constants::TABLE_LINK . " tl
+            INNER JOIN " . AFES_Constants::TABLE_WEBSHOP . " tw  
+            ON tl.webshopId = tw.id " . $sqlSearch,
+            $sqlParameters);
+
+        return intval($this->db->get_results($sql, ARRAY_A)[0]['number']);
+    }
+
+    public function get_link_page($currentPage, $perPage, $orderBy, $order, $search)
+    {
+        switch ($orderBy) {
+            case 'webshop':
+                $orderBy = 'tw.name';
+                break;
+            case 'label':
+                $orderBy = 'tl.label';
+                break;
+            case 'category':
+                $orderBy = 'tl.category';
+                break;
+            case 'url':
+                $orderBy = 'tl.url';
+                break;
+            default :
+                $orderBy = 'tl.id';
+        }
+
+        $order = in_array($order, array('asc', 'desc')) ? $order : 'asc';
+
+        $sqlSearch = '';
+        $sqlParameters = array();
+        if (isset($search)) {
+            $sqlSearch = "WHERE tw.name LIKE CONCAT('%',%s,'%') OR tl.label LIKE CONCAT('%',%s,'%') OR tl.category LIKE CONCAT('%',%s,'%') OR tl.url LIKE CONCAT('%',%s,'%')";
+            array_push($sqlParameters, $search, $search, $search, $search);
+
+            if (is_numeric($search)) {
+                $sqlSearch .= "OR tl.id = %d";
+                array_push($sqlParameters, intval($search));
+            }
+        }
+
+        array_push($sqlParameters, (($currentPage - 1) * $perPage), $perPage);
+
+        $sql = $this->db->prepare(
+            "SELECT tl.id as id, CONCAT('[" . AFES_Constants::LINK_TAG . " id=', tl.id, ']') as tag, tw.name as webshop, tl.webshopId as webshopId, tl.label as label, tl.category as category, tl.parameters as parameters, tl.url as url, tl.noFollow as noFollow, tl.openInNewTab as openInNewTab  
+            FROM " . AFES_Constants::TABLE_LINK . " tl
+            INNER JOIN " . AFES_Constants::TABLE_WEBSHOP . " tw  
+            ON tl.webshopId = tw.id " . $sqlSearch . " 
+            ORDER BY " . $orderBy . " " . $order .  " LIMIT %d, %d",
+            $sqlParameters);
+
+        return $this->db->get_results($sql, ARRAY_A);
+    }
+
+    public function get_link_by_id($id)
+    {
+        if (!isset($id) || !is_numeric($id)) {
+            return new AFES_Link();
+        }
+
+        $sql = $this->db->prepare("SELECT * FROM " . AFES_Constants::TABLE_LINK . " WHERE id=%d", array($id));
+        $link = $this->db->get_row($sql);
+
+        return isset($link->id) ? new AFES_Link(
+            $link->id,
+            $link->webshopId,
+            $link->label,
+            $link->category,
+            $link->parameters,
+            $link->url,
+            $link->noFollow,
+            $link->openInNewTab
+        ) : new AFES_Link();
+    }
+
+    public function edit_link($link)
+    {
+        require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+
+        $id = $link->getId();
+
+        $canUsePremiumCode = false;
+        if (aff_fs()->is__premium_only()) {
+            if (aff_fs()->can_use_premium_code()) {
+                $canUsePremiumCode = true;
+            }
+        }
+
+        if (!$canUsePremiumCode && $id === null && $this->get_table_count(AFES_Constants::TABLE_LINK) >= 50) {
+            return new AFES_Link();
+        }
+
+        $values = array(
+            "id" => $id,
+            "webshopId" => $link->getWebshopId(),
+            "label" => $link->getLabel(),
+            "category" => $link->getCategory(),
+            "parameters" => json_encode($link->getParameters()),
+            "url" => $link->getUrl(),
+            "noFollow" => $link->isNoFollow(),
+            "openInNewTab" => $link->isOpenInNewTab()
+        );
+
+        if (isset($id)) {
+            $this->db->update(AFES_Constants::TABLE_LINK, $values, array("id" => $id));
+        } else {
+            $this->db->insert(AFES_Constants::TABLE_LINK, $values);
+        }
+    }
+
+    public function delete_link($id) {
+        $this->db->delete(AFES_Constants::TABLE_LINK, array('id' => $id));
     }
 
     /****************************** Utils functions ******************************/

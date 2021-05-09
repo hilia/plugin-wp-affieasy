@@ -1,0 +1,21 @@
+.width-100 {
+    width: 100%;
+}
+
+.copy-to-clipboard {
+    margin-right: 4px;
+    opacity: 0.7;
+}
+
+.copy-to-clipboard:hover {
+    opacity: 1;
+    cursor: pointer;
+}
+
+.dashicons-info {
+    cursor: help;
+}
+
+#usage-info {
+    text-align: center;
+}

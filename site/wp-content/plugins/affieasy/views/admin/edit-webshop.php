@@ -141,7 +141,7 @@ $webshopName = $webshop->getName();
             <?php esc_html_e('between', 'affieasy'); ?> <strong>[[</strong> <?php esc_html_e('and', 'affieasy'); ?> <strong>]]</strong>.<br><br>
 
             <?php esc_html_e(
-                    'Now You can add affiliate links for decathlon in your tables (edit table -> add row -> Affiliate links -> select decathlon). Parameters',
+                    'Now You can create affiliate links for decathlon or add some directly to your tables (edit table -> add row -> Affiliate links -> select decathlon). Parameters',
                     'affieasy'); ?>
             <strong>[[product_url]]</strong> <?php esc_html_e('and', 'affieasy'); ?> <strong>[[click_ref]]</strong>
             <?php esc_html_e('will be asked during creation process and the url will be automatically generated.', 'affieasy'); ?>

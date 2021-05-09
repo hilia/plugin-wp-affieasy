@@ -30,7 +30,13 @@ msgstr ""
 msgid "to take full advantage of the features available!"
 msgstr ""
 
+msgid "Webshop"
+msgstr ""
+
 msgid "Webshops"
+msgstr ""
+
+msgid "Url"
 msgstr ""
 
 msgid "Tables"
@@ -49,6 +55,9 @@ msgid "Background color"
 msgstr ""
 
 msgid "Id"
+msgstr ""
+
+msgid "Tag"
 msgstr ""
 
 msgid "Font size"
@@ -81,13 +90,19 @@ msgstr ""
 msgid "Edit"
 msgstr ""
 
-msgid "(Required)"
+msgid "Duplicate"
 msgstr ""
 
 msgid "Name must not be empty"
 msgstr ""
 
+msgid "(Required)"
+msgstr ""
+
 msgid "Table not found."
+msgstr ""
+
+msgid "copy"
 msgstr ""
 
 #Webshop list
@@ -158,7 +173,7 @@ msgstr ""
 msgid "between"
 msgstr ""
 
-msgid "Now You can add affiliate links for decathlon in your tables (edit table -> add row -> Affiliate links -> select decathlon). Parameters"
+msgid "Now You can create affiliate links for decathlon or add some directly to your tables (edit table -> add row -> Affiliate links -> select decathlon). Parameters"
 msgstr ""
 
 msgid "will be asked during creation process and the url will be automatically generated."
@@ -184,6 +199,9 @@ msgid "Are you sure you want to delete the table?"
 msgstr ""
 
 msgid "Add new table"
+msgstr ""
+
+msgid "The table has been duplicated"
 msgstr ""
 
 msgid "The table has been deleted"
@@ -245,9 +263,6 @@ msgid "Update table"
 msgstr ""
 
 msgid "Table %1$s saved"
-msgstr ""
-
-msgid "Tag"
 msgstr ""
 
 msgid "Put this tag in your page to include the table"
@@ -359,4 +374,62 @@ msgid "Rendering can be slightly different depending on the theme applied."
 msgstr ""
 
 msgid "Save table"
+msgstr ""
+
+#Links edition
+msgid "Add new link"
+msgstr ""
+
+msgid "Edit link"
+msgstr ""
+
+msgid "Buy a premium licence to create more than 50 links."
+msgstr ""
+
+msgid "No Link found."
+msgstr ""
+
+msgid "Favor the use of tags to keep your links up to date in your pages and benefit from automatic generation."
+msgstr ""
+
+msgid "If you don't use tags to display links, only urls parameters should be filled in."
+msgstr ""
+
+msgid "Link label"
+msgstr ""
+
+msgid "Category"
+msgstr ""
+
+msgid "Open in new tab"
+msgstr ""
+
+msgid "No follow link"
+msgstr ""
+
+msgid "New link added"
+msgstr ""
+
+msgid "The link has been updated"
+msgstr ""
+
+msgid "Are you sure you want to delete the link?"
+msgstr ""
+
+msgid "The link has been deleted"
+msgstr ""
+
+msgid "Search links"
+msgstr ""
+
+msgid "Short url"
+msgstr ""
+
+msgid "Copy to clipboard"
+msgstr ""
+
+msgid "Tag copied!"
+msgstr ""
+
+msgid "Short url copied!"
 msgstr ""

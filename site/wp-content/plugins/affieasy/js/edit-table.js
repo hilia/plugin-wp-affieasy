@@ -1,15 +1,4 @@
 jQuery(($) => {
-    const SPECIAL_CHARS = {
-        a: 'á|à|ã|â|À|Á|Ã|Â',
-        e: 'é|è|ê|É|È|Ê',
-        i: 'í|ì|î|Í|Ì|Î',
-        o: 'ó|ò|ô|õ|Ó|Ò|Ô|Õ',
-        u: 'ú|ù|û|ü|Ú|Ù|Û|Ü',
-        c: 'ç|Ç',
-        n: 'ñ|Ñ',
-        '-': ' '
-    };
-
     const HTML = 'HTML';
     const AFFILIATION = 'AFFILIATION';
     const IMAGE = 'IMAGE';
@@ -41,7 +30,7 @@ jQuery(($) => {
     initSelectImageButtons();
     initRemoveImagesButtons();
     initEditAffiliateLinkButtons();
-    addRecaluclationLinkEvents();
+    addRecalculationLinkEvents();
 
     //init color pickers
     $('#background-color').minicolors({});
@@ -509,6 +498,14 @@ jQuery(($) => {
                 modal: true,
                 buttons,
             });
+
+            recalculateLink({
+                data: {
+                    url: currentAffiliationUrl,
+                    parametersSelector: '.affiliation-parameter-input',
+                    linkOverviewSelector: '#affiliation-link-overview'
+                }
+            });
         }
     }
 
@@ -741,14 +738,15 @@ jQuery(($) => {
     }
 
     // Add recalulation link overview on each webshop parameter
-    function addRecaluclationLinkEvents() {
+    function addRecalculationLinkEvents() {
         $('.affiliation-parameter-input').on('change keyup paste', event => {
-            if (!!event) {
-                const input = $(event.currentTarget);
-                input.val(removeSpecialCharsFromUrlParameter(input.val()));
-
-                recalculateAffiliationLinkOverview();
-            }
+            recalculateLink({
+                data: {
+                    url: currentAffiliationUrl,
+                    parametersSelector: '.affiliation-parameter-input',
+                    linkOverviewSelector: '#affiliation-link-overview'
+                }
+            });
         });
     }
 
@@ -799,9 +797,9 @@ jQuery(($) => {
             jqueryElement.val(!!affilitateLinkValue ? affilitateLinkValue[jqueryElement.data('parameter')] : '');
         });
 
-        addRecaluclationLinkEvents();
-        recalculateAffiliationLinkOverview();
+        addRecalculationLinkEvents();
     }
+
 
     // Update editAffiliationLinkModalInputs (preferences if new, else filled values)
     function updateAffiateInputsModal(linkText, background, color) {
@@ -828,31 +826,5 @@ jQuery(($) => {
         value['linkText'] = $('#link-text-input').val();
 
         return value;
-    }
-
-    // Recalculate affiliation link overview depending on modal parameters
-    function recalculateAffiliationLinkOverview() {
-        $('.affiliation-parameter-input').each(() => {
-            let url = currentAffiliationUrl;
-
-            $('.affiliation-parameter-input').each((index, element) => {
-                const jqueryElement = $(element);
-                const value = jqueryElement.val();
-                if (!!value) {
-                    url = url.replace(`[[${jqueryElement.data('parameter')}]]`, value.toString());
-                }
-            });
-
-            $('#affiliation-link-overview').text(url);
-        })
-    }
-
-    function removeSpecialCharsFromUrlParameter(parameter) {
-        return !!parameter ?
-            Object.keys(SPECIAL_CHARS)
-                .reduce((acc, cur) => acc.replace(new RegExp(SPECIAL_CHARS[cur], 'g'), cur), parameter)
-                .replaceAll(/"/g, '')
-                .replaceAll(/'/g, '') :
-            '';
     }
 });
