@@ -7,9 +7,9 @@ Tags:              tables, affiliate links, responsive, comparison tables, prici
 Donate link:
 Requires at least: 5.1
 Tested up to:      5.7.1
-Version:           0.9.23
+Version:           1.0.1
 Requires PHP:      7.2
-Stable tag:        0.9.23
+Stable tag:        1.0.1
 License: GPLv2 or later
 
 Build comparison tables in minutes with autoaffiliate link!
@@ -29,11 +29,14 @@ See our [tutorial](https://www.affieasy.com/how-to-use-affieasy/ "Tutorial") or 
 Free version:
 *   Create 2 webshops and manage preferences for affiliate links (text, background color and text color)
 *   Unlimited table creation which may contain HTML, images and affiliate links
+*   Create 50 affiliate links outsides tables (unlimited in tables)
+*   Pretty url managment on links outside tables
 *   Customize table headers (background color, text color, font weight and font size)
 *   Display responsive tables
 
 Additional features for the premium version:
 *   Unlimited webshops
+*   Unlimited affiliate links outside tables
 *   Drag & Drop rows and columns
 *   Responsive table parameters unlocked
 *   Full table customization
