@@ -30,7 +30,7 @@ Free version:
 *   Create 2 webshops and manage preferences for affiliate links (text, background color and text color)
 *   Unlimited table creation which may contain HTML, images and affiliate links
 *   Create 50 affiliate links outsides tables (unlimited in tables)
-*   Pretty url managment on links outside tables
+*   Pretty url managment
 *   Customize table headers (background color, text color, font weight and font size)
 *   Display responsive tables
 
