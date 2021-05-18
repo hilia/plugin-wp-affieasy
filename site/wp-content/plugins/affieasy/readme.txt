@@ -12,13 +12,13 @@ Requires PHP:      7.2
 Stable tag:        1.0.1
 License: GPLv2 or later
 
-Build comparison tables in minutes with autoaffiliate link!
+Build comparison tables and affiliate links in minutes with this powerful plugin!
 
 == Description ==
 
 Build comparison table in a really easy way. You can do everything: comparison tables, TOP tables, etc.
 
-The magic appears with the autoaffiliate link module with you just need to **put the URL of the product** and **that's all**!
+Also benefit from the powerful affiliate link management system (in or ouside tables).
 AffiEasy rebuild your URL with your affiliate parameters. It'll **save you tons of time** and when your need to change the product, it's really fast because you just need to change only the URL.
 See our [tutorial](https://www.affieasy.com/how-to-use-affieasy/ "Tutorial") or watch the video below to discover the possibilities offered by this plugin.
 
