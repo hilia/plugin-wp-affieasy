@@ -7,9 +7,9 @@ Tags:              tables, affiliate links, responsive, comparison tables, prici
 Donate link:
 Requires at least: 5.1
 Tested up to:      5.7.2
-Version:           1.0.1
+Version:           1.0.2
 Requires PHP:      7.2
-Stable tag:        1.0.1
+Stable tag:        1.0.2
 License: GPLv2 or later
 
 Build comparison tables and affiliate links in minutes with this powerful plugin!
@@ -61,7 +61,10 @@ See all the differences between free and premium versions: [AffiEasy](https://ww
 
 == Changelog ==
 
-= 1.0.0 =
+= 1.0.2 =
+* Fix plugin uninstallation
+
+= 1.0.1 =
 * Create / update affiliate links outside tables
 * Pretty url managment on links
 * Duplicate tables
