@@ -748,6 +748,14 @@ jQuery(($) => {
                 }
             });
         });
+
+        recalculateLink({
+            data: {
+                url: currentAffiliationUrl,
+                parametersSelector: '.affiliation-parameter-input',
+                linkOverviewSelector: '#affiliation-link-overview'
+            }
+        });
     }
 
     // Clear and add preferences / selected values in the edit affiliation links modal depending on the selected webshop

@@ -6,19 +6,19 @@ Plugin URI:        https://www.affieasy.com/
 Tags:              tables, affiliate links, responsive, comparison tables, pricing tables, responsive tables, table maker, wordpress table, affiliate table
 Donate link:
 Requires at least: 5.1
-Tested up to:      5.7.1
-Version:           0.9.23
+Tested up to:      5.7.2
+Version:           1.0.2
 Requires PHP:      7.2
-Stable tag:        0.9.23
+Stable tag:        1.0.2
 License: GPLv2 or later
 
-Build comparison tables in minutes with autoaffiliate link!
+Build comparison tables and affiliate links in minutes with this powerful plugin!
 
 == Description ==
 
 Build comparison table in a really easy way. You can do everything: comparison tables, TOP tables, etc.
 
-The magic appears with the autoaffiliate link module with you just need to **put the URL of the product** and **that's all**!
+Also benefit from the powerful affiliate link management system (in or ouside tables).
 AffiEasy rebuild your URL with your affiliate parameters. It'll **save you tons of time** and when your need to change the product, it's really fast because you just need to change only the URL.
 See our [tutorial](https://www.affieasy.com/how-to-use-affieasy/ "Tutorial") or watch the video below to discover the possibilities offered by this plugin.
 
@@ -29,11 +29,14 @@ See our [tutorial](https://www.affieasy.com/how-to-use-affieasy/ "Tutorial") or 
 Free version:
 *   Create 2 webshops and manage preferences for affiliate links (text, background color and text color)
 *   Unlimited table creation which may contain HTML, images and affiliate links
+*   Create 50 affiliate links outsides tables (unlimited in tables)
+*   Pretty url managment
 *   Customize table headers (background color, text color, font weight and font size)
 *   Display responsive tables
 
 Additional features for the premium version:
 *   Unlimited webshops
+*   Unlimited affiliate links outside tables
 *   Drag & Drop rows and columns
 *   Responsive table parameters unlocked
 *   Full table customization
@@ -58,7 +61,10 @@ See all the differences between free and premium versions: [AffiEasy](https://ww
 
 == Changelog ==
 
-= 1.0.0 =
+= 1.0.2 =
+* Fix plugin uninstallation
+
+= 1.0.1 =
 * Create / update affiliate links outside tables
 * Pretty url managment on links
 * Duplicate tables

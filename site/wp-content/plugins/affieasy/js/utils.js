@@ -41,8 +41,6 @@ function removeSpecialCharsFromUrlParameter(parameter) {
         Object.keys(SPECIAL_CHARS)
             .reduce((acc, cur) => acc.replace(new RegExp(SPECIAL_CHARS[cur], 'g'), cur), parameter)
             .replaceAll(/"/g, '')
-            .replaceAll(/'/g, '')
-            .replaceAll(/&/g, '')
-            .replaceAll(/\?/g, '') :
-        '';
+            .replaceAll(/'/g, '') :
+        '   ';
 }

@@ -31,6 +31,10 @@ wp_enqueue_script(
 $dbManager = new AFES_DbManager();
 
 $id = isset($_GET['id']) ? sanitize_key($_GET['id']) : null;
+if ($id === null) {
+    $id = isset($_POST['id']) ? sanitize_text_field($_POST['id']) : null;
+}
+
 
 $canUsePremiumCode = false;
 if (aff_fs()->is__premium_only()) {
@@ -42,7 +46,7 @@ if (aff_fs()->is__premium_only()) {
 $isActionForbidden = !$canUsePremiumCode && $id === null && $dbManager->get_table_count(AFES_Constants::TABLE_WEBSHOP) >= 2;
 
 $webshop = $isActionForbidden ? new AFES_Webshop() : new AFES_Webshop(
-    isset($_POST['id']) ? sanitize_text_field($_POST['id']) : null,
+    $id,
     isset($_POST['name']) ? sanitize_text_field($_POST['name']) : null,
     isset($_POST['url']) ? sanitize_text_field($_POST['url']) : null,
     isset($_POST['link-text-preference']) ? sanitize_text_field($_POST['link-text-preference']) : null,
