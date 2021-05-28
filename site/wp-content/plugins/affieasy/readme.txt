@@ -7,9 +7,9 @@ Tags:              tables, affiliate links, responsive, comparison tables, prici
 Donate link:
 Requires at least: 5.1
 Tested up to:      5.7.2
-Version:           1.0.2
+Version:           1.0.3
 Requires PHP:      7.2
-Stable tag:        1.0.2
+Stable tag:        1.0.3
 License: GPLv2 or later
 
 Build comparison tables and affiliate links in minutes with this powerful plugin!
@@ -30,7 +30,7 @@ Free version:
 *   Create 2 webshops and manage preferences for affiliate links (text, background color and text color)
 *   Unlimited table creation which may contain HTML, images and affiliate links
 *   Create 50 affiliate links outsides tables (unlimited in tables)
-*   Pretty url managment
+*   Pretty url managment on links outside tables
 *   Customize table headers (background color, text color, font weight and font size)
 *   Display responsive tables
 
@@ -60,6 +60,9 @@ See all the differences between free and premium versions: [AffiEasy](https://ww
 6. Easy way to create affiliate link
 
 == Changelog ==
+
+= 1.0.3 =
+* Remove pretty url managment on table links (need more work)
 
 = 1.0.2 =
 * Fix plugin uninstallation

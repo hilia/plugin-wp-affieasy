@@ -245,11 +245,10 @@ class AFES_GenerationUtils
         <div class="affieasy-table-cell affieasy-table-cell-links <?php echo $forBothOrRow ? 'affieasy-table-responsive-both-row-content' : '' ?>" <?php echo $backgroundColor; ?>>
             <?php foreach ($affiliateLinks as $affiliateLink) { ?>
                 <a
-                        href="<?php echo '/?' . AFES_Constants::SHORT_LINK_SLUG; ?>"
+                        href="<?php echo $affiliateLink->url ?>"
                     <?php echo AFES_GenerationUtils::get_affiliate_link_style($affiliateLink); ?>
                         class="affieasy-table-cell-link <?php echo $isFirst ? '' : 'affieasy-table-cell-link-with-margin'; ?>"
                         target="_blank"
-                        onclick="window.open('<?php echo $affiliateLink->url; ?>'); return false;"
                         rel="nofollow">
                     <span class="dashicons dashicons-cart affieasy-table-cell-link-icon"></span>
                     <span class="affieasy-table-cell-link-text"><?php echo $affiliateLink->linkText; ?></span>
