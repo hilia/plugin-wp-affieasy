@@ -6,10 +6,10 @@ Plugin URI:        https://www.affieasy.com/
 Tags:              tables, affiliate links, responsive, comparison tables, pricing tables, responsive tables, table maker, wordpress table, affiliate table
 Donate link:
 Requires at least: 5.1
-Tested up to:      5.7.2
-Version:           1.0.3
+Tested up to:      5.9.1
+Version:           1.0.4
 Requires PHP:      7.2
-Stable tag:        1.0.3
+Stable tag:        1.0.4
 License: GPLv2 or later
 
 Build comparison tables and affiliate links in minutes with this powerful plugin!
@@ -60,6 +60,9 @@ See all the differences between free and premium versions: [AffiEasy](https://ww
 6. Easy way to create affiliate link
 
 == Changelog ==
+
+= 1.0.4 =
+* Update freemius version
 
 = 1.0.3 =
 * Remove pretty url managment on table links (need more work)
