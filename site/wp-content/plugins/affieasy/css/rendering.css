@@ -1,3 +1,27 @@
+.affieasy-icon-green {
+    color: #06c29f;
+}
+
+.affieasy-icon-red {
+    color: #cc0000;
+}
+
+.affieasy-icon-blue {
+    color: #13b3e3;
+}
+
+.affieasy-icon-orange {
+    color: #ff6a00;
+}
+
+.affieasy-icon-black {
+    color: #111111;
+}
+
+.affieasy-icon-yellow {
+    color: #ffbf00;
+}
+
 .affieasy-table {
     display: grid;
     border: 1px solid #c2c2c2!important;
@@ -52,7 +76,6 @@
 
     text-align: center;
     display: flex!important;
-    flex-direction: column!important;
     align-items: center!important;
     justify-content: center!important;
     padding: 5px!important;

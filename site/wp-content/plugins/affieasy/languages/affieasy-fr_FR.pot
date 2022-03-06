@@ -376,6 +376,18 @@ msgstr ""
 msgid "Save table"
 msgstr ""
 
+msgid "Show tips"
+msgstr ""
+
+msgid "Tips"
+msgstr ""
+
+msgid "You can use html in each cells: for example if you want to line break, use &lt;br&gt;, &lt;ul&gt;...&lt;/ul&gt; for a list..."
+msgstr ""
+
+msgid "The shortcodes mentioned below allow you to easily add icons to your tables (ask us via support if you want more)."
+msgstr ""
+
 #Links edition
 msgid "Add new link"
 msgstr ""

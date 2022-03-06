@@ -72,6 +72,14 @@ jQuery(($) => {
         openEditHeaderOptionsModal();
     });
 
+    // Open the tips popovers
+    $('#show-tips').on('click', () => {
+        $('#show-tips').popModal({
+            html: $('#show-tips-popover'),
+            placement: 'bottomCenter'
+        });
+    });
+
     // Add delete col events
     $("[id*=button-col-delete-]").each((index, element) => {
         const jqueryElement = $(element);

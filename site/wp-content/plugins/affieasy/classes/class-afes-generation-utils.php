@@ -310,6 +310,15 @@ class AFES_GenerationUtils
 
     private static function format_html_content($content)
     {
-        return str_replace('&amp;NewLine;', '', str_replace('&quot;', '"', $content));
+        return AFES_GenerationUtils::replace_placeholders(str_replace('&amp;NewLine;', '', str_replace('&quot;', '"', $content)));
+    }
+
+    private static function replace_placeholders($content)
+    {
+        foreach (AFES_Constants::AVAILABLE_ICONS as $key => $value) {
+            $content = str_replace($key, '<span class="dashicons dashicons-' . $value . '"></span>', $content);
+        }
+
+        return $content;
     }
 }

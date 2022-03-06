@@ -594,6 +594,10 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
             <button id="edit-header-options" type="button" class="page-title-action">
                 <?php esc_html_e('Edit header options', 'affieasy'); ?>
             </button>
+
+            <button id="show-tips" type="button" class="page-title-action">
+                <?php esc_html_e('Show tips', 'affieasy'); ?>
+            </button>
         </div>
 
         <table id="table-content">
@@ -842,7 +846,7 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
 
     <div id="popovers">
         <div id="add-row-popover">
-            <h3 class="add-row-popover-header"><?php esc_html_e('Row type', 'affieasy'); ?></h3>
+            <h3 class="popover-header"><?php esc_html_e('Row type', 'affieasy'); ?></h3>
             <div class="add-row-popover-content">
                 <button type="button" id="add-html-row" class="button-primary add-row-popover-button">
                     <?php esc_html_e('Text / Html', 'affieasy'); ?>
@@ -864,6 +868,22 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
                     <?php } ?>
                 </button>
             </div>
+        </div>
+        <div id="show-tips-popover">
+            <h3 class="popover-header"><?php esc_html_e('Tips', 'affieasy'); ?></h3>
+            <p>
+                <?php esc_html_e('You can use html in each cells: for example if you want to line break, use &lt;br&gt;, &lt;ul&gt;...&lt;/ul&gt; for a list...', 'affieasy'); ?>
+            </p>
+            <p>
+                <?php esc_html_e('The shortcodes mentioned below allow you to easily add icons to your tables (ask us via support if you want more).', 'affieasy'); ?>
+            </p>
+
+            <div class="show-tips-popover-icon-list">
+                <?php foreach (AFES_Constants::AVAILABLE_ICONS as $key => $value) { ?>
+                    <div><?php echo $key; ?></div>
+                    <div><span class="dashicons dashicons-<?php echo $value ?>"></span></div>
+                <?php } ?>
+            </ul>
         </div>
     </div>
 </div>
