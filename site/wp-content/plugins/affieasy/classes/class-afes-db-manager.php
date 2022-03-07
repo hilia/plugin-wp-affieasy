@@ -60,7 +60,7 @@ class AFES_DbManager
                 $webshop['backgroundColorPreference'],
                 $webshop['textColorPreference']
             );
-        }, $this->db->get_results('SELECT * FROM ' . AFES_Constants::TABLE_WEBSHOP, ARRAY_A));
+        }, $this->db->get_results('SELECT * FROM ' . AFES_Constants::TABLE_WEBSHOP . ' ORDER BY name ASC', ARRAY_A));
     }
 
     public function get_webshop_page($currentPage, $perPage)
