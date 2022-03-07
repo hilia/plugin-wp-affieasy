@@ -376,6 +376,18 @@ msgstr "Le rendu pourra être légèrement différent on fonction du thème appl
 msgid "Save table"
 msgstr "Sauvegarder tableau"
 
+msgid "Show tips"
+msgstr "Afficher conseils"
+
+msgid "Tips"
+msgstr "Conseils"
+
+msgid "You can use html in each cells: for example if you want to line break, use &lt;br&gt;, &lt;ul&gt;...&lt;/ul&gt; for a list..."
+msgstr "Vous pouvez utiliser le langage html dans chaque cellule : par exemple si vous souhaitez un saut de ligne, utilisez &lt;br&gt;, &lt;ul&gt;...&lt;/ul&gt; pour une liste..."
+
+msgid "The shortcodes mentioned below allow you to easily add icons to your tables (ask us via support if you want more)."
+msgstr "Les codes ci-dessous vous permettent d'ajouter facilement des icônes dans vos tableaux (demandez nous via le support si vous en souhaitez d'autres)."
+
 #Links edition
 msgid "Add new link"
 msgstr "Ajouter un lien"

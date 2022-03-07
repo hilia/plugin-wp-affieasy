@@ -2,7 +2,8 @@
 
 namespace affieasy;
 
-class AFES_Constants {
+class AFES_Constants
+{
     const TABLE_WEBSHOP = 'wp_affieasy_webshop';
     const TABLE_TABLE = 'wp_affieasy_table';
     const TABLE_LINK = 'wp_affieasy_link';
@@ -32,5 +33,16 @@ class AFES_Constants {
         'ROW_HEADER' => 'Row header',
         'BOTH' => 'Both',
         'NONE' => 'None'
+    );
+
+    const AVAILABLE_ICONS = array(
+        '%TICK%' => 'yes affieasy-icon-green',
+        '%CROSS%' => 'no affieasy-icon-red',
+        '%INFO%' => 'info affieasy-icon-blue',
+        '%WARNING%' => 'warning affieasy-icon-orange',
+        '%HEART%' => 'heart affieasy-icon-red',
+        '%LOCK%' => 'lock affieasy-icon-black',
+        '%EMPTY-STAR%' => 'star-empty affieasy-icon-yellow',
+        '%FILLED-STAR%' => 'star-filled affieasy-icon-yellow',
     );
 }
