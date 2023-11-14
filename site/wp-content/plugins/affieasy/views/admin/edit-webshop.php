@@ -37,11 +37,11 @@ if ($id === null) {
 
 
 $canUsePremiumCode = false;
-if (aff_fs()->is__premium_only()) {
-    if (aff_fs()->can_use_premium_code()) {
+// if (aff_fs()->is__premium_only()) {
+//    if (aff_fs()->can_use_premium_code()) {
         $canUsePremiumCode = true;
-    }
-}
+//    }
+// }
 
 $isActionForbidden = !$canUsePremiumCode && $id === null && $dbManager->get_table_count(AFES_Constants::TABLE_WEBSHOP) >= 2;
 
@@ -51,7 +51,9 @@ $webshop = $isActionForbidden ? new AFES_Webshop() : new AFES_Webshop(
     isset($_POST['url']) ? sanitize_text_field($_POST['url']) : null,
     isset($_POST['link-text-preference']) ? sanitize_text_field($_POST['link-text-preference']) : null,
     isset($_POST['background-color-preference']) ? sanitize_hex_color($_POST['background-color-preference']) : null,
-    isset($_POST['text-color-preference']) ? sanitize_hex_color($_POST['text-color-preference']) : null
+    isset($_POST['text-color-preference']) ? sanitize_hex_color($_POST['text-color-preference']) : null,
+    isset($_POST['encoder-url']) ? sanitize_key($_POST['encoder-url']) === 'on' : false
+
 );
 
 $errors = array();
@@ -254,6 +256,21 @@ $webshopName = $webshop->getName();
                             id="text-color-preference"
                             name="text-color-preference"
                             value="<?php echo esc_attr($webshop->getTextColorPreference()); ?>"
+                            <?php echo $isActionForbidden ? 'disabled' : ''; ?>>
+                </td>
+            </tr>
+            <tr class="form-field">
+                <th scope="row">
+                    <label for="text-color-preference">
+                        <?php esc_html_e('Encoder Url', 'affieasy'); ?>
+                    </label>
+                </th>
+                <td>
+                    <input
+                            type="checkbox"
+                            id="encoder-url"
+                            name="encoder-url"
+                            <?php echo ($webshop->getEncoderUrl()==1)?'checked':''?>
                             <?php echo $isActionForbidden ? 'disabled' : ''; ?>>
                 </td>
             </tr>

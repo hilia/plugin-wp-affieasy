@@ -30,7 +30,8 @@ class AFES_WebshopList extends WP_List_Table
     {
         return [
             'id' => esc_html__('Id', 'affieasy'),
-            'name' => esc_html__('Name', 'affieasy')
+            'name' => esc_html__('Name', 'affieasy'),
+            'encoderUrl' => esc_html__('EncoderUrl', 'affieasy')
         ];
     }
 
@@ -47,6 +48,13 @@ class AFES_WebshopList extends WP_List_Table
         );
     }
 
+    public function get_sortable_columns()
+    {
+        return array(
+            'id' => array('id', false),
+            'name' => array('name', false));
+    }
+
     function column_default($item, $column_name)
     {
         return stripslashes($item[$column_name]);
@@ -55,11 +63,20 @@ class AFES_WebshopList extends WP_List_Table
     public function prepare_items()
     {
         $per_page = AFES_Constants::ITEMS_PER_PAGE;
+        $search = isset($_GET['s']) ? sanitize_text_field($_GET['s']) : null;
         $total_items = $this->dbManager->get_table_count(AFES_Constants::TABLE_WEBSHOP);
-        $data = $this->dbManager->get_webshop_page($this->get_pagenum(), $per_page);
+        // $data = $this->dbManager->get_webshop_page($this->get_pagenum(), $per_page);
+        $data = $this->dbManager->get_webshop_page(
+            $this->get_pagenum(),
+            $per_page,
+            isset($_GET['orderby']) ? sanitize_key($_GET['orderby']) : null,
+            isset($_GET['order']) ? sanitize_key($_GET['order']) : null,
+            $search
+        );
 
         $this->items = $data;
-        $this->_column_headers = array($this->get_columns(), array(), array());
+        // $this->_column_headers = array($this->get_columns(), array(), array());
+        $this->_column_headers = array($this->get_columns(), array(), $this->get_sortable_columns());
         $this->set_pagination_args(array(
             'total_items' => $total_items,
             'per_page' => $per_page,

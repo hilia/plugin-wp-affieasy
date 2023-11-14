@@ -40,11 +40,11 @@ if ($isValidDeleteAction) {
 }
 
 $canUsePremiumCode = false;
-if (aff_fs()->is__premium_only()) {
-    if (aff_fs()->can_use_premium_code()) {
+// if (aff_fs()->is__premium_only()) {
+//    if (aff_fs()->can_use_premium_code()) {
         $canUsePremiumCode = true;
-    }
-}
+//    }
+// }
 
 $dbManager = new AFES_DbManager();
 $currentWebshopCount = 0;

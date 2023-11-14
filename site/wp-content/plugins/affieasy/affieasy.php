@@ -17,9 +17,12 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
+/*
 if (function_exists('aff_fs')) {
     aff_fs()->set_basename(true, __FILE__);
 } else {
+    
+    
     if (!function_exists('aff_fs')) {
         // Create a helper function for easy SDK access.
         function aff_fs()
@@ -27,6 +30,7 @@ if (function_exists('aff_fs')) {
             global $aff_fs;
 
             if (!isset($aff_fs)) {
+                
                 // Include Freemius SDK.
                 require_once dirname(__FILE__) . '/freemius/start.php';
 
@@ -51,6 +55,7 @@ if (function_exists('aff_fs')) {
                     // IMPORTANT: MAKE SURE TO REMOVE SECRET KEY BEFORE DEPLOYMENT.
                     'secret_key' => 'sk_sVtKIw:nh~bErBdXy%iQw9=}Nu)RT',
                 ));
+                
             }
 
             return $aff_fs;
@@ -60,7 +65,11 @@ if (function_exists('aff_fs')) {
         aff_fs();
         // Signal that SDK was initiated.
         do_action('aff_fs_loaded');
+        
+        
     }
+    
+
 
     require_once 'classes/class-afes-affiliation-table-admin.php';
     $plugin_instance = new AFES_AffiliationTableAdmin();
@@ -71,7 +80,10 @@ if (function_exists('aff_fs')) {
     {
         load_plugin_textdomain('affieasy', FALSE, basename(dirname(__FILE__)) . '/languages/');
 
-        $plugin_version = get_plugin_data( __FILE__ )['Version'];
+        // $plugin_version = get_plugin_data( __FILE__ )['Version'];
+        $plugin_version ="1.0.5";
+        // echo "plugin_version : ".$plugin_version."<br />";
+        // die();
         if ($plugin_version !== get_option(AFES_Constants::AFFIEASY_PLUGIN_VERSION)) {
             update_option(AFES_Constants::AFFIEASY_PLUGIN_VERSION, $plugin_version);
             AFES_AffiliationTableAdmin::initialize_affieasy_plugin();
@@ -90,5 +102,28 @@ if (function_exists('aff_fs')) {
         }
     }
 
-    aff_fs()->add_action('after_uninstall', 'aff_fs_uninstall_cleanup');
+    // aff_fs()->add_action('after_uninstall', 'aff_fs_uninstall_cleanup');
 }
+
+*/
+
+require_once 'classes/class-afes-affiliation-table-admin.php';
+$plugin_instance = new AFES_AffiliationTableAdmin();
+
+register_activation_hook(__FILE__, array($plugin_instance, 'initialize_affieasy_plugin'));
+
+function after_plugins_loaded()
+{
+    load_plugin_textdomain('affieasy', FALSE, basename(dirname(__FILE__)) . '/languages/');
+
+    // $plugin_version = get_plugin_data( __FILE__ )['Version'];
+    $plugin_version ="1.0.5";
+    // echo "plugin_version : ".$plugin_version."<br />";
+    // die();
+    if ($plugin_version !== get_option(AFES_Constants::AFFIEASY_PLUGIN_VERSION)) {
+        update_option(AFES_Constants::AFFIEASY_PLUGIN_VERSION, $plugin_version);
+        AFES_AffiliationTableAdmin::initialize_affieasy_plugin();
+    }
+}
+
+add_action('plugins_loaded', 'after_plugins_loaded');

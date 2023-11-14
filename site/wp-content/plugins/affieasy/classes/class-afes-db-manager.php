@@ -45,7 +45,8 @@ class AFES_DbManager
 				url TEXT NOT NULL,
 				linkTextPreference VARCHAR(255),
 				backgroundColorPreference VARCHAR(10),
-				textColorPreference VARCHAR(10)
+				textColorPreference VARCHAR(10),
+                encoderUrl TINYINT(1)
 			);");
     }
 
@@ -58,15 +59,30 @@ class AFES_DbManager
                 $webshop['url'],
                 $webshop['linkTextPreference'],
                 $webshop['backgroundColorPreference'],
-                $webshop['textColorPreference']
+                $webshop['textColorPreference'],
+                $webshop['encoderUrl']
             );
         }, $this->db->get_results('SELECT * FROM ' . AFES_Constants::TABLE_WEBSHOP . ' ORDER BY name ASC', ARRAY_A));
     }
 
-    public function get_webshop_page($currentPage, $perPage)
+    // todo permettre le tri des boutiques
+    public function get_webshop_page($currentPage, $perPage, $orderBy="name", $order="asc")
     {
+        switch ($orderBy) {
+            case 'id':
+                $orderBy = 'id';
+                break;
+            case 'name':
+                $orderBy = 'name';
+                break;
+            default :
+                $orderBy = 'name';
+        }
+
+        $order = in_array($order, array('asc', 'desc')) ? $order : 'asc';
+
         $sql = $this->db->prepare(
-            "SELECT id, name FROM " . AFES_Constants::TABLE_WEBSHOP . " ORDER BY id DESC LIMIT %d, %d",
+            "SELECT id, name, encoderUrl FROM " . AFES_Constants::TABLE_WEBSHOP . " ORDER BY ".$orderBy." ".$order." LIMIT %d, %d",
             array((($currentPage - 1) * $perPage), $perPage));
 
         return $this->db->get_results($sql, ARRAY_A);
@@ -83,7 +99,8 @@ class AFES_DbManager
             $webshop->url,
             $webshop->linkTextPreference,
             $webshop->backgroundColorPreference,
-            $webshop->textColorPreference
+            $webshop->textColorPreference,
+            $webshop->encoderUrl
         );
     }
 
@@ -94,11 +111,11 @@ class AFES_DbManager
         $webshopId = $webshop->getId();
 
         $canUsePremiumCode = false;
-        if (aff_fs()->is__premium_only()) {
-            if (aff_fs()->can_use_premium_code()) {
+        // if (aff_fs()->is__premium_only()) {
+        //    if (aff_fs()->can_use_premium_code()) {
                 $canUsePremiumCode = true;
-            }
-        }
+        //    }
+        // }
 
         if (!$canUsePremiumCode && $webshopId === null && $this->get_table_count(AFES_Constants::TABLE_WEBSHOP) >= 2) {
             return new AFES_Webshop();
@@ -109,7 +126,9 @@ class AFES_DbManager
             "url" => $webshop->getUrl(),
             "linkTextPreference" => $webshop->getLinkTextPreference(),
             "backgroundColorPreference" => $webshop->getBackgroundColorPreference(),
-            "textColorPreference" => $webshop->getTextColorPreference());
+            "textColorPreference" => $webshop->getTextColorPreference(),
+            "encoderUrl" => $webshop->getEncoderUrl()
+        );
 
         if (empty($webshopId)) {
             $this->db->insert(AFES_Constants::TABLE_WEBSHOP, $values);
@@ -205,13 +224,13 @@ class AFES_DbManager
             "responsiveBreakpoint" => AFES_Table::$defaultResponsiveBreakpoint,
             "backgroundColor" => AFES_Table::$defaultBackgroundColor);
 
-        if (aff_fs()->is__premium_only()) {
-            if (aff_fs()->can_use_premium_code()) {
+        // if (aff_fs()->is__premium_only()) {
+            // if (aff_fs()->can_use_premium_code()) {
                 $values['maxWidth'] = is_numeric($maxWidth) ? $maxWidth : null;
                 $values['responsiveBreakpoint'] = is_numeric($responsiveBreakpoint) ? $responsiveBreakpoint : null;
                 $values['backgroundColor'] = $backgroundColor ? $backgroundColor : null;
-            }
-        }
+            //}
+        // }
 
         if (empty($tableId)) {
             $this->db->insert(AFES_Constants::TABLE_TABLE, $values);
@@ -399,11 +418,11 @@ class AFES_DbManager
         $id = $link->getId();
 
         $canUsePremiumCode = false;
-        if (aff_fs()->is__premium_only()) {
-            if (aff_fs()->can_use_premium_code()) {
+        // if (aff_fs()->is__premium_only()) {
+            // if (aff_fs()->can_use_premium_code()) {
                 $canUsePremiumCode = true;
-            }
-        }
+            // }
+        // }
 
         if (!$canUsePremiumCode && $id === null && $this->get_table_count(AFES_Constants::TABLE_LINK) >= 50) {
             return new AFES_Link();

@@ -47,11 +47,11 @@ wp_enqueue_script(
 );
 
 $canUsePremiumCode = false;
-if (aff_fs()->is__premium_only()) {
-    if (aff_fs()->can_use_premium_code()) {
+// if (aff_fs()->is__premium_only()) {
+//  if (aff_fs()->can_use_premium_code()) {
         $canUsePremiumCode = true;
-    }
-}
+//    }
+// }
 
 wp_localize_script( 'edit-table-script', 'translations', array(
     'add' => esc_html__('Add', 'affieasy'),
