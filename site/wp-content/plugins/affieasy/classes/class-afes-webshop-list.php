@@ -30,8 +30,8 @@ class AFES_WebshopList extends WP_List_Table
     {
         return [
             'id' => esc_html__('Id', 'affieasy'),
-            'name' => esc_html__('Name', 'affieasy'),
-            'encoderUrl' => esc_html__('EncoderUrl', 'affieasy')
+            'name' => esc_html__('Name', 'affieasy')
+            /*,'encoderUrl' => esc_html__('EncoderUrl', 'affieasy')*/
         ];
     }
 

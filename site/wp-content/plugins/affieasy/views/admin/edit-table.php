@@ -46,12 +46,7 @@ wp_enqueue_script(
     time()
 );
 
-$canUsePremiumCode = false;
-// if (aff_fs()->is__premium_only()) {
-//  if (aff_fs()->can_use_premium_code()) {
-        $canUsePremiumCode = true;
-//    }
-// }
+$canUsePremiumCode = true;
 
 wp_localize_script( 'edit-table-script', 'translations', array(
     'add' => esc_html__('Add', 'affieasy'),
@@ -156,7 +151,6 @@ $isTableWithRowHeader = in_array($headerType, array('ROW_HEADER', 'BOTH'));
 $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
 ?>
 
-<?php require_once dirname(__DIR__, 3) . '/' . $pluginName . '/inc/free-version-message.php'; ?>
 <div id="edit-affiliation-link-modal" hidden>
     <?php if ($hasNoWebShop) { ?>
         <p>

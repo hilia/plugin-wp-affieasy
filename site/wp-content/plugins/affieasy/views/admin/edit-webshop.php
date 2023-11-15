@@ -35,13 +35,7 @@ if ($id === null) {
     $id = isset($_POST['id']) ? sanitize_text_field($_POST['id']) : null;
 }
 
-
-$canUsePremiumCode = false;
-// if (aff_fs()->is__premium_only()) {
-//    if (aff_fs()->can_use_premium_code()) {
-        $canUsePremiumCode = true;
-//    }
-// }
+$canUsePremiumCode = true;
 
 $isActionForbidden = !$canUsePremiumCode && $id === null && $dbManager->get_table_count(AFES_Constants::TABLE_WEBSHOP) >= 2;
 
@@ -91,7 +85,6 @@ $webshopName = $webshop->getName();
 
 ?>
 
-<?php require_once dirname(__DIR__, 3) . '/' . $pluginName . '/inc/free-version-message.php'; ?>
 <div class="wrap">
     <div class="header">
         <h1 class="wp-heading-inline"><?php echo empty($webshopId) ?

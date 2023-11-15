@@ -46,7 +46,7 @@ $tableList = new AFES_TableList();
 </div>
 
 <div class="wrap">
-    <?php require_once dirname(__DIR__, 3) . '/' . $pluginName . '/inc/free-version-message.php'; ?>
+    
     <h1 class="wp-heading-inline"><?php esc_html_e('Tables', 'affieasy'); ?></h1>
 
     <a href="admin.php?page=affieasy-table&action=edit-table" class="page-title-action">

@@ -110,13 +110,8 @@ class AFES_DbManager
 
         $webshopId = $webshop->getId();
 
-        $canUsePremiumCode = false;
-        // if (aff_fs()->is__premium_only()) {
-        //    if (aff_fs()->can_use_premium_code()) {
-                $canUsePremiumCode = true;
-        //    }
-        // }
-
+        $canUsePremiumCode = true;
+        
         if (!$canUsePremiumCode && $webshopId === null && $this->get_table_count(AFES_Constants::TABLE_WEBSHOP) >= 2) {
             return new AFES_Webshop();
         }
@@ -224,13 +219,9 @@ class AFES_DbManager
             "responsiveBreakpoint" => AFES_Table::$defaultResponsiveBreakpoint,
             "backgroundColor" => AFES_Table::$defaultBackgroundColor);
 
-        // if (aff_fs()->is__premium_only()) {
-            // if (aff_fs()->can_use_premium_code()) {
-                $values['maxWidth'] = is_numeric($maxWidth) ? $maxWidth : null;
-                $values['responsiveBreakpoint'] = is_numeric($responsiveBreakpoint) ? $responsiveBreakpoint : null;
-                $values['backgroundColor'] = $backgroundColor ? $backgroundColor : null;
-            //}
-        // }
+        $values['maxWidth'] = is_numeric($maxWidth) ? $maxWidth : null;
+        $values['responsiveBreakpoint'] = is_numeric($responsiveBreakpoint) ? $responsiveBreakpoint : null;
+        $values['backgroundColor'] = $backgroundColor ? $backgroundColor : null;
 
         if (empty($tableId)) {
             $this->db->insert(AFES_Constants::TABLE_TABLE, $values);
@@ -417,13 +408,8 @@ class AFES_DbManager
 
         $id = $link->getId();
 
-        $canUsePremiumCode = false;
-        // if (aff_fs()->is__premium_only()) {
-            // if (aff_fs()->can_use_premium_code()) {
-                $canUsePremiumCode = true;
-            // }
-        // }
-
+        $canUsePremiumCode = true;
+        
         if (!$canUsePremiumCode && $id === null && $this->get_table_count(AFES_Constants::TABLE_LINK) >= 50) {
             return new AFES_Link();
         }

@@ -69,12 +69,7 @@ if (isset($actionType)) {
     }
 }
 
-$canUsePremiumCode = false;
-// if (aff_fs()->is__premium_only()) {
-//    if (aff_fs()->can_use_premium_code()) {
-        $canUsePremiumCode = true;
-//    }
-// }
+$canUsePremiumCode = true;
 
 $currentLinkCount = 0;
 if (!$canUsePremiumCode) {
@@ -188,7 +183,7 @@ $hasNoWebshop = empty($webshops);
 
 <div class="wrap">
     <div class="header">
-        <?php require_once dirname(__DIR__, 3) . '/' . $pluginName . '/inc/free-version-message.php'; ?>
+        
         <h1 class="wp-heading-inline"><?php echo esc_html__('Affiliate links', 'affieasy'); ?></h1>
 
         <?php if ($hasNoWebshop) { ?>

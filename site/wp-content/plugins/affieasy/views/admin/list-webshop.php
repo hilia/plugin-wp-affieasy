@@ -39,12 +39,7 @@ if ($isValidDeleteAction) {
     $dbManager->delete_webshop($id);
 }
 
-$canUsePremiumCode = false;
-// if (aff_fs()->is__premium_only()) {
-//    if (aff_fs()->can_use_premium_code()) {
-        $canUsePremiumCode = true;
-//    }
-// }
+$canUsePremiumCode = true;
 
 $dbManager = new AFES_DbManager();
 $currentWebshopCount = 0;
@@ -64,7 +59,7 @@ $webshopList = new AFES_WebshopList();
 <div class="wrap">
 
     <div class="header">
-        <?php require_once dirname(__DIR__, 3) . '/' . $pluginName . '/inc/free-version-message.php'; ?>
+        
         <h1 class="wp-heading-inline"><?php esc_html_e('Webshops', 'affieasy'); ?></h1>
 
         <?php if ($canUsePremiumCode || $currentWebshopCount < 2) { ?>
