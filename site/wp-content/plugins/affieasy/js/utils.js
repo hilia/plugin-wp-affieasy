@@ -12,21 +12,36 @@ const SPECIAL_CHARS = {
 // Recalculate link depending on url and parameters
 // event.data must contain url (base webshop url), parametersSelector (class of input parameters) and linkOverviewSelector (class of overview paragraph)
 function recalculateLink(event) {
+    
+    
+    // console.log('event.data.url : ', event.data.url);
+    // console.log('event.data.parametersSelector : ', event.data.parametersSelector);
+
     if (event && event.data) {
         let data = event.data;
+        console.log('data: ', data);
         let url = data.url;
         Array.from(document.querySelectorAll(data.parametersSelector)).forEach(input => {
             if (input) {
                 let cleanedValue = '';
 
                 if (input.value) {
+                    console.log('input.value : ', input.value);
                     cleanedValue = removeSpecialCharsFromUrlParameter(input.value);
+                    console.log('cleanedValue : ', cleanedValue);
                     url = url.replace(`[[${input.dataset.parameter}]]`, cleanedValue);
+                    /*
+                    if (data.encoderUrl=='1'){
+                        url.replace(url,url)
+                    }
+                    */
                 }
 
                 input.value = cleanedValue;
             }
         });
+
+        console.log('url sortie : ', url);
 
         const pOverview = document.querySelector(data.linkOverviewSelector);
         if (pOverview) {

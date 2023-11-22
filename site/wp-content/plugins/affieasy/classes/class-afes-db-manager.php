@@ -65,7 +65,6 @@ class AFES_DbManager
         }, $this->db->get_results('SELECT * FROM ' . AFES_Constants::TABLE_WEBSHOP . ' ORDER BY name ASC', ARRAY_A));
     }
 
-    // todo permettre le tri des boutiques
     public function get_webshop_page($currentPage, $perPage, $orderBy="name", $order="asc")
     {
         switch ($orderBy) {
@@ -389,14 +388,31 @@ class AFES_DbManager
 
         $sql = $this->db->prepare("SELECT * FROM " . AFES_Constants::TABLE_LINK . " WHERE id=%d", array($id));
         $link = $this->db->get_row($sql);
-
+        $url = $link->url;
+        // W-prog encoder url si check dans boutique
+        $parameters = $link->parameters;
+        $parameters = json_decode($parameters);
+        $product_url="";
+        foreach ($parameters as $clef => $valeur){
+            if ($clef=="product_url"){
+                $product_url=$valeur;
+            }
+        }
+        
+        $dbManager = new AFES_DbManager();
+        $webshop = $dbManager->get_webshop_by_id($link->webshopId);
+        $encoderUrl = $webshop->getEncoderUrl();
+        if ($encoderUrl=="1"){
+            $url = str_replace($product_url, urlencode($product_url), $url );
+        }
+        // Fin w-prog
         return isset($link->id) ? new AFES_Link(
             $link->id,
             $link->webshopId,
             $link->label,
             $link->category,
             $link->parameters,
-            $link->url,
+            $url,
             $link->noFollow,
             $link->openInNewTab
         ) : new AFES_Link();
@@ -414,13 +430,31 @@ class AFES_DbManager
             return new AFES_Link();
         }
 
+        $url = $link->getUrl();
+        // Wprog : encodage de l'url en base de données.
+        /*
+        $product_url="";
+        foreach ($link->getParameters() as $clef => $valeur){
+            if ($clef=="product_url"){
+                $product_url=$valeur;
+            }
+        }
+        $dbManager = new AFES_DbManager();
+        $webshop = $dbManager->get_webshop_by_id($link->getWebshopId());
+        $encoderUrl = $webshop->getEncoderUrl();
+        if ($encoderUrl=="1" && $product_url!==""){
+            // Regenerer l'url à partir du tag : [[product_url]] 
+            $url = str_replace($product_url, urlencode($product_url), $url );
+        }
+        */
+        // Fin w-Prog
         $values = array(
             "id" => $id,
             "webshopId" => $link->getWebshopId(),
             "label" => $link->getLabel(),
             "category" => $link->getCategory(),
             "parameters" => json_encode($link->getParameters()),
-            "url" => $link->getUrl(),
+            "url" => $url,
             "noFollow" => $link->isNoFollow(),
             "openInNewTab" => $link->isOpenInNewTab()
         );

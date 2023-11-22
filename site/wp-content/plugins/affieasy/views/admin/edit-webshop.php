@@ -193,6 +193,21 @@ $webshopName = $webshop->getName();
                             <?php echo $isActionForbidden ? 'disabled' : ''; ?>>
                 </td>
             </tr>
+            <tr class="form-field">
+                <th scope="row">
+                    <label for="encoder-url">
+                        <?php esc_html_e('Encoder Url', 'affieasy'); ?>
+                    </label>
+                </th>
+                <td>
+                    <input
+                            type="checkbox"
+                            id="encoder-url"
+                            name="encoder-url"
+                            <?php echo ($webshop->getEncoderUrl()==1)?'checked':''?>
+                            <?php echo $isActionForbidden ? 'disabled' : ''; ?>>
+                </td>
+            </tr>
         </table>
 
         <h2 class="title">
@@ -252,21 +267,7 @@ $webshopName = $webshop->getName();
                             <?php echo $isActionForbidden ? 'disabled' : ''; ?>>
                 </td>
             </tr>
-            <tr class="form-field">
-                <th scope="row">
-                    <label for="text-color-preference">
-                        <?php esc_html_e('Encoder Url', 'affieasy'); ?>
-                    </label>
-                </th>
-                <td>
-                    <input
-                            type="checkbox"
-                            id="encoder-url"
-                            name="encoder-url"
-                            <?php echo ($webshop->getEncoderUrl()==1)?'checked':''?>
-                            <?php echo $isActionForbidden ? 'disabled' : ''; ?>>
-                </td>
-            </tr>
+            
         </table>
     </form>
 

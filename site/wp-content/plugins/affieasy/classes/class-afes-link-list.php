@@ -45,10 +45,12 @@ class AFES_LinkList extends WP_List_Table
     {
         $tag = $item['tag'];
 
+        $url = $item['url'];
+        
         return sprintf('%1$s %2$s',
             '<span data-type="tag" data-value="' . $tag . '" class="dashicons dashicons-admin-links copy-to-clipboard" title="' . esc_html__('Copy to clipboard', 'affieasy') . '"></span>' . $tag,
             $this->row_actions(array(
-                'edit' => sprintf('<a href="#" class="update-link" data-id="' . $item['id'] . '" data-webshop-id="' . $item['webshopId'] . '" data-label="' . $item['label'] . '" data-category="' . $item['category'] . '" data-parameters="' . str_replace('"', "'", $item['parameters']) . '" data-url="' . $item['url'] . '" data-no-follow="' . $item['noFollow'] . '" data-open-in-new-tab="' . $item['openInNewTab'] . '">' . esc_html__('Edit', 'affieasy') . '</a>'),
+                'edit' => sprintf('<a href="#" class="update-link" data-id="' . $item['id'] . '" data-webshop-id="' . $item['webshopId'] . '" data-label="' . $item['label'] . '" data-category="' . $item['category'] . '" data-parameters="' . str_replace('"', "'", $item['parameters']) . '" data-url="' .  $url . '" data-no-follow="' . $item['noFollow'] . '" data-open-in-new-tab="' . $item['openInNewTab'] . '">' . esc_html__('Edit', 'affieasy') . '</a>'),
                 'delete' => sprintf('<a href="#" class="delete-link" data-id="' . $item['id'] . '">' . esc_html__('Delete', 'affieasy') . '</a>'),
             ))
         );
@@ -58,6 +60,30 @@ class AFES_LinkList extends WP_List_Table
     {
         $shortUrl = $this->baseUrl . '?' . AFES_Constants::SHORT_LINK_SLUG . '=' . $item['id'];
         return '<span data-value="' . $shortUrl . '" class="dashicons dashicons-admin-links copy-to-clipboard" title="' . esc_html__('Copy to clipboard', 'affieasy') . '"></span>' . $shortUrl;
+    }
+
+    function column_url($item)
+    {
+
+        $url = $item['url'];
+        
+        // w-prog : pour un affichage correct de l'url encodée dans la liste.
+        $parameters = $item['parameters'];
+        $parameters = json_decode($parameters);
+        $product_url="";
+        foreach ($parameters as $clef => $valeur){
+            if ($clef=="product_url"){
+                $product_url=$valeur;
+            }
+        }
+        $dbManager = new AFES_DbManager();
+        $webshop = $dbManager->get_webshop_by_id($item['webshopId']);
+        $encoderUrl = $webshop->getEncoderUrl();
+        if ($encoderUrl=="1"){
+            $url = str_replace($product_url, urlencode($product_url), $url );
+        }
+        // Fin w-prog
+        return $url;
     }
 
     public function get_sortable_columns()

@@ -97,6 +97,7 @@ jQuery(($) => {
         if (isEdition) {
             const data = event.data;
 
+            // console.log(data);
             $('#idParam').val(data.id);
             $('#webshopIdParam').val(data.webshopId);
             $('#labelParam').val(data.label);
@@ -110,12 +111,13 @@ jQuery(($) => {
             Object.keys(parameters).forEach(key => {
                 $(`[data-parameter="${key}"]`).val(parameters[key]);
             });
-
+            
             recalculateLink({
                data: {
                    url: $("#webshopIdParam option:selected").data('url'),
                    parametersSelector: '.link-parameter-input',
-                   linkOverviewSelector: '#p-overview'
+                   linkOverviewSelector: '#p-overview',
+                   /*, encoderUrl:'1'*/
                }
             });
         } else {
@@ -137,6 +139,8 @@ jQuery(($) => {
         let selectedWebshop = $("#webshopIdParam option:selected");
         if (selectedWebshop) {
             url = selectedWebshop.data('url');
+            
+            // console.log(url);
 
             selectedWebshop.data('parameters')
                 .split('|||')
@@ -156,6 +160,8 @@ jQuery(($) => {
                         url,
                         parametersSelector: '.link-parameter-input',
                         linkOverviewSelector: '#p-overview'}, recalculateLink)))));
+
+            // console.log(url);
 
             $('#p-overview').text(url);
         }

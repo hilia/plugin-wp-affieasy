@@ -167,7 +167,7 @@ $hasNoWebshop = empty($webshops);
                 </td>
             </tr>
             <tr>
-                <th scope="row">
+                <th scope="row" class="overview">
                     <label>
                         <?php esc_html_e('Link overview', 'affieasy'); ?>
                     </label>
