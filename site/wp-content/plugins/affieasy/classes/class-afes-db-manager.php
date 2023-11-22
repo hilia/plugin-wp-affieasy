@@ -45,9 +45,19 @@ class AFES_DbManager
 				url TEXT NOT NULL,
 				linkTextPreference VARCHAR(255),
 				backgroundColorPreference VARCHAR(10),
-				textColorPreference VARCHAR(10),
-                encoderUrl TINYINT(1)
+				textColorPreference VARCHAR(10)
 			);");
+    }
+    public function update_table_webshop_encoderUrl()
+    {
+        global $wpdb;
+        
+        $sql="ALTER TABLE `" . AFES_Constants::TABLE_WEBSHOP . "` ADD COLUMN `encoderUrl` tinyint NULL DEFAULT 0 AFTER `textColorPreference`;";
+       
+        require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+        dbDelta($sql);
+        // echo "sql : ".$sql."<hr />";
+        // echo "last_error : ".$wpdb->last_error."<hr />";
     }
 
     public function get_webshop_list()

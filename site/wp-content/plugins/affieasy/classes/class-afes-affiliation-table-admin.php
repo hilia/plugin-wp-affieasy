@@ -49,6 +49,15 @@ class AFES_AffiliationTableAdmin
         if (!$staticDbManager->table_exists(AFES_Constants::TABLE_LINK)) {
             $staticDbManager->create_table_link();
         }
+
+    }
+
+    public static function update_affieasy_plugin()
+    {
+        $staticDbManager = AFES_DbManager::get_instance();
+        // W-prog Update le 22/11/2023 : creation champ encoderUrl 
+        $staticDbManager->update_table_webshop_encoderUrl();
+
     }
 
     public function add_menus_page_affiliation_table()

@@ -29,8 +29,9 @@ function after_plugins_loaded()
     // $plugin_version ="1.0.5";
     $plugin_version =AFES_Constants::PLUGIN_VERSION; // Version sans Fremius FreeWare
     if ($plugin_version !== get_option(AFES_Constants::AFFIEASY_PLUGIN_VERSION)) {
-        update_option(AFES_Constants::AFFIEASY_PLUGIN_VERSION, $plugin_version);
         AFES_AffiliationTableAdmin::initialize_affieasy_plugin();
+        AFES_AffiliationTableAdmin::update_affieasy_plugin();
+        update_option(AFES_Constants::AFFIEASY_PLUGIN_VERSION, $plugin_version);
     }
 }
 
