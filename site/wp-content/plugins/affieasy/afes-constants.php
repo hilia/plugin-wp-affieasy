@@ -46,6 +46,6 @@ class AFES_Constants
         '%FILLED-STAR%' => 'star-filled affieasy-icon-yellow',
     );
 
-    const PLUGIN_VERSION = '1.1.3';
+    const PLUGIN_VERSION = '1.1.4';
     
 }
