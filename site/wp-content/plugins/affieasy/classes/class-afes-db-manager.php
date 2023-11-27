@@ -55,7 +55,7 @@ class AFES_DbManager
         $sql="ALTER TABLE `" . AFES_Constants::TABLE_WEBSHOP . "` ADD COLUMN `encoderUrl` tinyint NULL DEFAULT 0 AFTER `textColorPreference`;";
         require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
         // dbDelta($sql); // SQL update ne fonctionne pas
-        $wpdb->get_results($sql); // Remplacer par get_result, OK fonctionnel le 27/11/2023
+        $wpdb->get_results($sql); // Remplacer par get_result, OK fonctionnel le 27/11/2023 -  https://wordpress.stackexchange.com/questions/141971/why-does-dbdelta-not-catch-mysqlerrors
     }
 
     public function get_webshop_list()
