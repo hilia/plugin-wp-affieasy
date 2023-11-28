@@ -257,8 +257,8 @@ class AFES_GenerationUtils
                 // W-prog encoder url si check dans boutique
                 $dbManager = new AFES_DbManager();
                 $webshop = $dbManager->get_webshop_by_id($affiliateLink->webshopId);
-                $encoderUrl = $webshop->getEncoderUrl();
-                if ($encoderUrl=="1"){
+                $encodeUrl = $webshop->getEncodeUrl();
+                if ($encodeUrl=="1"){
                     $urlAffiliateLink = str_replace($affiliateLink->product_url, urlencode($affiliateLink->product_url), $urlAffiliateLink );
                 }
                 // Fin w-prog

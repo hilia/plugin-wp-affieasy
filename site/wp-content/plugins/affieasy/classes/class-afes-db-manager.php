@@ -48,11 +48,11 @@ class AFES_DbManager
 				textColorPreference VARCHAR(10)
 			);");
     }
-    public function update_table_webshop_encoderUrl()
+    public function update_table_webshop_encodeUrl()
     {
         
         global $wpdb;
-        $sql="ALTER TABLE `" . AFES_Constants::TABLE_WEBSHOP . "` ADD COLUMN `encoderUrl` tinyint NULL DEFAULT 0 AFTER `textColorPreference`;";
+        $sql="ALTER TABLE `" . AFES_Constants::TABLE_WEBSHOP . "` ADD COLUMN `encodeUrl` tinyint NULL DEFAULT 0 AFTER `textColorPreference`;";
         require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
         // dbDelta($sql); // SQL update ne fonctionne pas
         $wpdb->get_results($sql); // Remplacer par get_result, OK fonctionnel le 27/11/2023 -  https://wordpress.stackexchange.com/questions/141971/why-does-dbdelta-not-catch-mysqlerrors
@@ -68,7 +68,7 @@ class AFES_DbManager
                 $webshop['linkTextPreference'],
                 $webshop['backgroundColorPreference'],
                 $webshop['textColorPreference'],
-                $webshop['encoderUrl']
+                $webshop['encodeUrl']
             );
         }, $this->db->get_results('SELECT * FROM ' . AFES_Constants::TABLE_WEBSHOP . ' ORDER BY name ASC', ARRAY_A));
     }
@@ -89,7 +89,7 @@ class AFES_DbManager
         $order = in_array($order, array('asc', 'desc')) ? $order : 'asc';
 
         $sql = $this->db->prepare(
-            "SELECT id, name, encoderUrl FROM " . AFES_Constants::TABLE_WEBSHOP . " ORDER BY ".$orderBy." ".$order." LIMIT %d, %d",
+            "SELECT id, name, encodeUrl FROM " . AFES_Constants::TABLE_WEBSHOP . " ORDER BY ".$orderBy." ".$order." LIMIT %d, %d",
             array((($currentPage - 1) * $perPage), $perPage));
 
         return $this->db->get_results($sql, ARRAY_A);
@@ -107,7 +107,7 @@ class AFES_DbManager
             $webshop->linkTextPreference,
             $webshop->backgroundColorPreference,
             $webshop->textColorPreference,
-            $webshop->encoderUrl
+            $webshop->encodeUrl
         );
     }
 
@@ -129,7 +129,7 @@ class AFES_DbManager
             "linkTextPreference" => $webshop->getLinkTextPreference(),
             "backgroundColorPreference" => $webshop->getBackgroundColorPreference(),
             "textColorPreference" => $webshop->getTextColorPreference(),
-            "encoderUrl" => $webshop->getEncoderUrl()
+            "encodeUrl" => $webshop->getEncodeUrl()
         );
 
         if (empty($webshopId)) {
@@ -409,8 +409,8 @@ class AFES_DbManager
         
         $dbManager = new AFES_DbManager();
         $webshop = $dbManager->get_webshop_by_id($link->webshopId);
-        $encoderUrl = $webshop->getEncoderUrl();
-        if ($encoderUrl=="1"){
+        $encodeUrl = $webshop->getEncodeUrl();
+        if ($encodeUrl=="1"){
             $url = str_replace($product_url, urlencode($product_url), $url );
         }
         // Fin w-prog
@@ -449,8 +449,8 @@ class AFES_DbManager
         }
         $dbManager = new AFES_DbManager();
         $webshop = $dbManager->get_webshop_by_id($link->getWebshopId());
-        $encoderUrl = $webshop->getEncoderUrl();
-        if ($encoderUrl=="1" && $product_url!==""){
+        $encodeUrl = $webshop->getEncodeUrl();
+        if ($encodeUrl=="1" && $product_url!==""){
             // Regenerer l'url à partir du tag : [[product_url]] 
             $url = str_replace($product_url, urlencode($product_url), $url );
         }

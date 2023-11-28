@@ -55,8 +55,8 @@ class AFES_AffiliationTableAdmin
     public static function update_affieasy_plugin()
     {
         $staticDbManager = AFES_DbManager::get_instance();
-        // W-prog Update le 22/11/2023 : creation champ encoderUrl 
-        $staticDbManager->update_table_webshop_encoderUrl();
+        // W-prog Update le 22/11/2023 : creation champ encodeUrl 
+        $staticDbManager->update_table_webshop_encodeUrl();
 
     }
 

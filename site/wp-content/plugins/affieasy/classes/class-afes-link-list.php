@@ -78,8 +78,8 @@ class AFES_LinkList extends WP_List_Table
         }
         $dbManager = new AFES_DbManager();
         $webshop = $dbManager->get_webshop_by_id($item['webshopId']);
-        $encoderUrl = $webshop->getEncoderUrl();
-        if ($encoderUrl=="1"){
+        $encodeUrl = $webshop->getEncodeUrl();
+        if ($encodeUrl=="1"){
             $url = str_replace($product_url, urlencode($product_url), $url );
         }
         // Fin w-prog

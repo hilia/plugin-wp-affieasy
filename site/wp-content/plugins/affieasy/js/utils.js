@@ -30,11 +30,6 @@ function recalculateLink(event) {
                     cleanedValue = removeSpecialCharsFromUrlParameter(input.value);
                     console.log('cleanedValue : ', cleanedValue);
                     url = url.replace(`[[${input.dataset.parameter}]]`, cleanedValue);
-                    /*
-                    if (data.encoderUrl=='1'){
-                        url.replace(url,url)
-                    }
-                    */
                 }
 
                 input.value = cleanedValue;

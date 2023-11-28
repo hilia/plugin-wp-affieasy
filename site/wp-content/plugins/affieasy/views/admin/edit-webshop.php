@@ -204,7 +204,7 @@ $webshopName = $webshop->getName();
                             type="checkbox"
                             id="encoder-url"
                             name="encoder-url"
-                            <?php echo ($webshop->getEncoderUrl()==1)?'checked':''?>
+                            <?php echo ($webshop->getEncodeUrl()==1)?'checked':''?>
                             <?php echo $isActionForbidden ? 'disabled' : ''; ?>>
                 </td>
             </tr>

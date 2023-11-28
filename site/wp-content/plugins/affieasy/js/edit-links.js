@@ -116,8 +116,7 @@ jQuery(($) => {
                data: {
                    url: $("#webshopIdParam option:selected").data('url'),
                    parametersSelector: '.link-parameter-input',
-                   linkOverviewSelector: '#p-overview',
-                   /*, encoderUrl:'1'*/
+                   linkOverviewSelector: '#p-overview'
                }
             });
         } else {
