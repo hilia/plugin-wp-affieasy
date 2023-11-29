@@ -7,9 +7,9 @@ Tags:              tables, affiliate links, responsive, comparison tables, prici
 Donate link:
 Requires at least: 5.1
 Tested up to:      6.4.1
-Version:           1.1.3
+Version:           1.1.4
 Requires PHP:      7.2
-Stable tag:        1.1.3
+Stable tag:        1.1.4
 License: GPLv2 or later
 
 Build comparison tables and affiliate links in minutes with this powerful plugin!
