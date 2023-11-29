@@ -56,6 +56,9 @@ See our [tutorial](https://www.affieasy.com/how-to-use-affieasy/ "Tutorial") or 
 
 == Changelog ==
 
+= 1.1.4 =
+* fixes some code
+
 = 1.1.3 =
 * AffiEasy is now free to use!
 * opensource from GitHub
