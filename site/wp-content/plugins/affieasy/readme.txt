@@ -6,10 +6,10 @@ Plugin URI:        https://www.affieasy.com/
 Tags:              tables, affiliate links, responsive, comparison tables, pricing tables, responsive tables, table maker, wordpress table, affiliate table
 Donate link:
 Requires at least: 5.1
-Tested up to:      5.9.1
-Version:           1.0.5
+Tested up to:      6.4.1
+Version:           1.1.4
 Requires PHP:      7.2
-Stable tag:        1.0.5
+Stable tag:        1.1.4
 License: GPLv2 or later
 
 Build comparison tables and affiliate links in minutes with this powerful plugin!
@@ -26,22 +26,17 @@ See our [tutorial](https://www.affieasy.com/how-to-use-affieasy/ "Tutorial") or 
 
 == Features ==
 
-Free version:
-*   Create 2 webshops and manage preferences for affiliate links (text, background color and text color)
+*   Create unlimited webshops and manage preferences for affiliate links (text, background color and text color)
 *   Unlimited table creation which may contain HTML, images and affiliate links
-*   Create 50 affiliate links outsides tables (unlimited in tables)
+*   Create unlimited affiliate links outsides tables (unlimited in tables)
 *   Pretty url managment on links outside tables
 *   Customize table headers (background color, text color, font weight and font size)
 *   Display responsive tables
 
-Additional features for the premium version:
-*   Unlimited webshops
-*   Unlimited affiliate links outside tables
-*   Drag & Drop rows and columns
-*   Responsive table parameters unlocked
-*   Full table customization
-
-See all the differences between free and premium versions: [AffiEasy](https://www.affieasy.com/pricing/ "Your easy comparison table")
+/!\ If you came from version previous to 1.1.3, here how to update without loosing any data:
+1. disable old AffiEasy plugin
+2. install the new plugin (>= v1.1.3)
+3. remove previous plugin
 
 == Installation ==
 
@@ -60,6 +55,16 @@ See all the differences between free and premium versions: [AffiEasy](https://ww
 6. Easy way to create affiliate link
 
 == Changelog ==
+
+= 1.1.4 =
+* fixes some code
+
+= 1.1.3 =
+* AffiEasy is now free to use!
+* opensource from GitHub
+* Shops are now alphabetical ordered
+* url can be encoded with a check box from the shops page
+* PHP 8.2 compatible
 
 = 1.0.5 =
 * Add the possibility to put icons in the tables

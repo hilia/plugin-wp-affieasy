@@ -11,6 +11,7 @@ class AFES_Webshop
     private $linkTextPreference;
     private $backgroundColorPreference;
     private $textColorPreference;
+    private $encodeUrl;
 
     function __construct(
         $id = null,
@@ -18,7 +19,8 @@ class AFES_Webshop
         $url = null,
         $linkTextPreference = null,
         $backgroundColorPreference = null,
-        $textColorPreference = null)
+        $textColorPreference = null,
+        $encodeUrl=-1)
     {
         $this->id = $id;
         $this->name = $name;
@@ -30,6 +32,7 @@ class AFES_Webshop
         $this->linkTextPreference = $linkTextPreference;
         $this->backgroundColorPreference = $backgroundColorPreference;
         $this->textColorPreference = $textColorPreference;
+        $this->encodeUrl = $encodeUrl;
     }
 
     public function getId()
@@ -64,5 +67,9 @@ class AFES_Webshop
     public function getTextColorPreference()
     {
         return $this->textColorPreference;
+    }
+    public function getEncodeUrl()
+    {
+        return $this->encodeUrl;
     }
 }

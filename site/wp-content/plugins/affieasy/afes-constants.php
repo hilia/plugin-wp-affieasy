@@ -45,4 +45,7 @@ class AFES_Constants
         '%EMPTY-STAR%' => 'star-empty affieasy-icon-yellow',
         '%FILLED-STAR%' => 'star-filled affieasy-icon-yellow',
     );
+
+    const PLUGIN_VERSION = '1.1.4';
+    
 }

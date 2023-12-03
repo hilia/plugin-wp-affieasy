@@ -48,6 +48,15 @@ class AFES_DbManager
 				textColorPreference VARCHAR(10)
 			);");
     }
+    public function update_table_webshop_encodeUrl()
+    {
+        
+        global $wpdb;
+        $sql="ALTER TABLE `" . AFES_Constants::TABLE_WEBSHOP . "` ADD COLUMN `encodeUrl` tinyint NULL DEFAULT 0 AFTER `textColorPreference`;";
+        require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+        // dbDelta($sql); // SQL update ne fonctionne pas
+        $wpdb->get_results($sql); // Remplacer par get_result, OK fonctionnel le 27/11/2023 -  https://wordpress.stackexchange.com/questions/141971/why-does-dbdelta-not-catch-mysqlerrors
+    }
 
     public function get_webshop_list()
     {
@@ -58,15 +67,29 @@ class AFES_DbManager
                 $webshop['url'],
                 $webshop['linkTextPreference'],
                 $webshop['backgroundColorPreference'],
-                $webshop['textColorPreference']
+                $webshop['textColorPreference'],
+                $webshop['encodeUrl']
             );
         }, $this->db->get_results('SELECT * FROM ' . AFES_Constants::TABLE_WEBSHOP . ' ORDER BY name ASC', ARRAY_A));
     }
 
-    public function get_webshop_page($currentPage, $perPage)
+    public function get_webshop_page($currentPage, $perPage, $orderBy="name", $order="asc")
     {
+        switch ($orderBy) {
+            case 'id':
+                $orderBy = 'id';
+                break;
+            case 'name':
+                $orderBy = 'name';
+                break;
+            default :
+                $orderBy = 'name';
+        }
+
+        $order = in_array($order, array('asc', 'desc')) ? $order : 'asc';
+
         $sql = $this->db->prepare(
-            "SELECT id, name FROM " . AFES_Constants::TABLE_WEBSHOP . " ORDER BY id DESC LIMIT %d, %d",
+            "SELECT id, name, encodeUrl FROM " . AFES_Constants::TABLE_WEBSHOP . " ORDER BY ".$orderBy." ".$order." LIMIT %d, %d",
             array((($currentPage - 1) * $perPage), $perPage));
 
         return $this->db->get_results($sql, ARRAY_A);
@@ -83,7 +106,8 @@ class AFES_DbManager
             $webshop->url,
             $webshop->linkTextPreference,
             $webshop->backgroundColorPreference,
-            $webshop->textColorPreference
+            $webshop->textColorPreference,
+            $webshop->encodeUrl
         );
     }
 
@@ -93,13 +117,8 @@ class AFES_DbManager
 
         $webshopId = $webshop->getId();
 
-        $canUsePremiumCode = false;
-        if (aff_fs()->is__premium_only()) {
-            if (aff_fs()->can_use_premium_code()) {
-                $canUsePremiumCode = true;
-            }
-        }
-
+        $canUsePremiumCode = true;
+        
         if (!$canUsePremiumCode && $webshopId === null && $this->get_table_count(AFES_Constants::TABLE_WEBSHOP) >= 2) {
             return new AFES_Webshop();
         }
@@ -109,7 +128,9 @@ class AFES_DbManager
             "url" => $webshop->getUrl(),
             "linkTextPreference" => $webshop->getLinkTextPreference(),
             "backgroundColorPreference" => $webshop->getBackgroundColorPreference(),
-            "textColorPreference" => $webshop->getTextColorPreference());
+            "textColorPreference" => $webshop->getTextColorPreference(),
+            "encodeUrl" => $webshop->getEncodeUrl()
+        );
 
         if (empty($webshopId)) {
             $this->db->insert(AFES_Constants::TABLE_WEBSHOP, $values);
@@ -205,13 +226,9 @@ class AFES_DbManager
             "responsiveBreakpoint" => AFES_Table::$defaultResponsiveBreakpoint,
             "backgroundColor" => AFES_Table::$defaultBackgroundColor);
 
-        if (aff_fs()->is__premium_only()) {
-            if (aff_fs()->can_use_premium_code()) {
-                $values['maxWidth'] = is_numeric($maxWidth) ? $maxWidth : null;
-                $values['responsiveBreakpoint'] = is_numeric($responsiveBreakpoint) ? $responsiveBreakpoint : null;
-                $values['backgroundColor'] = $backgroundColor ? $backgroundColor : null;
-            }
-        }
+        $values['maxWidth'] = is_numeric($maxWidth) ? $maxWidth : null;
+        $values['responsiveBreakpoint'] = is_numeric($responsiveBreakpoint) ? $responsiveBreakpoint : null;
+        $values['backgroundColor'] = $backgroundColor ? $backgroundColor : null;
 
         if (empty($tableId)) {
             $this->db->insert(AFES_Constants::TABLE_TABLE, $values);
@@ -379,14 +396,31 @@ class AFES_DbManager
 
         $sql = $this->db->prepare("SELECT * FROM " . AFES_Constants::TABLE_LINK . " WHERE id=%d", array($id));
         $link = $this->db->get_row($sql);
-
+        $url = $link->url;
+        // W-prog encoder url si check dans boutique
+        $parameters = $link->parameters;
+        $parameters = json_decode($parameters);
+        $product_url="";
+        foreach ($parameters as $clef => $valeur){
+            if ($clef=="product_url"){
+                $product_url=$valeur;
+            }
+        }
+        
+        $dbManager = new AFES_DbManager();
+        $webshop = $dbManager->get_webshop_by_id($link->webshopId);
+        $encodeUrl = $webshop->getEncodeUrl();
+        if ($encodeUrl=="1"){
+            $url = str_replace($product_url, urlencode($product_url), $url );
+        }
+        // Fin w-prog
         return isset($link->id) ? new AFES_Link(
             $link->id,
             $link->webshopId,
             $link->label,
             $link->category,
             $link->parameters,
-            $link->url,
+            $url,
             $link->noFollow,
             $link->openInNewTab
         ) : new AFES_Link();
@@ -398,24 +432,37 @@ class AFES_DbManager
 
         $id = $link->getId();
 
-        $canUsePremiumCode = false;
-        if (aff_fs()->is__premium_only()) {
-            if (aff_fs()->can_use_premium_code()) {
-                $canUsePremiumCode = true;
-            }
-        }
-
+        $canUsePremiumCode = true;
+        
         if (!$canUsePremiumCode && $id === null && $this->get_table_count(AFES_Constants::TABLE_LINK) >= 50) {
             return new AFES_Link();
         }
 
+        $url = $link->getUrl();
+        // Wprog : encodage de l'url en base de données.
+        /*
+        $product_url="";
+        foreach ($link->getParameters() as $clef => $valeur){
+            if ($clef=="product_url"){
+                $product_url=$valeur;
+            }
+        }
+        $dbManager = new AFES_DbManager();
+        $webshop = $dbManager->get_webshop_by_id($link->getWebshopId());
+        $encodeUrl = $webshop->getEncodeUrl();
+        if ($encodeUrl=="1" && $product_url!==""){
+            // Regenerer l'url à partir du tag : [[product_url]] 
+            $url = str_replace($product_url, urlencode($product_url), $url );
+        }
+        */
+        // Fin w-Prog
         $values = array(
             "id" => $id,
             "webshopId" => $link->getWebshopId(),
             "label" => $link->getLabel(),
             "category" => $link->getCategory(),
             "parameters" => json_encode($link->getParameters()),
-            "url" => $link->getUrl(),
+            "url" => $url,
             "noFollow" => $link->isNoFollow(),
             "openInNewTab" => $link->isOpenInNewTab()
         );

@@ -71,7 +71,14 @@ class AFES_GenerationUtils
     static function generate_link($link)
     {
         if (isset($link) && is_numeric($link->getId())) { ?>
+
+            <?php // Ancien lien : ?>
             <a href="<?php echo '/?' . AFES_Constants::SHORT_LINK_SLUG . '=' . $link->getId(); ?>" <?php echo $link->isNoFollow() === "1" ? 'rel=nofollow' : ''; ?> <?php echo $link->isOpenInNewTab() ? 'target="_blank"' : ''; ?>><?php echo sanitize_text_field($link->getLabel()); ?></a>
+            <?php /*
+            <hr />
+            Nouveau lien : 
+            <a href="<?php echo AFES_Constants::LINK_REGIE . '' . $link->getUrl(); ?>" <?php echo $link->isNoFollow() === "1" ? 'rel=nofollow' : ''; ?> <?php echo $link->isOpenInNewTab() ? 'target="_blank"' : ''; ?>><?php echo sanitize_text_field($link->getLabel()); ?></a>
+            */?>
         <?php }
     }
 
@@ -244,8 +251,20 @@ class AFES_GenerationUtils
         ?>
         <div class="affieasy-table-cell affieasy-table-cell-links <?php echo $forBothOrRow ? 'affieasy-table-responsive-both-row-content' : '' ?>" <?php echo $backgroundColor; ?>>
             <?php foreach ($affiliateLinks as $affiliateLink) { ?>
-                <a
-                        href="<?php echo $affiliateLink->url ?>"
+
+                <?php 
+                $urlAffiliateLink = $affiliateLink->url;
+                // W-prog encoder url si check dans boutique
+                $dbManager = new AFES_DbManager();
+                $webshop = $dbManager->get_webshop_by_id($affiliateLink->webshopId);
+                $encodeUrl = $webshop->getEncodeUrl();
+                if ($encodeUrl=="1"){
+                    $urlAffiliateLink = str_replace($affiliateLink->product_url, urlencode($affiliateLink->product_url), $urlAffiliateLink );
+                }
+                // Fin w-prog
+                ?>
+
+                <a href="<?php echo $urlAffiliateLink ?>"
                     <?php echo AFES_GenerationUtils::get_affiliate_link_style($affiliateLink); ?>
                         class="affieasy-table-cell-link <?php echo $isFirst ? '' : 'affieasy-table-cell-link-with-margin'; ?>"
                         target="_blank"
