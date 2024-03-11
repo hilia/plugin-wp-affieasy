@@ -256,7 +256,12 @@ class AFES_DbManager
 
     public function delete_table($id)
     {
-        $this->db->delete(AFES_Constants::TABLE_TABLE, array('id' => $id));
+        // Check CSRF
+        if (isset($_POST['form_nonce']) && wp_verify_nonce($_POST['form_nonce'],'test-nonce') && isset($_POST['new_email']) && is_user_logged_in()) {
+            $this->db->delete(AFES_Constants::TABLE_TABLE, array('id' => $id));
+        }else{
+            die();
+        }
     }
 
     private function remove_affiliate_links_in_table_by_webshop_id($id)
