@@ -46,14 +46,27 @@ class AFES_LinkList extends WP_List_Table
         $tag = $item['tag'];
 
         $url = $item['url'];
+        // $url = url_encode($url);
+        $url = str_replace('%C3%A9', "é", $url);
+        // %C3%A9
         
-        return sprintf('%1$s %2$s',
+        $id=$item['id'];
+        $webshopId = $item['webshopId'];
+        
+        $label = $item['label'];
+        $category = $item['category'];
+        $parameters = $item['parameters'];
+        $noFollow = $item['noFollow'];
+        $openInNewTab = $item['openInNewTab'];
+        
+        $editResult = sprintf('<a href="#" class="update-link" data-id="' . $id . '" data-webshop-id="' . $webshopId . '" data-label="' . $label . '" data-category="' . $category . '" data-parameters="' . $parameters . '" data-url="' .  $url . '" data-no-follow="' . $noFollow . '" data-open-in-new-tab="' . $openInNewTab . '">' . esc_html__('Edit', 'affieasy') . '</a>');
+        $deleteResult = sprintf('<a href="#" class="delete-link" data-id="' . $id . '">' . esc_html__('Delete', 'affieasy') . '</a>');
+        $result = sprintf('%1$s %2$s',
             '<span data-type="tag" data-value="' . $tag . '" class="dashicons dashicons-admin-links copy-to-clipboard" title="' . esc_html__('Copy to clipboard', 'affieasy') . '"></span>' . $tag,
-            $this->row_actions(array(
-                'edit' => sprintf('<a href="#" class="update-link" data-id="' . $item['id'] . '" data-webshop-id="' . $item['webshopId'] . '" data-label="' . $item['label'] . '" data-category="' . $item['category'] . '" data-parameters="' . str_replace('"', "'", $item['parameters']) . '" data-url="' .  $url . '" data-no-follow="' . $item['noFollow'] . '" data-open-in-new-tab="' . $item['openInNewTab'] . '">' . esc_html__('Edit', 'affieasy') . '</a>'),
-                'delete' => sprintf('<a href="#" class="delete-link" data-id="' . $item['id'] . '">' . esc_html__('Delete', 'affieasy') . '</a>'),
-            ))
+            $this->row_actions(array('edit' => $editResult,'delete' => $deleteResult))
         );
+        return $result;
+        
     }
 
     function column_shortUrl($item)
@@ -108,7 +121,7 @@ class AFES_LinkList extends WP_List_Table
 
         $search = isset($_GET['s']) ? sanitize_text_field($_GET['s']) : null;
         $total_items = $search === null ?
-            $this->dbManager->get_table_count(AFES_Constants::TABLE_LINK) :
+            $this->dbManager->get_table_count(TABLE_LINK) :
             $this->dbManager->get_link_count($search);
 
         $data = $this->dbManager->get_link_page(

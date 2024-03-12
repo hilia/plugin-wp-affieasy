@@ -38,15 +38,15 @@ class AFES_AffiliationTableAdmin
     public static function initialize_affieasy_plugin()
     {
         $staticDbManager = AFES_DbManager::get_instance();
-        if (!$staticDbManager->table_exists(AFES_Constants::TABLE_WEBSHOP)) {
+        if (!$staticDbManager->table_exists(TABLE_WEBSHOP)) {
             $staticDbManager->create_table_webshop();
         }
 
-        if (!$staticDbManager->table_exists(AFES_Constants::TABLE_TABLE)) {
+        if (!$staticDbManager->table_exists(TABLE_TABLE)) {
             $staticDbManager->create_table_table();
         }
 
-        if (!$staticDbManager->table_exists(AFES_Constants::TABLE_LINK)) {
+        if (!$staticDbManager->table_exists(TABLE_LINK)) {
             $staticDbManager->create_table_link();
         }
 
