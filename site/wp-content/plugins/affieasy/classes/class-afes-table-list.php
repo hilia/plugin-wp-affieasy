@@ -56,7 +56,7 @@ class AFES_TableList extends WP_List_Table
     public function prepare_items()
     {
         $per_page = AFES_Constants::ITEMS_PER_PAGE;
-        $total_items = $this->dbManager->get_table_count(AFES_Constants::TABLE_TABLE);
+        $total_items = $this->dbManager->get_table_count(TABLE_TABLE);
         $data = $this->dbManager->get_table_page($this->get_pagenum(), $per_page);
 
         $this->items = $data;

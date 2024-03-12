@@ -64,7 +64,7 @@ class AFES_WebshopList extends WP_List_Table
     {
         $per_page = AFES_Constants::ITEMS_PER_PAGE;
         $search = isset($_GET['s']) ? sanitize_text_field($_GET['s']) : null;
-        $total_items = $this->dbManager->get_table_count(AFES_Constants::TABLE_WEBSHOP);
+        $total_items = $this->dbManager->get_table_count(TABLE_WEBSHOP);
         // $data = $this->dbManager->get_webshop_page($this->get_pagenum(), $per_page);
         $data = $this->dbManager->get_webshop_page(
             $this->get_pagenum(),

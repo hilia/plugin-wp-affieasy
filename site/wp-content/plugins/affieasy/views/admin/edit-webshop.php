@@ -37,7 +37,7 @@ if ($id === null) {
 
 $canUsePremiumCode = true;
 
-$isActionForbidden = !$canUsePremiumCode && $id === null && $dbManager->get_table_count(AFES_Constants::TABLE_WEBSHOP) >= 2;
+$isActionForbidden = !$canUsePremiumCode && $id === null && $dbManager->get_table_count(TABLE_WEBSHOP) >= 2;
 
 $webshop = $isActionForbidden ? new AFES_Webshop() : new AFES_Webshop(
     $id,

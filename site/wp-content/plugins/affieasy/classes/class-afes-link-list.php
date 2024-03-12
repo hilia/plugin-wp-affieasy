@@ -121,7 +121,7 @@ class AFES_LinkList extends WP_List_Table
 
         $search = isset($_GET['s']) ? sanitize_text_field($_GET['s']) : null;
         $total_items = $search === null ?
-            $this->dbManager->get_table_count(AFES_Constants::TABLE_LINK) :
+            $this->dbManager->get_table_count(TABLE_LINK) :
             $this->dbManager->get_link_count($search);
 
         $data = $this->dbManager->get_link_page(

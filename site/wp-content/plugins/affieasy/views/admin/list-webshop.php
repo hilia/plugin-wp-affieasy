@@ -44,7 +44,7 @@ $canUsePremiumCode = true;
 $dbManager = new AFES_DbManager();
 $currentWebshopCount = 0;
 if (!$canUsePremiumCode) {
-    $currentWebshopCount = $dbManager->get_table_count(AFES_Constants::TABLE_WEBSHOP);
+    $currentWebshopCount = $dbManager->get_table_count(TABLE_WEBSHOP);
 }
 
 $webshopList = new AFES_WebshopList();

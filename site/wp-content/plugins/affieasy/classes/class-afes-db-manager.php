@@ -39,7 +39,7 @@ class AFES_DbManager
     {
         require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
 
-        dbDelta(" CREATE TABLE " . AFES_Constants::TABLE_WEBSHOP . " (
+        dbDelta(" CREATE TABLE " . TABLE_WEBSHOP . " (
 			    id INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT,
 				name VARCHAR(255) NOT NULL,
 				url TEXT NOT NULL,
@@ -52,7 +52,7 @@ class AFES_DbManager
     {
         
         global $wpdb;
-        $sql="ALTER TABLE `" . AFES_Constants::TABLE_WEBSHOP . "` ADD COLUMN `encodeUrl` tinyint NULL DEFAULT 0 AFTER `textColorPreference`;";
+        $sql="ALTER TABLE `" . TABLE_WEBSHOP . "` ADD COLUMN `encodeUrl` tinyint NULL DEFAULT 0 AFTER `textColorPreference`;";
         require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
         // dbDelta($sql); // SQL update ne fonctionne pas
         $wpdb->get_results($sql); // Remplacer par get_result, OK fonctionnel le 27/11/2023 -  https://wordpress.stackexchange.com/questions/141971/why-does-dbdelta-not-catch-mysqlerrors
@@ -70,7 +70,7 @@ class AFES_DbManager
                 $webshop['textColorPreference'],
                 $webshop['encodeUrl']
             );
-        }, $this->db->get_results('SELECT * FROM ' . AFES_Constants::TABLE_WEBSHOP . ' ORDER BY name ASC', ARRAY_A));
+        }, $this->db->get_results('SELECT * FROM ' . TABLE_WEBSHOP . ' ORDER BY name ASC', ARRAY_A));
     }
 
     public function get_webshop_page($currentPage, $perPage, $orderBy="name", $order="asc")
@@ -89,7 +89,7 @@ class AFES_DbManager
         $order = in_array($order, array('asc', 'desc')) ? $order : 'asc';
 
         $sql = $this->db->prepare(
-            "SELECT id, name, encodeUrl FROM " . AFES_Constants::TABLE_WEBSHOP . " ORDER BY ".$orderBy." ".$order." LIMIT %d, %d",
+            "SELECT id, name, encodeUrl FROM " . TABLE_WEBSHOP . " ORDER BY ".$orderBy." ".$order." LIMIT %d, %d",
             array((($currentPage - 1) * $perPage), $perPage));
 
         return $this->db->get_results($sql, ARRAY_A);
@@ -97,7 +97,7 @@ class AFES_DbManager
 
     public function get_webshop_by_id($id)
     {
-        $sql = $this->db->prepare("SELECT * FROM " . AFES_Constants::TABLE_WEBSHOP . " WHERE id=%d", array($id));
+        $sql = $this->db->prepare("SELECT * FROM " . TABLE_WEBSHOP . " WHERE id=%d", array($id));
         $webshop = $this->db->get_row($sql);
 
         return new AFES_Webshop(
@@ -119,7 +119,7 @@ class AFES_DbManager
 
         $canUsePremiumCode = true;
         
-        if (!$canUsePremiumCode && $webshopId === null && $this->get_table_count(AFES_Constants::TABLE_WEBSHOP) >= 2) {
+        if (!$canUsePremiumCode && $webshopId === null && $this->get_table_count(TABLE_WEBSHOP) >= 2) {
             return new AFES_Webshop();
         }
 
@@ -133,11 +133,11 @@ class AFES_DbManager
         );
 
         if (empty($webshopId)) {
-            $this->db->insert(AFES_Constants::TABLE_WEBSHOP, $values);
+            $this->db->insert(TABLE_WEBSHOP, $values);
 
             $webshopId = $this->db->insert_id;
         } else {
-            $this->db->update(AFES_Constants::TABLE_WEBSHOP, $values, array("id" => $webshopId));
+            $this->db->update(TABLE_WEBSHOP, $values, array("id" => $webshopId));
         }
 
         return $this->get_webshop_by_id($webshopId);
@@ -145,7 +145,7 @@ class AFES_DbManager
 
     public function delete_webshop($id)
     {
-        $this->db->delete(AFES_Constants::TABLE_WEBSHOP, array('id' => $id));
+        $this->db->delete(TABLE_WEBSHOP, array('id' => $id));
         $this->remove_affiliate_links_in_table_by_webshop_id($id);
     }
 
@@ -155,7 +155,7 @@ class AFES_DbManager
     {
         require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
 
-        dbDelta("CREATE TABLE " . AFES_Constants::TABLE_TABLE . " (
+        dbDelta("CREATE TABLE " . TABLE_TABLE . " (
 			    id INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT,
 				name VARCHAR(255) NOT NULL,
 				headerType ENUM('COLUMN_HEADER', 'ROW_HEADER', 'BOTH', 'NONE') NOT NULL DEFAULT 'COLUMN_HEADER',
@@ -180,13 +180,13 @@ class AFES_DbManager
                 $table['maxWidth'],
                 $table['backgroundColor']
             );
-        }, $this->db->get_results('SELECT * FROM ' . AFES_Constants::TABLE_TABLE, ARRAY_A));
+        }, $this->db->get_results('SELECT * FROM ' . TABLE_TABLE, ARRAY_A));
     }
 
     public function get_table_page($currentPage, $perPage)
     {
         $sql = $this->db->prepare(
-            "SELECT id, name FROM " . AFES_Constants::TABLE_TABLE . " ORDER BY id DESC LIMIT %d, %d",
+            "SELECT id, name FROM " . TABLE_TABLE . " ORDER BY id DESC LIMIT %d, %d",
             array((($currentPage - 1) * $perPage), $perPage));
 
         return $this->db->get_results($sql, ARRAY_A);
@@ -194,7 +194,7 @@ class AFES_DbManager
 
     public function get_table_by_id($id)
     {
-        $sql = $this->db->prepare("SELECT * FROM " . AFES_Constants::TABLE_TABLE . " WHERE id=%d", array($id));
+        $sql = $this->db->prepare("SELECT * FROM " . TABLE_TABLE . " WHERE id=%d", array($id));
         $table = $this->db->get_row($sql);
 
         return isset($table->id) ? new AFES_Table(
@@ -231,11 +231,11 @@ class AFES_DbManager
         $values['backgroundColor'] = $backgroundColor ? $backgroundColor : null;
 
         if (empty($tableId)) {
-            $this->db->insert(AFES_Constants::TABLE_TABLE, $values);
+            $this->db->insert(TABLE_TABLE, $values);
 
             $tableId = $this->db->insert_id;
         } else {
-            $this->db->update(AFES_Constants::TABLE_TABLE, $values, array("id" => $tableId));
+            $this->db->update(TABLE_TABLE, $values, array("id" => $tableId));
         }
 
         return $this->get_table_by_id($tableId);
@@ -256,12 +256,7 @@ class AFES_DbManager
 
     public function delete_table($id)
     {
-        // Check CSRF
-        if (isset($_POST['form_nonce']) && wp_verify_nonce($_POST['form_nonce'],'test-nonce') && isset($_POST['new_email']) && is_user_logged_in()) {
-            $this->db->delete(AFES_Constants::TABLE_TABLE, array('id' => $id));
-        }else{
-            die();
-        }
+        $this->db->delete(TABLE_TABLE, array('id' => $id));
     }
 
     private function remove_affiliate_links_in_table_by_webshop_id($id)
@@ -310,7 +305,7 @@ class AFES_DbManager
     {
         require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
 
-        dbDelta(" CREATE TABLE " . AFES_Constants::TABLE_LINK . " (
+        dbDelta(" CREATE TABLE " . TABLE_LINK . " (
 			    id INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT,
 				webshopId INTEGER,
 			    label VARCHAR(255) NOT NULL,
@@ -319,7 +314,7 @@ class AFES_DbManager
 			    url TEXT NOT NULL,
 				noFollow BOOLEAN NOT NULL DEFAULT TRUE,
 				openInNewTab BOOLEAN NOT NULL DEFAULT TRUE,
-				FOREIGN KEY (webshopId) REFERENCES " . AFES_Constants::TABLE_WEBSHOP . "(id) ON DELETE CASCADE
+				FOREIGN KEY (webshopId) REFERENCES " . TABLE_WEBSHOP . "(id) ON DELETE CASCADE
 			);");
     }
 
@@ -339,8 +334,8 @@ class AFES_DbManager
 
         $sql = $this->db->prepare(
             "SELECT COUNT(*) AS number
-            FROM " . AFES_Constants::TABLE_LINK . " tl
-            INNER JOIN " . AFES_Constants::TABLE_WEBSHOP . " tw  
+            FROM " . TABLE_LINK . " tl
+            INNER JOIN " . TABLE_WEBSHOP . " tw  
             ON tl.webshopId = tw.id " . $sqlSearch,
             $sqlParameters);
 
@@ -384,8 +379,8 @@ class AFES_DbManager
 
         $sql = $this->db->prepare(
             "SELECT tl.id as id, CONCAT('[" . AFES_Constants::LINK_TAG . " id=', tl.id, ']') as tag, tw.name as webshop, tl.webshopId as webshopId, tl.label as label, tl.category as category, tl.parameters as parameters, tl.url as url, tl.noFollow as noFollow, tl.openInNewTab as openInNewTab  
-            FROM " . AFES_Constants::TABLE_LINK . " tl
-            INNER JOIN " . AFES_Constants::TABLE_WEBSHOP . " tw  
+            FROM " . TABLE_LINK . " tl
+            INNER JOIN " . TABLE_WEBSHOP . " tw  
             ON tl.webshopId = tw.id " . $sqlSearch . " 
             ORDER BY " . $orderBy . " " . $order .  " LIMIT %d, %d",
             $sqlParameters);
@@ -399,7 +394,7 @@ class AFES_DbManager
             return new AFES_Link();
         }
 
-        $sql = $this->db->prepare("SELECT * FROM " . AFES_Constants::TABLE_LINK . " WHERE id=%d", array($id));
+        $sql = $this->db->prepare("SELECT * FROM " . TABLE_LINK . " WHERE id=%d", array($id));
         $link = $this->db->get_row($sql);
         $url = $link->url;
         // W-prog encoder url si check dans boutique
@@ -439,7 +434,7 @@ class AFES_DbManager
 
         $canUsePremiumCode = true;
         
-        if (!$canUsePremiumCode && $id === null && $this->get_table_count(AFES_Constants::TABLE_LINK) >= 50) {
+        if (!$canUsePremiumCode && $id === null && $this->get_table_count(TABLE_LINK) >= 50) {
             return new AFES_Link();
         }
 
@@ -473,14 +468,14 @@ class AFES_DbManager
         );
 
         if (isset($id)) {
-            $this->db->update(AFES_Constants::TABLE_LINK, $values, array("id" => $id));
+            $this->db->update(TABLE_LINK, $values, array("id" => $id));
         } else {
-            $this->db->insert(AFES_Constants::TABLE_LINK, $values);
+            $this->db->insert(TABLE_LINK, $values);
         }
     }
 
     public function delete_link($id) {
-        $this->db->delete(AFES_Constants::TABLE_LINK, array('id' => $id));
+        $this->db->delete(TABLE_LINK, array('id' => $id));
     }
 
     /****************************** Utils functions ******************************/

@@ -73,7 +73,7 @@ $canUsePremiumCode = true;
 
 $currentLinkCount = 0;
 if (!$canUsePremiumCode) {
-    $currentLinkCount = $dbManager->get_table_count(AFES_Constants::TABLE_LINK);
+    $currentLinkCount = $dbManager->get_table_count(TABLE_LINK);
 }
 
 $webshops = $dbManager->get_webshop_list();
