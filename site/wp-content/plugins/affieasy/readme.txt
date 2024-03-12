@@ -1,15 +1,15 @@
 === AffiEasy ===
 
-Contributors:      perrinalexandre05, wpoduj
+Contributors:      wpoduj
 Plugin Name:       AffiEasy
-Plugin URI:        https://www.affieasy.com/
+Plugin URI:        
 Tags:              tables, affiliate links, responsive, comparison tables, pricing tables, responsive tables, table maker, wordpress table, affiliate table
 Donate link:
 Requires at least: 5.1
-Tested up to:      6.4.1
-Version:           1.1.4
+Tested up to:      6.4.3
+Version:           1.1.5
 Requires PHP:      7.2
-Stable tag:        1.1.4
+Stable tag:        1.1.5
 License: GPLv2 or later
 
 Build comparison tables and affiliate links in minutes with this powerful plugin!
@@ -20,7 +20,7 @@ Build comparison table in a really easy way. You can do everything: comparison t
 
 Also benefit from the powerful affiliate link management system (in or ouside tables).
 AffiEasy rebuild your URL with your affiliate parameters. It'll **save you tons of time** and when your need to change the product, it's really fast because you just need to change only the URL.
-See our [tutorial](https://www.affieasy.com/how-to-use-affieasy/ "Tutorial") or watch the video below to discover the possibilities offered by this plugin.
+See the video below to discover the possibilities offered by this plugin.
 
 [youtube https://www.youtube.com/watch?v=NfCv35Guhdo]
 
@@ -32,11 +32,6 @@ See our [tutorial](https://www.affieasy.com/how-to-use-affieasy/ "Tutorial") or 
 *   Pretty url managment on links outside tables
 *   Customize table headers (background color, text color, font weight and font size)
 *   Display responsive tables
-
-/!\ If you came from version previous to 1.1.3, here how to update without loosing any data:
-1. disable old AffiEasy plugin
-2. install the new plugin (>= v1.1.3)
-3. remove previous plugin
 
 == Installation ==
 
@@ -56,6 +51,10 @@ See our [tutorial](https://www.affieasy.com/how-to-use-affieasy/ "Tutorial") or 
 
 == Changelog ==
 
+= 1.1.5 =
+* support prefix databases tables
+* support utf-8 (no more crash when listing links with utf-8 text like accent, %, etc)
+
 = 1.1.4 =
 * fixes some code
 
@@ -65,6 +64,11 @@ See our [tutorial](https://www.affieasy.com/how-to-use-affieasy/ "Tutorial") or 
 * Shops are now alphabetical ordered
 * url can be encoded with a check box from the shops page
 * PHP 8.2 compatible
+
+/!\ If you came from version previous to 1.1.3, here how to update without loosing any data:
+1. disable old AffiEasy plugin
+2. install the new plugin (>= v1.1.3)
+3. remove previous plugin
 
 = 1.0.5 =
 * Add the possibility to put icons in the tables
