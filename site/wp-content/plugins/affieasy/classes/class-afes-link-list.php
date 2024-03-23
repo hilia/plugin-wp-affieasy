@@ -56,7 +56,8 @@ class AFES_LinkList extends WP_List_Table
         $label = $item['label'];
         $category = $item['category'];
         $parameters = $item['parameters'];
-        $parameters = str_replace('"', "'", $parameters);       
+        $parameters = str_replace('"', "'", $parameters);
+        $parameters = str_replace('%20', " ", $parameters);
         $noFollow = $item['noFollow'];
         $openInNewTab = $item['openInNewTab'];
         
