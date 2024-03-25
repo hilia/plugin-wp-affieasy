@@ -47,8 +47,9 @@ class AFES_LinkList extends WP_List_Table
 
         $url = $item['url'];
         // $url = url_encode($url);
-        $url = str_replace('%C3%A9', "é", $url);
-        // %C3%A9
+        // $url = str_replace('%C3%A9', "é", $url);
+        $url = urldecode($url);
+    
         
         $id=$item['id'];
         $webshopId = $item['webshopId'];
@@ -56,7 +57,11 @@ class AFES_LinkList extends WP_List_Table
         $label = $item['label'];
         $category = $item['category'];
         $parameters = $item['parameters'];
-        $parameters = str_replace('"', "'", $parameters);       
+        $parameters = str_replace('"', "'", $parameters);
+        // echo $parameters."<hr />";
+        $parameters = urldecode($parameters);
+        // echo $parameters."<hr />";
+        
         $noFollow = $item['noFollow'];
         $openInNewTab = $item['openInNewTab'];
         
