@@ -22,14 +22,26 @@ wp_localize_script( 'list-table-script', 'translations', array(
 
 wp_enqueue_style('wp-jquery-ui-dialog');
 
-$id = isset($_GET['id']) ? sanitize_key($_GET['id']) : null;
-$action = isset($_GET['action']) ?  sanitize_key($_GET['action']) : null;
+$id = isset($_REQUEST['id']) ? sanitize_key($_REQUEST['id']) : null;
+$action = isset($_REQUEST['action']) ?  sanitize_key($_REQUEST['action']) : null;
 
 $isValidDeleteAction = $action === 'delete-table' && is_numeric($id);
 
 if (is_numeric($id)) {
     $dbManager = new AFES_DbManager();
-    if ($action === 'delete-table') {
+    
+    $nonce = isset($_REQUEST['_wpnonce']) ? $_REQUEST['_wpnonce'] : null;
+    /*
+    // echo "nonce =>".$nonce."<br />";
+    if ( ! wp_verify_nonce( $nonce, 'my-nonce' ) ) {
+        die( __( 'Security check', 'textdomain' ) ); 
+    } else {
+        // Do stuff here.
+        die('nonce OK');
+    }
+    */
+
+    if ($action === 'delete-table' && wp_verify_nonce( $nonce, 'my-nonce') ) {
         $dbManager->delete_table($id);
     } else if ($action === 'duplicate-table') {
         $dbManager->duplicate_table($id);

@@ -1,6 +1,17 @@
 jQuery(($) => {
 
+    // Confirmation de suppression vie message système, la modale étant inutile.
+    $('.delete-table-confirm').click(function(e){
+       
+        if (!confirm('Êtes-vous sur de vouloir supprimer cet enregistrement ?')){
+            e.preventDefault();
+        }
+
+    });
+
+    // TODO : les deux scripts ci-dessous sont vulnérables et donc à supprimer
     // Add openDeleteModal on each delete link
+    /*
     $('.delete-link').each(((index, element) => {
         const jqueryElement = $(element);
         jqueryElement.on('click', null, {id: $(element).data('id')}, openDeleteModal);
@@ -16,6 +27,7 @@ jQuery(($) => {
                 buttons: {
                     [translations.yes]: function () {
                         window.location.href = 'admin.php?page=affieasy-table&action=delete-table&id=' + event.data.id;
+                        
                     },
                     [translations.no]: function () {
                         $(this).dialog('close');
@@ -24,4 +36,5 @@ jQuery(($) => {
             });
         }
     }
+    */
 });
