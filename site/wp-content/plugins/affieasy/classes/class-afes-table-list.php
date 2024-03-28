@@ -38,27 +38,14 @@ class AFES_TableList extends WP_List_Table
     {
         $id = $item['id'];
         $nonce = wp_create_nonce( 'my-nonce' );
-        $urlDelete = 'admin.php?page=affieasy-table&action=delete-table&id='.$id; // Méthode pour tester sans le nonce.
-        // $urlDelete = 'admin.php?page=affieasy-table&action=delete-table&id='.$id.'&_wpnonce='.$nonce; // Méthode OK
-        // $urlDelete = wp_nonce_url('admin.php?page=affieasy-table&action=delete-table&id='.$id,'my_nonce'); // cette méthode ne permet pas d'être controlé.
+        $urlDelete = 'admin.php?page=affieasy-table&action=delete-table&id='.$id.'&_wpnonce='.$nonce;
 
         return sprintf('%1$s %2$s',
             $item['id'],
             $this->row_actions(array(
                 'edit' => sprintf('<a href="admin.php?page=affieasy-table&action=edit-table&id=' . $id . '">' . esc_html__('Edit', 'affieasy') . '</a>'),
                 'duplicate' => sprintf('<a href="admin.php?page=affieasy-table&action=duplicate-table&id=' . $id . '">' . esc_html__('Duplicate', 'affieasy') . '</a>'),
-                // 'delete' => sprintf('<a href="#" class="delete-link" data-id="' . $id . '">' . esc_html__('Delete', 'affieasy') . '</a>')
                 'delete' => sprintf('<a href="'.$urlDelete.'" class="delete-table-confirm">' . esc_html__('Delete', 'affieasy') . '</a>')
-                // Méthode d'envoie d'un formulaire par POST.
-                /*
-                'delete' => sprintf('
-                <form method="post" action="" class="delete-table-confirm">
-                    <input type="hidden" name="page" value="affieasy-table">
-                    <input type="hidden" name="action" value="delete-table">
-                    <input type="hidden" name="id" value="'.$id.'">
-                    <button type="submit">'.esc_html__('Delete', 'affieasy').'</button>
-                </form>')
-                */
             ))
         );
     }

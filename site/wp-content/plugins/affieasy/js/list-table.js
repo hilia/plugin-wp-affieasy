@@ -1,15 +1,5 @@
 jQuery(($) => {
 
-    // Confirmation de suppression vie message système, la modale étant inutile.
-    $('.delete-table-confirm').click(function(e){
-       
-        if (!confirm('Êtes-vous sur de vouloir supprimer cet enregistrement ?')){
-            e.preventDefault();
-        }
-
-    });
-
-    // TODO : les deux scripts ci-dessous sont vulnérables et donc à supprimer
     // Add openDeleteModal on each delete link
     /*
     $('.delete-link').each(((index, element) => {

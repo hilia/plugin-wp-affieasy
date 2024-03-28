@@ -31,15 +31,6 @@ if (is_numeric($id)) {
     $dbManager = new AFES_DbManager();
     
     $nonce = isset($_REQUEST['_wpnonce']) ? $_REQUEST['_wpnonce'] : null;
-    /*
-    // echo "nonce =>".$nonce."<br />";
-    if ( ! wp_verify_nonce( $nonce, 'my-nonce' ) ) {
-        die( __( 'Security check', 'textdomain' ) ); 
-    } else {
-        // Do stuff here.
-        die('nonce OK');
-    }
-    */
 
     if ($action === 'delete-table' && wp_verify_nonce( $nonce, 'my-nonce') ) {
         $dbManager->delete_table($id);
@@ -81,3 +72,15 @@ $tableList = new AFES_TableList();
         ?>
     </form>
 </div>
+<script>
+    jQuery(($) => {
+
+        $('.delete-table-confirm').click(function(e){
+        
+            if (!confirm('<?php esc_html_e('Are you sure you want to delete the table?', 'affieasy'); ?>')){
+                e.preventDefault();
+            }    
+
+        });
+    });
+</script>
