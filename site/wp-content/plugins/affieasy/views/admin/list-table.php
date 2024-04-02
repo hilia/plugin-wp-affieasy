@@ -34,7 +34,7 @@ if (is_numeric($id)) {
 
     if ($action === 'delete-table' && wp_verify_nonce( $nonce, 'my-nonce') ) {
         $dbManager->delete_table($id);
-    } else if ($action === 'duplicate-table') {
+    } else if ($action === 'duplicate-table' && wp_verify_nonce( $nonce, 'my-nonce')) {
         $dbManager->duplicate_table($id);
     }
 }
