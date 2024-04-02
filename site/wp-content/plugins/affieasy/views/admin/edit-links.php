@@ -56,7 +56,7 @@ if (isset($actionType)) {
     
     if ($actionType === 'deletion' && isset($id) && is_numeric($id) && wp_verify_nonce( $nonce, 'my-nonce') ) {
         $dbManager->delete_link($id);
-    } else if ($actionType === 'edition') {
+    } else if ($actionType === 'edition' && wp_verify_nonce( $nonce, 'edit-link-nonce') ) {
         $dbManager->edit_link(new AFES_Link(
             $id,
             isset($_POST['webshopIdParam']) ? sanitize_key($_POST['webshopIdParam']) : null,
@@ -94,6 +94,7 @@ $hasNoWebshop = empty($webshops);
         <input type="hidden" id="actionType" name="actionType" value="edition">
         <input type="hidden" id="parametersParam" name="parametersParam" value="">
         <input type="hidden" id="urlParam" name="urlParam" value="">
+        <?php wp_nonce_field('edit-link-nonce', '_wpnonce');?>
         <table class="form-table">
             <tbody>
             <tr>
