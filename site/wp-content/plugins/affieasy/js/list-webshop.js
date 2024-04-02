@@ -1,5 +1,5 @@
 jQuery(($) => {
-
+    /*
     // Add openDeleteModal on each delete link
     $('.delete-link').each(((index, element) => {
         const jqueryElement = $(element);
@@ -23,4 +23,5 @@ jQuery(($) => {
             });
         }
     }
+    */
 });
