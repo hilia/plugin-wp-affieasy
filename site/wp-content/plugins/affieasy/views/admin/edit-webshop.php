@@ -57,24 +57,31 @@ $isFromSaveAction = $submit === 'save-action';
 
 if(!$isActionForbidden) {
     if ($isFromSaveAction) {
-        if (empty($webshop->getName())) {
-            array_push($errors, esc_html__('Name must not be empty', 'affieasy'));
-        }
 
-        $webshopUrl = $webshop->geturl();
-        if (empty($webshopUrl)) {
-            array_push($errors, esc_html__('Url must not be empty', 'affieasy'));
-        } else {
-            if (!in_array(AFES_Constants::MANDATORY_URL_PARAM, $webshop->getParameters())) {
-                array_push($errors, sprintf(
-                    esc_html__('Url must contains at least [[%1$s]] parameter', 'affieasy'),
-                    AFES_Constants::MANDATORY_URL_PARAM));
+        $nonce = isset($_REQUEST['_wpnonce']) ? $_REQUEST['_wpnonce'] : null;
+        if (wp_verify_nonce( $nonce, 'edit-webshop-nonce')){
+
+            if (empty($webshop->getName())) {
+                array_push($errors, esc_html__('Name must not be empty', 'affieasy'));
             }
-        }
 
-        if (empty($errors)) {
-            $webshop = $dbManager->edit_webshop($webshop);
-        }
+            $webshopUrl = $webshop->geturl();
+            if (empty($webshopUrl)) {
+                array_push($errors, esc_html__('Url must not be empty', 'affieasy'));
+            } else {
+                if (!in_array(AFES_Constants::MANDATORY_URL_PARAM, $webshop->getParameters())) {
+                    array_push($errors, sprintf(
+                        esc_html__('Url must contains at least [[%1$s]] parameter', 'affieasy'),
+                        AFES_Constants::MANDATORY_URL_PARAM));
+                }
+            }
+
+            if (empty($errors)) {
+                $webshop = $dbManager->edit_webshop($webshop);
+            }
+
+        } // Fin check nonce
+
     } else if (!empty($id)) {
         $webshop = $dbManager->get_webshop_by_id($id);
     }
@@ -157,6 +164,7 @@ $webshopName = $webshop->getName();
 
     <form id="form" class="validate" method="post">
         <input type="hidden" id="id" name="id" value="<?php echo $webshopId; ?>">
+        <?php wp_nonce_field('edit-webshop-nonce', '_wpnonce');?>
         <table class="form-table" role="presentation">
             <tr class="form-field">
                 <th scope="row">
