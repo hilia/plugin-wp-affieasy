@@ -49,11 +49,12 @@ wp_localize_script('edit-links-script', 'translations', array(
 
 $dbManager = new AFES_DbManager();
 
-$actionType = isset($_POST['actionType']) ? sanitize_key($_POST['actionType']) : null;
-$id = isset($_POST['idParam']) && is_numeric($_POST['idParam']) ? intval(sanitize_key($_POST['idParam'])) : null;
-
+$actionType = isset($_REQUEST['actionType']) ? sanitize_key($_REQUEST['actionType']) : null;
+$id = isset($_REQUEST['idParam']) && is_numeric($_REQUEST['idParam']) ? intval(sanitize_key($_REQUEST['idParam'])) : null;
+$nonce = isset($_REQUEST['_wpnonce']) ? $_REQUEST['_wpnonce'] : null;
 if (isset($actionType)) {
-    if ($actionType === 'deletion' && isset($id) && is_numeric($id)) {
+    
+    if ($actionType === 'deletion' && isset($id) && is_numeric($id) && wp_verify_nonce( $nonce, 'my-nonce') ) {
         $dbManager->delete_link($id);
     } else if ($actionType === 'edition') {
         $dbManager->edit_link(new AFES_Link(
@@ -236,3 +237,15 @@ $hasNoWebshop = empty($webshops);
 
     <div id="usage-info"><span class="dashicons dashicons-info"></span> <?php esc_html_e('Favor the use of tags to keep your links up to date in your pages and benefit from automatic generation.', 'affieasy'); ?></div>
 </div>
+<script>
+    jQuery(($) => {
+
+        $('.delete-link-confirm').click(function(e){
+        
+            if (!confirm('<?php esc_html_e('Are you sure you want to delete the link?', 'affieasy'); ?>')){
+                e.preventDefault();
+            }    
+
+        });
+    });
+</script>

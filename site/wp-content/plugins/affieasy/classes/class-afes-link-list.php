@@ -64,9 +64,13 @@ class AFES_LinkList extends WP_List_Table
         
         $noFollow = $item['noFollow'];
         $openInNewTab = $item['openInNewTab'];
+
+        $nonce = wp_create_nonce( 'my-nonce' );
+        $urlDelete = 'admin.php?page=affieasy-link&actionType=deletion&idParam='.$id.'&_wpnonce='.$nonce;
         
         $editResult = sprintf('<a href="#" class="update-link" data-id="' . $id . '" data-webshop-id="' . $webshopId . '" data-label="' . $label . '" data-category="' . $category . '" data-parameters="' . $parameters . '" data-url="' .  $url . '" data-no-follow="' . $noFollow . '" data-open-in-new-tab="' . $openInNewTab . '">' . esc_html__('Edit', 'affieasy') . '</a>');
-        $deleteResult = sprintf('<a href="#" class="delete-link" data-id="' . $id . '">' . esc_html__('Delete', 'affieasy') . '</a>');
+        // $deleteResult = sprintf('<a href="#" class="delete-link" data-id="' . $id . '">' . esc_html__('Delete', 'affieasy') . '</a>');
+        $deleteResult = sprintf('<a href="'.$urlDelete.'" class="delete-link-confirm"">' . esc_html__('Delete', 'affieasy') . '</a>');
         $result = sprintf('%1$s %2$s',
             '<span data-type="tag" data-value="' . $tag . '" class="dashicons dashicons-admin-links copy-to-clipboard" title="' . esc_html__('Copy to clipboard', 'affieasy') . '"></span>' . $tag,
             $this->row_actions(array('edit' => $editResult,'delete' => $deleteResult))

@@ -47,10 +47,12 @@ jQuery(($) => {
     }));
 
     // Add openDeleteModal on each delete link
+    /*
     $('.delete-link').each(((index, element) => {
         const jqueryElement = $(element);
         jqueryElement.on('click', null, {id: $(element).data('id')}, openDeleteModal);
     }));
+    */
 
     $('#add-new-link').on('click', () => {
         openEditModal();
@@ -179,7 +181,7 @@ jQuery(($) => {
 
         $('#form').trigger('submit');
     }
-
+    /*
     function openDeleteModal(event) {
         if (!!event && !!event.data && !isNaN(event.data.id)) {
             $('#dialog-confirm-delete').dialog({
@@ -199,4 +201,5 @@ jQuery(($) => {
             });
         }
     }
+    */
 });
