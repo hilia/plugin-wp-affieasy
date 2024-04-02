@@ -96,36 +96,44 @@ $hasNoWebShop = empty($webshops);
 
 $submit = isset($_POST['submit']) ? sanitize_key($_POST['submit']) : null;
 $isFromSaveAction = $submit === 'save-action';
+
 if ($isFromSaveAction) {
-    if (empty($table->getName())) {
-        array_push($errors, esc_html__('Name must not be empty', 'affieasy'));
-    }
 
-    $isNullTableContent = $table->getContent() == null;
-    $isTableWithColumnHeader = in_array($table->getHeaderType(), array('COLUMN_HEADER', 'BOTH'));
-    $tableContentSize = $isNullTableContent ? 0 : count($table->getContent());
+    $nonce = isset($_REQUEST['_wpnonce']) ? $_REQUEST['_wpnonce'] : null;
+    if (wp_verify_nonce( $nonce, 'edit-table-nonce')){
 
-    if ($isTableWithColumnHeader && $tableContentSize < 2 || !$isTableWithColumnHeader && $tableContentSize < 1) {
-        array_push($errors, esc_html__('Table must contains at least one row', 'affieasy'));
-    }
-
-    $responsiveBreakpoint = $table->getResponsiveBreakpoint();
-    if ($responsiveBreakpoint !== '' && (!is_numeric($responsiveBreakpoint) || $responsiveBreakpoint < 0)) {
-        array_push($errors, esc_html__('Responsive breakpoint must be a positive number', 'affieasy'));
-    }
-
-    $maxWidth = $table->getMaxWidth();
-    if ($maxWidth !== '' && (!is_numeric($maxWidth) || $maxWidth < 0)) {
-        array_push($errors, esc_html__('Max width must be a positive number', 'affieasy'));
-    }
-
-    if (count($errors) == 0) {
-        $table = $dbManager->edit_table($table);
-    } else {
-        if ($isNullTableContent) {
-            $table->initDefaultContent();
+        if (empty($table->getName())) {
+            array_push($errors, esc_html__('Name must not be empty', 'affieasy'));
         }
-    }
+
+        $isNullTableContent = $table->getContent() == null;
+        $isTableWithColumnHeader = in_array($table->getHeaderType(), array('COLUMN_HEADER', 'BOTH'));
+        $tableContentSize = $isNullTableContent ? 0 : count($table->getContent());
+
+        if ($isTableWithColumnHeader && $tableContentSize < 2 || !$isTableWithColumnHeader && $tableContentSize < 1) {
+            array_push($errors, esc_html__('Table must contains at least one row', 'affieasy'));
+        }
+
+        $responsiveBreakpoint = $table->getResponsiveBreakpoint();
+        if ($responsiveBreakpoint !== '' && (!is_numeric($responsiveBreakpoint) || $responsiveBreakpoint < 0)) {
+            array_push($errors, esc_html__('Responsive breakpoint must be a positive number', 'affieasy'));
+        }
+
+        $maxWidth = $table->getMaxWidth();
+        if ($maxWidth !== '' && (!is_numeric($maxWidth) || $maxWidth < 0)) {
+            array_push($errors, esc_html__('Max width must be a positive number', 'affieasy'));
+        }
+
+        if (count($errors) == 0) {
+            $table = $dbManager->edit_table($table);
+        } else {
+            if ($isNullTableContent) {
+                $table->initDefaultContent();
+            }
+        }
+    
+    } // fin check nonce
+
 } else {
     $id = isset($_GET['id']) ? sanitize_key($_GET['id']) : null;
     if (!empty($id)) {
@@ -445,6 +453,7 @@ $isFromSaveActionOrNotNew = $isFromSaveAction || !empty($table->getId());
         <input type="hidden" id="initial-header-type" value="<?php echo $table->getHeaderType(); ?>">
         <input type="hidden" id="has-no-webshop" value="<?php echo $hasNoWebShop; ?>">
         <input type="hidden" id="can-use-premium-code" value="<?php echo (int) $canUsePremiumCode; ?>">
+        <?php wp_nonce_field('edit-table-nonce', '_wpnonce');?>
 
         <div class="general-table-options">
             <table class="form-table general-table-options-table" role="presentation">
