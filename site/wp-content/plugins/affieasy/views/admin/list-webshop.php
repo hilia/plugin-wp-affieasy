@@ -33,9 +33,10 @@ $dbManager = new AFES_DbManager();
 
 $id = isset($_GET['id']) ? sanitize_key($_GET['id']) : null;
 $action = isset($_GET['action']) ? sanitize_key($_GET['action']) : null;
+$nonce = isset($_REQUEST['_wpnonce']) ? $_REQUEST['_wpnonce'] : null;
 
 $isValidDeleteAction = $action === 'delete-webshop' && is_numeric($id);
-if ($isValidDeleteAction) {
+if ($isValidDeleteAction  && wp_verify_nonce( $nonce, 'my-nonce')) {
     $dbManager->delete_webshop($id);
 }
 
@@ -91,3 +92,15 @@ $webshopList = new AFES_WebshopList();
         ?>
     </form>
 </div>
+<script>
+    jQuery(($) => {
+
+        $('.delete-webshop-confirm').click(function(e){
+        
+            if (!confirm('<?php esc_html_e('Are you sure you want to delete the webshop (all related links will be removed)?', 'affieasy'); ?>')){
+                e.preventDefault();
+            }    
+
+        });
+    });
+</script>

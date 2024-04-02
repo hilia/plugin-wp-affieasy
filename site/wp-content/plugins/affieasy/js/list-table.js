@@ -1,6 +1,7 @@
 jQuery(($) => {
 
     // Add openDeleteModal on each delete link
+    /*
     $('.delete-link').each(((index, element) => {
         const jqueryElement = $(element);
         jqueryElement.on('click', null, {id: $(element).data('id')}, openDeleteModal);
@@ -16,6 +17,7 @@ jQuery(($) => {
                 buttons: {
                     [translations.yes]: function () {
                         window.location.href = 'admin.php?page=affieasy-table&action=delete-table&id=' + event.data.id;
+                        
                     },
                     [translations.no]: function () {
                         $(this).dialog('close');
@@ -24,4 +26,5 @@ jQuery(($) => {
             });
         }
     }
+    */
 });

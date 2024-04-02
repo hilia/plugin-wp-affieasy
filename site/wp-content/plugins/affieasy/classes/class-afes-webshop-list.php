@@ -38,12 +38,17 @@ class AFES_WebshopList extends WP_List_Table
     function column_id($item)
     {
         $id = $item['id'];
+        $nonce = wp_create_nonce( 'my-nonce' );
+        $urlDelete = 'admin.php?page=affieasy-webshop&action=delete-webshop&id='.$id.'&_wpnonce='.$nonce;
+
 
         return sprintf('%1$s %2$s',
             $item['id'],
             $this->row_actions(array(
                 'edit' => sprintf('<a href="admin.php?page=affieasy-webshop&action=edit-webshop&id=' . $id . '">' . esc_html__('Edit', 'affieasy') . '</a>'),
-                'delete' => sprintf('<a href="#" class="delete-link" data-id="' . $id . '">' . esc_html__('Delete', 'affieasy') . '</a>')
+                'delete' => sprintf('<a href="'.$urlDelete.'" class="delete-webshop-confirm">' . esc_html__('Delete', 'affieasy') . '</a>')
+                /*'delete' => sprintf('<a href="#" class="delete-link" data-id="' . $id . '">' . esc_html__('Delete', 'affieasy') . '</a>')*/
+                
             ))
         );
     }
