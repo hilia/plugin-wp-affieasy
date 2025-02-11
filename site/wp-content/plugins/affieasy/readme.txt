@@ -6,10 +6,11 @@ Plugin URI:
 Tags:              tables, affiliate links, responsive, comparison tables, pricing tables, responsive tables, table maker, wordpress table, affiliate table
 Donate link:
 Requires at least: 5.1
-Tested up to:      6.4.3
-Version:           1.1.8
+Tested up to:      6.7.2
+Version:           1.1.9
 Requires PHP:      7.2
-Stable tag:        1.1.8
+Stable tag:        1.1.9
+Author:            wpoduj
 License: GPLv2 or later
 
 Build comparison tables and affiliate links in minutes with this powerful plugin!
@@ -50,6 +51,9 @@ See the video below to discover the possibilities offered by this plugin.
 6. Easy way to create affiliate link
 
 == Changelog ==
+
+= 1.1.9 =
+* validate plugin up to 6.7.2
 
 = 1.1.8 =
 * remove old freemius directory
